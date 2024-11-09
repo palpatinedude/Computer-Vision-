@@ -27,6 +27,11 @@ import numpy as np
 
 # %%%%%%%%%%%%%%%%%%% FUNCTIONS %%%%%%%%%%%%%%%%%%%%%%%
 
+# normalize the image cause the pixel values should be in the range [0, 1] because the convolution operation is sensitive to 
+# #the input values cause it multiplies the pixel values with the kernel weights and sums them up in order to get the output pixel value
+def normalize_image(image):
+    return (image - image.min()) / (image.max() - image.min())
+
 # upsample the image by a factor of 2
 def upsample(image):
     upsampled_image = F.interpolate(image.unsqueeze(0), scale_factor=2, mode='bilinear', align_corners=False).squeeze(0)
@@ -105,7 +110,7 @@ def display_pyramid(pyramid, title):
     for level in range(num_levels):
         # Convert tensor to numpy array in (H, W, C) format for display
         image = pyramid[level].permute(1, 2, 0).detach().numpy()  # Convert to (height, width, channels)
-        
+        image = normalize_image(image)
         # Display each level in its subplot
         axs[level].imshow(image)
         axs[level].set_title(f"Level {level}\nShape: {image.shape[1]}x{image.shape[0]}")
