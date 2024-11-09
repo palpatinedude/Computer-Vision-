@@ -12,6 +12,8 @@
 #  THIRD STEP :
     # Create gaussian and laplacian pyramids for each image.
 
+#  FOURTH STEP :
+    # Blend the two images using the mask in order to create the final image.
 
 #   FIFTH STEP : 
      # Create binary mask  in order to define which parts of each image should dominate in the final blend
@@ -26,6 +28,41 @@ import torch.nn.functional as F
 import numpy as np
 
 # %%%%%%%%%%%%%%%%%%% FUNCTIONS %%%%%%%%%%%%%%%%%%%%%%%
+
+
+# reconstruct the image from the masked laplacian pyramids ,final output
+def reconstruct_image(blended_pyramid):
+    reconstructed_image = blended_pyramid[-1]  # start from the last level
+    for lap in reversed(blended_pyramid[:-1]):
+        # Upsample the image
+        upsampled_image = upsample(reconstructed_image)
+        
+        # Ensure the upsampled image matches the size of the current lap
+        diff_height = lap.shape[1] - upsampled_image.shape[1]
+        diff_width = lap.shape[2] - upsampled_image.shape[2]
+
+        # If dimensions mismatch, pad the upsampled image to match
+        if diff_height > 0 or diff_width > 0:
+            upsampled_image = F.pad(upsampled_image, 
+                                    (diff_width // 2, (diff_width + 1) // 2, 
+                                     diff_height // 2, (diff_height + 1) // 2), 
+                                    mode='replicate')
+
+        # Add the Laplacian level to the upsampled image
+        reconstructed_image = upsampled_image + lap
+    # Clip the final image to ensure pixel values are in the valid range
+    return torch.clamp(reconstructed_image, 0, 1)
+
+
+# apply mask to the laplacian pyramids
+def blend_images(laplacian_pyramid1, laplacian_pyramid2, mask_pyramid):
+    blended_pyramid = []
+    for lap1, lap2, mask in zip(laplacian_pyramid1, laplacian_pyramid2, mask_pyramid):
+        # blend each level using mask
+        blended_level = lap1 * mask + lap2 * (1 - mask)
+        blended_pyramid.append(blended_level)
+    return blended_pyramid
+
 
 # normalize the image cause the pixel values should be in the range [0, 1] because the convolution operation is sensitive to 
 # #the input values cause it multiplies the pixel values with the kernel weights and sums them up in order to get the output pixel value
@@ -135,7 +172,7 @@ def gaussian_pyramid(image, kernel, num_levels):
         pyramid.append(downsampled_image)
     
 
-        print(f"Level {level} downsampled image shape: {downsampled_image.shape}")
+      #  print(f"Level {level} downsampled image shape: {downsampled_image.shape}")
     
     return pyramid
 
@@ -144,8 +181,8 @@ def gaussian_pyramid(image, kernel, num_levels):
 def downsample(image):
     downsampled_image = F.interpolate(image.unsqueeze(0), scale_factor=0.5, mode='bilinear', align_corners=False).squeeze(0)
     print(f"Downsampled image shape: {downsampled_image.shape}")  
-    plt.imshow(downsampled_image.permute(1, 2, 0).detach().numpy())
-    plt.show()  
+  #  plt.imshow(downsampled_image.permute(1, 2, 0).detach().numpy())
+   # plt.show()  
     return downsampled_image
 
 
@@ -222,8 +259,7 @@ def create_mask(image_shape):
 
 
 
-#             Load and preprocess the images
-
+#             Load and preprocess the images 1st step
 #import the images as numpy arrays
 img1 = Image.open('photos/apple.jpg')  
 img2 = Image.open('photos/orange.jpg')  
@@ -264,14 +300,14 @@ plt.title("Image 2")
 plt.show()
 
 
-#             Define the gaussian kernel that will be used for convolution
+#             Define the gaussian kernel that will be used for convolution 2nd step
 
 kernel_size = 5  # 5X5 matrix
 sigma = 1.0      # standard deviation 
 kernel = gaussian_kernel(kernel_size, sigma,channel1)  # create the gaussian kernel
 
 
-#             Define the gaussian and laplacian pyramid for each image
+#             Define the gaussian and laplacian pyramid for each image  3rd step
 
 
 # create the gaussian pyramids
@@ -289,15 +325,14 @@ display_pyramid(laplacian_pyramid1, "Laplacian Pyramid for Image 1 (Apple)")
 display_pyramid(laplacian_pyramid2, "Laplacian Pyramid for Image 2 (Orange)")
 
 
-
-
-
-
-#             Define the mask that will be used for blending
+#             Define the mask that will be used for blending 4th step
 
 image_shape = img1_tensor.shape
 print("Image Shape:", image_shape)
 mask = create_mask(image_shape)
+
+# create gaussian pyramid for the mask
+mask_pyramid = gaussian_pyramid(mask, kernel, num_levels)
 
 # display the mask
 plt.figure(figsize=(5,5))
@@ -312,6 +347,23 @@ plt.imshow(combined_mask.squeeze(), cmap='gray')
 plt.title("Combined Mask")
 plt.show()
 '''
+
+#             Blend the two images using the mask in order to create the final image  5th step
+
+# Create Gaussian pyramid for the mask
+mask_pyramid1 = gaussian_pyramid(mask, kernel, num_levels)
+print("Mask Pyramid Length:", len(mask_pyramid1))
+
+# Blend the Laplacian pyramids using the mask pyramids
+blended_laplacian_pyramid = blend_images(laplacian_pyramid1, laplacian_pyramid2, mask_pyramid1)
+
+# Reconstruct the final image
+final_image = reconstruct_image(blended_laplacian_pyramid)
+
+# Display the final image
+plt.imshow(final_image.permute(1, 2, 0).detach().numpy())
+plt.title("Blended Image")
+plt.show()
 
 
 
