@@ -22,4 +22,15 @@ function checkType(I)
     else
         disp('The image has unexpected dimensions.');
     end
+
+      % check image type
+    if isa(image, 'uint8')
+        disp('Image Type: uint8');
+    elseif isa(image, 'uint16')
+        disp('Image Type: uint16');
+    elseif isa(image, 'double')
+        disp('Image Type: double');
+    else
+        disp(['Image Type: ', class(image)]);
+    end
 end
