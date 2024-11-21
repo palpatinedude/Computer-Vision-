@@ -1,0 +1,18 @@
+% function 
+function analyzeAndDisplayImage(image, imageName)
+    % Display image info (size and type)
+    sizeInfo = size(image);
+    disp(['Image Name: ', imageName]);
+    disp(['Size of Image: ', num2str(sizeInfo)]);
+
+    % Check image type using the separate function
+    checkType(image);
+
+    % Display the original image
+    figure;
+    imshow(image);
+    title(['Original Image: ', imageName]);
+
+    % Convert to different formats using the separate function
+    convertImage(image);
+end
