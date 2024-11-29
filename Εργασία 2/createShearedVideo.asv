@@ -1,0 +1,56 @@
+% create a periodic shear effect and save as video
+function createShearedVideo(image, outputPath, shearFactor, numFrames, shearDirection)
+%{
+    % set up video writer
+    outputVideo = VideoWriter(outputPath, 'MPEG-4'); 
+    open(outputVideo); 
+%}
+    % set up video writer
+    disp("i am inside ");
+    try
+        outputVideo = VideoWriter(outputPath, 'MPEG-4'); % use MPEG-4 profile
+        disp("mpej4");
+    catch
+        outputVideo = VideoWriter(outputPath, 'Motion JPEG AVI'); % fallback to Motion JPEG AVI
+        disp("jpeg");
+    end
+    open(outputVideo);
+
+    % create shear parameters and apply shear for each frame
+    for i = 1:numFrames
+        params = calculateShearParams(i, numFrames, shearFactor, shearDirection);
+        shearedImg = transformImage(image, 'shear', params); % apply shear
+        writeVideo(outputVideo, shearedImg); % write frame to video
+        imshow(shearedImg); 
+        title(['Frame ', num2str(i)]);
+    end
+    
+    close(outputVideo); % close the video
+    disp('Sheared video created successfully.');
+    % play the video
+    playVideo(outputPath);
+end
+
+% calculate shear parameters for the current frame
+function params = calculateShearParams(frameIndex, totalFrames, shearFactor, shearDirection)
+    t = frameIndex / totalFrames * 2 * pi; % periodic function
+    shearX = 0;
+    shearY = 0;
+    if shearDirection == 1 % shear along x-axis
+        shearX = shearFactor * sin(t);
+    elseif shearDirection == 2 % shear along y-axis
+        shearY = shearFactor * sin(t);
+    end
+    params.shearX = shearX;
+    params.shearY = shearY;
+
+end
+
+% play video from the given path
+function playVideo(videoPath)
+    video = VideoReader(videoPath); % read the video
+    implay(video); % play the video using implay
+    disp(['Playing video: ', video]);
+end
+
+
