@@ -1,5 +1,5 @@
 % function to shear an image by given factors
-function transformedImage = shearImage(image, parameters)
+function transformedImage = shearImage(image, parameters,display)
     shearX = parameters.shearX;
     shearY = parameters.shearY;
 
@@ -16,8 +16,9 @@ function transformedImage = shearImage(image, parameters)
 %    outputRef = imref2d(size(image) * 2); 
     transformedImage = imwarp(image, transform);
     
+    if display == 1
     plotTitle = displayDetails('shear', parameters, size(image), size(transformedImage));
     displayImages(image, transformedImage, plotTitle, 'shear');
-
+    end
 
 end

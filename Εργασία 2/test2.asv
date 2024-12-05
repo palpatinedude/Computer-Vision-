@@ -1,0 +1,145 @@
+
+% Add paths for images and transformations
+addpath('CV_2-TRANSFORMATIONS/photos/');
+addpath('transformations/');
+
+% Read images
+windmillBack = imread('windmill_back.jpeg');
+windmill = imread('windmill.png');
+mask = imread('windmill_mask.png');
+
+% Prepare video writer
+outputPath = 'rotating_windmill.avi';
+videoWriter = VideoWriter(outputPath, 'Motion JPEG AVI');
+open(videoWriter);
+
+% Preprocess images (remove red background and convert mask to binary)
+windmill = removeRedBackground(windmill);  % Remove red background
+maskBinary = preprocessMask(mask);         % Convert mask to binary
+
+% Get image dimensions
+[height, width, ~] = size(windmillBack);
+
+% Scaling and translation parameters (applied once)
+scaleFactor = 1.1;
+parameters.scaleFactor = scaleFactor; % Store scaling factor in parameters structure
+parameters.angle = 0; % Initialize the angle for rotation
+
+% Scale windmill and mask once using transformImage
+scaledWindmill = transformImage(windmill, 'scale', parameters, 0);
+scaledMask = transformImage(maskBinary, 'scale', parameters, 0);
+
+% Initial displacement (where the windmill is placed on the background)
+displacement = [width * 0.95, height * 0.37]; 
+
+% Rotation parameters
+numFrames = 36; % Number of frames for the video
+rotationStep = 360 / numFrames; % Degrees per frame
+
+% Create frames for the video
+for frame = 1:numFrames
+    % Rotation angle for this frame
+    parameters.angle = rotationStep * (frame - 1); % Update the rotation angle
+
+    % Rotate windmill and mask using transformImage
+    rotatedWindmill = transformImage(scaledWindmill, 'rotate', parameters, 0);
+    rotatedMask = transformImage(scaledMask, 'rotate', parameters, 0);
+    %figure; imshow(rotatedWindmill); title('Rotated Windmill');
+    %pause(0.2);
+    %figure; imshow(uint8(rotatedMask)*255); title('Rotated Mask');
+
+    % Blend windmill with background using the rotated mask
+    rotatedMask = rotatedMask > 0;
+    blendedImage = blendImages(windmillBack, rotatedWindmill, rotatedMask, displacement);
+    
+    % Write the frame to the video
+    writeVideo(videoWriter, blendedImage);
+end
+
+% Close video writer
+close(videoWriter);
+disp('Video of rotating windmill blades created successfully!');
+
+% --- Helper Functions ---
+
+function imgNoRed = removeRedBackground(img)
+    % Remove red background from an image
+    redMask = (img(:, :, 1) > 200 & img(:, :, 2) < 50 & img(:, :, 3) < 50);
+    imgNoRed = img .* uint8(~repmat(redMask, [1, 1, 3])); % Black out red areas
+end
+
+function binImg3D = preprocessMask(mask)
+    % Convert mask to binary and expand to 3 channels
+    grayImg = rgb2gray(mask); % Automatically handles RGB or grayscale
+    binImg = imbinarize(grayImg); % Convert to binary (logical: 0 or 1)
+    
+    % Optionally, apply morphological operations to clean the mask
+   % binImg = imfill(binImg, 'holes');  % Fill any holes in the mask
+ %   binImg = bwareaopen(binImg, 100); % Remove small objects (if needed)
+    
+    % Expand binary mask to 3 channels
+    binImg3D = repmat(binImg, [1, 1, 3]); % Expand binary mask to 3 channels
+end
+
+
+
+    function combinedImg = blendImages(bg, blades, mask, displacement)
+    % Get dimensions of inputs
+    [rowsB, colsB, ~] = size(blades);
+    [rowsBG, colsBG, ~] = size(bg);
+    
+    % Compute start and end indices for placement
+    rowStart = round(displacement(2) - rowsB / 2);
+    colStart = round(displacement(1) - colsB / 2);
+    rowEnd = min(rowsBG, rowStart + rowsB - 1);
+    colEnd = min(colsBG, colStart + colsB - 1);
+    disp(['Row Start: ', num2str(rowStart), ', Row End: ', num2str(rowEnd)]);
+    disp(['Col Start: ', num2str(colStart), ', Col End: ', num2str(colEnd)]);
+   
+    % Ensure mask is the same size as the blades (region to place)
+    maskRegion = mask(1:(rowEnd - rowStart + 1), 1:(colEnd - colStart + 1));
+  disp(['Mask : ', num2str(size(mask))]);
+
+disp(['Mask  Region: ', num2str(size(maskRegion))]);
+disp(['Blades Region: ', num2str(size(blades))]);
+disp(['Background Region: ', num2str(size(bg))]);
+
+
+    maskRegion = uint8(maskRegion);  % Ensure it's numeric
+    % Initialize combined image as the background
+    combinedImg = bg;
+    
+    % Loop through each color channel (RGB)
+    for c = 1:3
+        % Blend the image based on the mask
+        combinedImg(rowStart:rowEnd, colStart:colEnd, c) = ...
+            (1 - maskRegion) .* blades(1:(rowEnd - rowStart + 1), 1:(colEnd - colStart + 1), c) + ...
+            (maskRegion) .* bg(rowStart:rowEnd, colStart:colEnd, c);
+    end
+end
+    %{
+
+function combinedImg = blendImages(bg, blades, mask, displacement)
+    % Get dimensions of inputs
+    [rowsB, colsB, ~] = size(blades);
+    [rowsBG, colsBG, ~] = size(bg);
+    % Ensure mask is the same size as the blades (region to place)
+    maskRegion = mask(1:(rowEnd - rowStart + 1), 1:(colEnd - colStart + 1));
+ 
+    maskRegion = uint8(maskRegion);  % Ensure it's numeric
+    % Initialize combined image as the background
+    combinedImg = bg;
+    
+    % Loop through each color channel (RGB)
+    for c = 1:3
+        % Perform weighted sum: where mask is 1, use blade; where mask is 0, use background
+        combinedImg(rowStart:rowEnd, colStart:colEnd, c) = ...
+            (maskRegion) .* bg(rowStart:rowEnd, colStart:colEnd, c) + ...
+            (1 - maskRegion ).* blades(1:(rowEnd - rowStart + 1), 1:(colEnd - colStart + 1), c);
+    end
+end
+    %}
+
+
+
+

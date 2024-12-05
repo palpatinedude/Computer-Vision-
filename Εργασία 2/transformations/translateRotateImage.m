@@ -1,5 +1,5 @@
 % function to translate and rotate an image
-function transformedImage = translateRotateImage(image, parameters)
+function transformedImage = translateRotateImage(image, parameters,display)
     % extract translation and rotation parameters
     translateX = parameters.translateX;
     translateY = parameters.translateY;
@@ -18,8 +18,9 @@ function transformedImage = translateRotateImage(image, parameters)
     originalSize = size(image);
     transformedImage = centerImage(originalSize, transformedImageTemp);
 %}
+    if display == 1
     plotTitle = displayDetails('translateRotate', parameters, size(image), size(transformedImage));
     displayImages(image, transformedImage, plotTitle, 'translateRotate');
-
+    end
 
 end

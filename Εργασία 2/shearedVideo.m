@@ -13,7 +13,7 @@ function shearedVideo(image, outputPath, shearFactor, numFrames, shearDirection)
     % shear parameters and apply shear for each frame
     for i = 1:numFrames
         params = shearParams(i, numFrames, shearFactor, shearDirection);
-        shearedImg = transformImage(image, 'shear', params); 
+        shearedImg = transformImage(image, 'shear', params,1); 
         
         % resize each sheared image original size
         shearedImgResized = imresize(shearedImg, [originalRows, originalCols]);

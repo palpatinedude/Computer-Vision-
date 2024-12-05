@@ -6,7 +6,7 @@ function compositeImg = compositeImage(image, scales)
     % scale each image and calculate total width
     for i = 1:length(scales)
         parameters.scaleFactor = scales(i);
-        scaled_images{i} = transformImage(image, 'scale', parameters);
+        scaled_images{i} = transformImage(image, 'scale', parameters,0);
         total_width = total_width + size(scaled_images{i}, 2);
     end
     

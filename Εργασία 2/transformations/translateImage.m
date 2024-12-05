@@ -1,5 +1,5 @@
 % function to translate an image by given parameters in x and y directions
-function transformedImage = translateImage(image, parameters)
+function transformedImage = translateImage(image, parameters,display)
     % extract translation parameters
     translateX = parameters.translateX;
     translateY = parameters.translateY;
@@ -12,6 +12,8 @@ function transformedImage = translateImage(image, parameters)
     outputRef = imref2d(size(image) * 2); 
     transformedImage = imwarp(image, transform, 'OutputView', outputRef);
 
+    if display == 1
     plotTitle = displayDetails('translate', parameters, size(image), size(transformedImage));
     displayImages(image, transformedImage, plotTitle,'translate');
+    end
 end

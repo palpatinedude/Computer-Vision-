@@ -1,4 +1,4 @@
-function transformedImage = scaleImage(image, parameters)
+function transformedImage = scaleImage(image, parameters,display)
     scaleFactor = parameters.scaleFactor;
 
     % scaling matrix
@@ -12,9 +12,10 @@ function transformedImage = scaleImage(image, parameters)
     originalSize = size(image);
     paddedImage = centerImage(originalSize, scaledImage);
     
-
+    if display == 1
     plotTitle = displayDetails('scale', parameters, size(image), size(paddedImage));
     displayImages(image, paddedImage, plotTitle, 'scale');
+    end
     transformedImage = paddedImage;
 end
 %{

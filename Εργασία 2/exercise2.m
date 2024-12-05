@@ -17,7 +17,7 @@ windmill = imread('CV_2-TRANSFORMATIONS/photos/windmill.png');
 mask = imread('CV_2-TRANSFORMATIONS/photos/windmill_mask.png');
 
 
-%{
+
 % display image information
 for i = 1:length(images)
     imageInfo(images{i});
@@ -28,31 +28,31 @@ end
 
 % scaling
 parameters.scaleFactor = 1.25; 
-scaledbeach = transformImage(beach, 'scale', parameters);
+scaledbeach = transformImage(beach, 'scale', parameters,1);
 
 % rotation
 parameters.angle = 75; 
 rotatedbeach = transformImage(beach, 'rotate', parameters);
 parameters.angle = -75; 
-rotatedI2 = transformImage(beach, 'rotate', parameters);
+rotatedI2 = transformImage(beach, 'rotate', parameters,1);
 
 
 % shearing
 parameters.shearX = 1; 
 parameters.shearY = 0;  
-shearedbeach = transformImage(beach, 'shear', parameters);
+shearedbeach = transformImage(beach, 'shear', parameters,1);
 
 % translation
 parameters.translateX = 200; 
 parameters.translateY = 100; 
-translatedbeach = transformImage(beach, 'translate', parameters);
+translatedbeach = transformImage(beach, 'translate', parameters,1);
 
 
 % translation and rotation
 parameters.translateX = 250; 
 parameters.translateY = 50; 
 parameters.angle = 30;       
-translatedAndRotatedbeach = transformImage(beach, 'translateRotate', parameters);
+translatedAndRotatedbeach = transformImage(beach, 'translateRotate', parameters,1);
 
 % make a animation rotate ball
 numFrames = 300;            
@@ -78,10 +78,10 @@ figure;
 imshow(compositeImg);
 title('Composite Image with Multiple Scales');
 
-%}
 
 
-%{
+
+
 
 % PART 3,4 ---- create periodic shear effect on the image
 outputPath = 'CV_2-TRANSFORMATIONS/photos/sheared_pudding.avi';
@@ -91,32 +91,21 @@ shearDirection = 1; % shear along x-axis
 
 % create and play sheared video
 shearedVideo(pudding, outputPath, shearFactor, numFrames, shearDirection);
-%}
+
 
 % PART 5 ---- create animated windmill transformation video
-%{
-% ensure the mask is binary and expand to 3 channels
-if ~all(mask(:) == 0 | mask(:) == 255)
-    mask = imbinarize(mask); 
-    disp('Now its binary .');
-end
-mask3Channel = repmat(mask, [1, 1, 3]); 
 
-% check if windmill image has alpha channel
-if size(windmill, 3) == 4
-    coImage = windmill(:, :, 1:3); % extract rgb channels
-    alphaChannel = double(windmill(:, :, 4)) / 255; % normalize alpha channel
-else
-    coImage = windmill; % use rgb channels
-    
-end
-%}
-disp(size(windmill));
-alphaChannel = windmill(:, :, 3);
-figure;
-imshow(alphaChannel);
-figure;
-imshow(windmill);
+
+
+
+
+
+
+
+
+
+
+%{
 
 % set video parameters
 outputPath = 'CV_2-TRANSFORMATIONS/photos/transf_windmill.avi';
@@ -184,7 +173,7 @@ end
 close(videoWriter);
 
 disp('Video created and saved as transf_windmill.avi');
-
+%}
 
 
 

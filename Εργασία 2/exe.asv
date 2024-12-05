@@ -1,0 +1,216 @@
+% Add paths
+addpath ('CV_2-TRANSFORMATIONS/photos/');
+addpath("transformations/");
+
+% Read images
+windmillBack = imread('windmill_back.jpeg');
+windmill = imread('windmill.png');
+mask = imread('windmill_mask.png');
+
+% Preprocess windmill to remove red background
+figure;
+imshow(windmill);
+windmill = removeRedBackground(windmill);
+figure;
+imshow(windmill);
+rotatedwindmill = transformImage(windmill,'rotate',) 
+
+% Preprocess mask
+maskBinary = preprocessMask(mask);
+
+% Fourier Transform of Mask
+fourierMask = computeFourier(maskBinary);
+
+% Define video parameters
+outputPath = 'rotating_windmill.avi';
+numFrames = 20; % Number of frames for the video
+rotationStep = 360 / numFrames; % Degrees per frame
+
+% Prepare video writer
+videoWriter = VideoWriter(outputPath, 'Motion JPEG AVI');
+open(videoWriter);
+
+% Get image dimensions
+[height, width, ~] = size(windmillBack);
+
+% Loop to create video frames
+for frame = 1:numFrames
+    % Compute rotation angle
+    parameters.angle = rotationStep * (frame - 1);
+    
+    % Rotate the windmill blades
+    rotatedBlades = transformImage(windmill, 'rotate', parameters, 0);
+    
+    % Scale and place the blades on the background
+    parameters.scaleFactor = 0.8; % Adjust the size of the blades
+    scaledBlades = transformImage(rotatedBlades, 'scale', parameters, 0);
+    displacement = [width * 0.5, height * 0.5]; % Center position
+    combinedImage = placeBladesOnBackground(scaledBlades, windmillBack, displacement);
+    
+    % Blend using the binary mask
+    blendedImage = blendImages(windmillBack, combinedImage, maskBinary);
+    
+    % Write frame to video
+    writeVideo(videoWriter, blendedImage);
+    %{
+    % Display for debugging/visualization
+    imshow(blendedImage);
+    title(['Frame ', num2str(frame)]);
+    pause(0.1);
+    %}
+end
+
+% Close video writer
+close(videoWriter);
+
+disp('Video of rotating windmill blades created successfully!');
+
+% --- Helper Functions ---
+
+function imgNoRed = removeRedBackground(img)
+    % Remove red background from an image
+    redMask = (img(:, :, 1) > 200 & img(:, :, 2) < 50 & img(:, :, 3) < 50);
+    imgNoRed = img;
+    for c = 1:3
+        imgNoRed(:, :, c) = img(:, :, c) .* uint8(~redMask); % Black out red areas
+    end
+end
+
+function combinedImg = blendImages(bg, blades, binMask3D)
+    % Ensure all inputs have matching sizes
+
+   % Verify all sizes and types
+disp('Background size:'), disp(size(bg));
+disp('Blades size:'), disp(size(blades));
+disp('Binary mask size:'), disp(size(binMask3D));
+
+disp('Background type:'), disp(class(bg));
+disp('Blades type:'), disp(class(blades));
+disp('Binary mask type:'), disp(class(binMask3D));
+
+
+    if ~isequal(size(bg), size(blades))
+        blades = imresize(blades, [size(bg, 1), size(bg, 2)]);
+    end
+    
+    if ~isequal(size(bg), size(binMask3D))
+        binMask3D = imresize(binMask3D, [size(bg, 1), size(bg, 2)]);
+    end
+
+    % Blend rotating blades with the background using the binary mask
+    combinedImg = bg; % Start with the background
+    for c = 1:3
+        combinedImg(:, :, c) = combinedImg(:, :, c) .* uint8(~binMask3D(:, :, c)) + ...
+                               blades(:, :, c) .* uint8(binMask3D(:, :, c));
+    end
+end
+
+function [binImg3D] = preprocessMask(mask)
+    % Check if the mask is RGB or grayscale
+    isRGB = checkMaskType(mask);
+    
+    % Convert mask to grayscale if needed
+    grayImg = rgbGray(mask, isRGB);
+    
+    % Convert grayscale to binary
+    binImg = grayBinary(grayImg);
+    
+    % Expand binary mask to 3 channels
+    binImg3D = expandBinaryMask(binImg);
+    
+    % Compute Fourier transforms for debugging
+    fourierImg = computeFourier(mask);
+    fourierGray = computeFourier(grayImg);
+    fourierBin = computeFourier(binImg);
+
+    % Plot masks and Fourier transforms
+    plotMaskInfo(mask, grayImg, binImg, binImg3D, fourierImg, fourierGray, fourierBin);
+end
+
+function isRGB = checkMaskType(img)
+    % Determine if the image is RGB or grayscale
+    if size(img, 3) == 3
+        isRGB = true;
+        disp('Mask is RGB.');
+    else
+        isRGB = false;
+        disp('Mask is Grayscale.');
+    end
+end
+
+function grayImg = rgbGray(img, isRGB)
+    % Convert RGB to grayscale
+    if isRGB
+        grayImg = rgb2gray(img);
+    else
+        grayImg = img;
+    end
+end
+
+function binImg = grayBinary(grayImg)
+    % Convert grayscale to binary
+    binImg = imbinarize(grayImg);
+end
+
+function binImg3D = expandBinaryMask(binImg)
+    % Expand binary mask to 3 channels
+    binImg3D = repmat(binImg, [1, 1, 3]);
+end
+
+function combinedImage = placeBladesOnBackground(blades, background, displacement)
+    % Ensure compatibility between blades and background
+     
+    if size(background, 3) == 1
+        background = repmat(background, [1, 1, 3]);
+    end
+    if size(blades, 3) == 1
+        blades = repmat(blades, [1, 1, 3]);
+    end
+    if ~isa(background, 'uint8')
+        background = uint8(background);
+    end
+    if ~isa(blades, 'uint8')
+        blades = uint8(blades);
+    end
+
+    % Get dimensions
+    [rowsB, colsB, ~] = size(background);
+    [rowsT, colsT, ~] = size(blades);
+
+    % Determine placement region
+    rowStart = max(1, round(displacement(2) - rowsT / 2));
+    colStart = max(1, round(displacement(1) - colsT / 2));
+    rowEnd = min(rowsB, rowStart + rowsT - 1);
+    colEnd = min(colsB, colStart + colsT - 1);
+
+    % Calculate corresponding region in blades
+    bladeRowStart = max(1, 1 + (1 - rowStart));
+    bladeColStart = max(1, 1 + (1 - colStart));
+    bladeRowEnd = bladeRowStart + (rowEnd - rowStart);
+    bladeColEnd = bladeColStart + (colEnd - colStart);
+
+    % Overlay blades onto the background
+    combinedImage = background;
+    for channel = 1:3
+        combinedImage(rowStart:rowEnd, colStart:colEnd, channel) = ...
+            max(background(rowStart:rowEnd, colStart:colEnd, channel), ...
+                blades(bladeRowStart:bladeRowEnd, bladeColStart:bladeColEnd, channel));
+    end
+end
+
+function fourierImg = computeFourier(img)
+    % Compute Fourier transform
+    fourierImg = fftshift(log(abs(fft2(double(img))) + 1));
+end
+
+function plotMaskInfo(mask, grayImg, binImg, binImg3D, fourierImg, fourierGray, fourierBin)
+    % Plot masks and Fourier transforms
+    figure;
+    subplot(3, 3, 1); imshow(mask); title('Original Mask');
+    subplot(3, 3, 2); imshow(grayImg); title('Grayscale Mask');
+    subplot(3, 3, 3); imshow(binImg); title('Binary Mask');
+    subplot(3, 3, 4); imshow(binImg3D(:, :, 1)); title('Binary Mask (Expanded)');
+    subplot(3, 3, 5); imshow(uint8(fourierImg / max(fourierImg(:)) * 255)); title('Fourier (Original)');
+    subplot(3, 3, 6); imshow(uint8(fourierGray / max(fourierGray(:)) * 255)); title('Fourier (Grayscale)');
+    subplot(3, 3, 7); imshow(uint8(fourierBin / max(fourierBin(:)) * 255)); title('Fourier (Binary)');
+end

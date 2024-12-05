@@ -3,7 +3,7 @@ function sequence = createAnimation(image, numFrames, canvasSize, rotationRadius
     parameters.scaleFactor = 0.3; 
     %smallBall = resizeBall(image, scaleFactor);
     
-    smallBall = transformImage(image, 'scale',parameters);
+    smallBall = transformImage(image, 'scale',parameters,1);
 
 
     % create the canvas for animation 
