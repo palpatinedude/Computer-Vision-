@@ -7,11 +7,10 @@ function imageInfo(image)
     % check image type 
     checkType(image);
 
-
     % original image
     figure;
     imshow(image);
-    title(['Original Image ']);
+    title('Original Image ');
 
     % convert to different formats 
  %   convertImage(image);

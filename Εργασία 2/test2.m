@@ -101,92 +101,36 @@ end
 
 function combinedImg = blendImages(bg, blades, mask, displacement)
     % Get dimensions of inputs
-    [rowsB, colsB, ~] = size(blades);
-    [rowsBG, colsBG, ~] = size(bg);
-    [rowsMask, colsMask, ~] = size(mask); % Get size of the mask
+    [rowsB, colsB, ~] = size(blades);  % Blade dimensions
+    [rowsBG, colsBG, ~] = size(bg);    % Background dimensions
 
-    % Compute start and end indices for placement
-    rowStart = round(displacement(2) - rowsB / 2);
-    colStart = round(displacement(1) - colsB / 2);
+    % Define the start and end positions for where the blades should be placed
+    rowStart = round(displacement(2)); % Y-coordinate (vertical position)
+    colStart = round(displacement(1)); % X-coordinate (horizontal position)
+    
+    % Calculate the end positions based on the blade dimensions
     rowEnd = rowStart + rowsB - 1;
     colEnd = colStart + colsB - 1;
-
-    % Adjust indices to ensure they are within bounds of the background
-    rowStartValid = max(1, rowStart);
-    colStartValid = max(1, colStart);
-    rowEndValid = min(rowsBG, rowEnd);
-    colEndValid = min(colsBG, colEnd);
-
-    % Adjust blade and mask indices to fit the valid region
-    bladeRowStart = max(1, 2 - rowStart); % Offset for blades when rowStart < 1
-    bladeColStart = max(1, 2 - colStart); % Offset for blades when colStart < 1
-    bladeRowEnd = rowsB - max(0, rowEnd - rowsBG);
-    bladeColEnd = colsB - max(0, colEnd - colsBG);
-
-    % Ensure blade and mask indices are within valid bounds of mask
-    bladeRowEnd = min(bladeRowEnd, rowsMask);
-    bladeColEnd = min(bladeColEnd, colsMask);
-
-    % Ensure that the bladeRegion and maskRegion have the same dimensions
-    bladeHeight = bladeRowEnd - bladeRowStart + 1;
-    bladeWidth = bladeColEnd - bladeColStart + 1;
-
-    maskRegion = mask(bladeRowStart:bladeRowEnd, bladeColStart:bladeColEnd, :);
-    bladeRegion = blades(bladeRowStart:bladeRowEnd, bladeColStart:bladeColEnd, :);
-
-    % Ensure the mask region matches the blade region size
-    [maskHeight, maskWidth, ~] = size(maskRegion);
-    if maskHeight ~= bladeHeight || maskWidth ~= bladeWidth
-        error('Mask and blade regions do not have the same size.');
-    end
-
-    % Extract the corresponding region from the background
-    bgRegion = bg(rowStartValid:rowEndValid, colStartValid:colEndValid, :);
-
-    % Ensure compatibility of data types for blending
-    bladeRegion = double(bladeRegion);
-    maskRegion = double(maskRegion);
-    bgRegion = double(bgRegion);
+    
+    % Ensure the end positions do not exceed the background image size
+    rowEnd = min(rowEnd, rowsBG);
+    colEnd = min(colEnd, colsBG);
+    
+    % Extract the region from the mask that will be blended
+    maskRegion = mask(1:(rowEnd - rowStart + 1), 1:(colEnd - colStart + 1), :);
+    maskRegion = uint8(maskRegion);  % Ensure it's numeric
 
     % Initialize the combined image as the background
-    combinedImg = bg;
-
-    % Perform blending operation
-    for c = 1:3
-        combinedImg(rowStartValid:rowEndValid, colStartValid:colEndValid, c) = ...
-            maskRegion(:, :, c) .* bladeRegion(:, :, c) + ...
-            (1 - maskRegion(:, :, c)) .* bgRegion(:, :, c);
-    end
-
-    % Convert combined image back to uint8
-    combinedImg = uint8(combinedImg);
-end
-
-
-
-  
-    %{
-
-function combinedImg = blendImages(bg, blades, mask, displacement)
-    % Get dimensions of inputs
-    [rowsB, colsB, ~] = size(blades);
-    [rowsBG, colsBG, ~] = size(bg);
-    % Ensure mask is the same size as the blades (region to place)
-    maskRegion = mask(1:(rowEnd - rowStart + 1), 1:(colEnd - colStart + 1));
- 
-    maskRegion = uint8(maskRegion);  % Ensure it's numeric
-    % Initialize combined image as the background
     combinedImg = bg;
     
     % Loop through each color channel (RGB)
     for c = 1:3
-        % Perform weighted sum: where mask is 1, use blade; where mask is 0, use background
+        % Perform the blending operation for each channel
         combinedImg(rowStart:rowEnd, colStart:colEnd, c) = ...
-            (maskRegion) .* bg(rowStart:rowEnd, colStart:colEnd, c) + ...
-            (1 - maskRegion ).* blades(1:(rowEnd - rowStart + 1), 1:(colEnd - colStart + 1), c);
+            (maskRegion(:, :, c)) .* blades(1:(rowEnd - rowStart + 1), 1:(colEnd - colStart + 1), c) + ...
+            (1 - maskRegion(:, :, c)) .* bg(rowStart:rowEnd, colStart:colEnd, c);
     end
 end
-    %}
 
 
 

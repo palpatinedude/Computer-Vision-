@@ -9,13 +9,13 @@ disp('Hello, World!')
 %  -------------  1.1 imread  ---------------------
 
 
+
 beach = imread('CV_2-TRANSFORMATIONS/photos/beach.jpg');
 ball = imread('CV_2-TRANSFORMATIONS/photos/ball.jpg');
 windmillBack= imread('CV_2-TRANSFORMATIONS/photos/windmill_back.jpeg');
 pudding = imread('CV_2-TRANSFORMATIONS/photos/pudding.png');
 windmill = imread('CV_2-TRANSFORMATIONS/photos/windmill.png');
 mask = imread('CV_2-TRANSFORMATIONS/photos/windmill_mask.png');
-
 
 
 % display image information
@@ -53,6 +53,7 @@ parameters.translateX = 250;
 parameters.translateY = 50; 
 parameters.angle = 30;       
 translatedAndRotatedbeach = transformImage(beach, 'translateRotate', parameters,1);
+
 
 % make a animation rotate ball
 numFrames = 300;            

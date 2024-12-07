@@ -1,0 +1,29 @@
+% main goal of this part to combine multiple scaled versions of the image
+
+% function to execute the 2nd part of the procedure
+function part2(img)
+
+  % Define scaling factors
+  scales = [2.5, 1.2, 1.5, 3.2];
+
+  for i = 1:length(scales)-1  
+     for j = 1:length(scales)-i
+        if scales(i) > scales(i+1)  
+          temp = scales(i);
+          scales(i+1) = temp; 
+          scales(i)
+
+       end
+    end
+  end
+ disp(scales);
+  
+  % create the composite image with scaled versions
+  compositeImg = compositeImage(img, scales);
+
+  % display the result
+  figure;
+  imshow(compositeImg);
+  title('Composite image with multiple scales');
+  
+end

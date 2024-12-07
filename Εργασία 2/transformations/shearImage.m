@@ -17,8 +17,8 @@ function transformedImage = shearImage(image, parameters,display)
     transformedImage = imwarp(image, transform);
     
     if display == 1
-    plotTitle = displayDetails('shear', parameters, size(image), size(transformedImage));
-    displayImages(image, transformedImage, plotTitle, 'shear');
+    plotTitle = displayTransDetails('shear', parameters, size(image), size(transformedImage));
+    displayImages(image, transformedImage, plotTitle);
     end
 
 end

@@ -16,11 +16,11 @@ function transformedImage = translateRotateImage(image, parameters,display)
 %{
     % center transformed image on a blank canvas
     originalSize = size(image);
-    transformedImage = centerImage(originalSize, transformedImageTemp);
+    transformedImage = centerImage(originalSize, transformedImage);
 %}
     if display == 1
-    plotTitle = displayDetails('translateRotate', parameters, size(image), size(transformedImage));
-    displayImages(image, transformedImage, plotTitle, 'translateRotate');
+    plotTitle = displayTransDetails('translateRotate', parameters, size(image), size(transformedImage));
+    displayImages(image, transformedImage, plotTitle);
     end
 
 end
