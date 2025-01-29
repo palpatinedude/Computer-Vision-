@@ -1,0 +1,59 @@
+function compareVideo(originalVideoPath, generatedVideoPath)
+    % Function to compare two videos frame by frame using MSE and PSNR
+
+ 
+
+    % Initialize arrays to store MSE and PSNR values for each frame
+    numFrames = originalVideo.NumFrames;
+    mseValues = zeros(1, numFrames);
+    psnrValues = zeros(1, numFrames);
+
+    % Loop through each frame to compute MSE and PSNR
+    for frameIdx = 1:numFrames
+        % Read the frames from both videos
+        origFrame = read(originalVideo, frameIdx);
+        genFrame = read(generatedVideo, frameIdx);
+
+        % Convert to grayscale if frames are in color
+        if size(origFrame, 3) == 3
+            origFrame = rgb2gray(origFrame);
+        end
+        if size(genFrame, 3) == 3
+            genFrame = rgb2gray(genFrame);
+        end
+
+        % Ensure both frames have the same dimensions
+        if ~isequal(size(origFrame), size(genFrame))
+            error('Frame dimensions do not match between videos.');
+        end
+
+        % Compute MSE
+        diff = double(origFrame) - double(genFrame);
+        mseValues(frameIdx) = mean(diff(:).^2);
+
+        % Compute PSNR if MSE is non-zero
+        if mseValues(frameIdx) > 0
+            psnrValues(frameIdx) = 10 * log10(255^2 / mseValues(frameIdx));
+        else
+            psnrValues(frameIdx) = Inf; % Perfect match
+        end
+    end
+
+    % Display results
+    fprintf('Average MSE: %.4f\n', mean(mseValues));
+    fprintf('Average PSNR: %.2f dB\n', mean(psnrValues));
+
+    % Plot MSE and PSNR values across frames
+    figure;
+    subplot(2, 1, 1);
+    plot(mseValues, '-o');
+    title('MSE Across Frames');
+    xlabel('Frame Index');
+    ylabel('MSE');
+
+    subplot(2, 1, 2);
+    plot(psnrValues, '-o');
+    title('PSNR Across Frames');
+    xlabel('Frame Index');
+    ylabel('PSNR (dB)');
+end

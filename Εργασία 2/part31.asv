@@ -1,0 +1,331 @@
+function part31(img, originalPath)
+    % Define parameters
+    outputPath = 'CV_2-TRANSFORMATIONS/photos/sheared_pudding.avi';
+    shearFactor = 0.3; % Periodic shear factor
+    shearDirection = 1; % Shear direction: 1 for x-axis only
+
+    % Prepare for video processing
+    originalParam = checkVideo(originalPath);
+
+  % Identify and highlight the pudding region in the first frame
+    [boundingBox, croppedPudding, puddingMask] = identifyPuddingRegion(img);
+%{
+    % Visualize the identified region and cropped pudding in the first frame
+    figure;
+    subplot(1, 2, 1);
+    imshow(puddingMask);
+    hold on;
+    rectangle('Position', boundingBox, 'EdgeColor', 'r', 'LineWidth', 2);
+    title('Identified Pudding Region in First Frame');
+    
+    subplot(1, 2, 2);
+    imshow(croppedPudding);
+    title('Cropped Pudding Region in First Frame');
+%}  
+   
+   
+    % Create video writer
+    videoWriter = VideoWriter(outputPath, 'Motion JPEG AVI');
+    videoWriter.FrameRate = originalParam.FrameRate;
+    open(videoWriter);
+
+    % Create and play sheared video
+    shearedVideo(videoWriter, img, shearFactor, shearDirection, originalParam,boundingBox);
+
+    % Close video writer
+    close(videoWriter);
+    disp('Video of sheared pudding created successfully!');
+
+    playVideo(outputPath);
+
+%    displayFirstFrames(originalPath, outputPath);
+end
+
+
+% Create a periodic shear effect and save as video
+function shearedVideo(videoWriter, image, shearFactor, shearDirection, originalParam, boundingBox)
+    try
+        numFrames = originalParam.NumFrames;
+        image = black2White(image);
+       
+        % Create the shear transformation for each frame and write to the video
+        for i = 1:3
+            params = shearParams(i, numFrames, shearFactor, shearDirection);
+
+            % First, expand the canvas to fit the sheared image
+            expandedImage = expandCanvas(image, boundingBox, shearFactor);
+            
+            % Apply shear transformation to the expanded image
+            shearedImg = applyShear(expandedImage, params, [50, 50]);  % Apply shear with a fixed base point
+
+            % Apply mask to replace black pixels with white
+            shearedImg = black2White(shearedImg);
+
+            % Resize the sheared image to match the original video's resolution
+            shearedImgResized = imresize(shearedImg, [originalParam.Height, originalParam.Width]);
+
+            figure;
+            imshow(shearedImgResized);
+
+            % Keep the pudding region fixed in the middle of the frame
+    %        shearedImgResized = keepPuddingInFixedPosition(shearedImgResized, boundingBox, originalParam);
+
+            % Convert the resized frame to a video frame and write to video
+           frame = im2frame(im2uint8(shearedImgResized));
+           
+            writeVideo(videoWriter, frame); 
+        end  
+    catch exception
+        disp(['Error in sheared video creation: ', exception.message]);
+    end
+end
+
+% Calculate shear parameters for each frame
+function params = shearParams(frameIndex, totalFrames, shearFactor, shearDirection)
+    t = frameIndex / totalFrames * 2 * pi; 
+
+    % Initialize shear values
+    params.shearX = 0; 
+    params.shearY = 0;
+    
+    if shearDirection == 1 % shear along x-axis only
+        params.shearX = shearFactor * (-cos(t));
+        params.shearY = 0;  % No shear in y direction
+    elseif shearDirection == 2 % shear both x and y axes
+        params.shearX = shearFactor * sin(t);
+        params.shearY = shearFactor * sin(t);
+    end
+end
+
+% Apply shear transformation to the image along the x-axis while keeping the base point fixed
+function shearedImg = applyShear(image, params, basePoint)
+    % Get the size of the image
+    [height, width, channels] = size(image);
+    
+    % Create meshgrid for pixel coordinates
+    [X, Y] = meshgrid(1:width, 1:height);
+    
+    % Translate coordinates so the base point is at the origin
+    X = X - basePoint(1);  % Shift X by base point
+    Y = Y - basePoint(2);  % Shift Y by base point
+    
+    % Apply shear along the X-axis
+    newX = X + params.shearX * Y;  % Apply shear along X based on Y-coordinate
+    
+    % Translate back to the original position
+    newX = newX + basePoint(1);  % Shift X back to original position
+    Y = Y + basePoint(2);  % Shift Y back (no change in Y)
+
+    % Interpolate the pixels to get the new sheared frame
+    shearedImg = interp2(X, Y, double(image(:,:,1)), newX, Y, 'linear', 0); % Apply shear for the red channel
+    
+    % If the image has more channels (RGB), apply the same transformation to all channels
+    if channels > 1
+        for c = 2:channels
+            shearedImg(:,:,c) = interp2(X, Y, double(image(:,:,c)), newX, Y, 'linear', 0);
+        end
+    end
+
+    % Convert back to uint8 for displaying
+    shearedImg = uint8(shearedImg);
+end
+
+% Function to replace black pixels with white
+function modifiedImage = black2White(image)
+    % Convert image to grayscale if it is RGB
+    if size(image, 3) == 3
+        grayImage = rgb2gray(image);
+    else
+        grayImage = image;
+    end
+
+    % Threshold to identify black pixels (black pixels will have near zero intensity)
+    blackPixels = grayImage < 10;  % 10 is the threshold for identifying black pixels
+    
+    % Create a modified image by replacing black pixels with white
+    modifiedImage = image;
+    modifiedImage(repmat(blackPixels, [1, 1, 3])) = 255; % Set black pixels to white (255)
+end
+
+% Play video from the given path
+function playVideo(videoPath)
+    implay(videoPath); % Play the video using implay
+    disp(['Playing video: ', videoPath]);
+end
+%{
+
+function displayFirstFrames(originalPath, createdPath)
+    % Read the first frame of the original video
+    originalVideo = VideoReader(originalPath);
+    originalFrame = read(originalVideo, 1);  % Read the first frame
+    
+    % Read the first frame of the created video
+    createdVideo = VideoReader(createdPath);
+    createdFrame = read(createdVideo, 1);   % Read the first frame
+    
+    % Identify pudding region in the original frame
+    [maskedOriginal, boundingBoxOriginal, croppedPuddingOriginal] = identifyPuddingRegion(originalFrame);
+    
+    % Identify pudding region in the created (sheared) frame
+    [maskedCreated, boundingBoxCreated, croppedPuddingCreated] = identifyPuddingRegion(createdFrame);
+
+    % Display the sizes of the bounding boxes (pudding region)
+    disp('Bounding Box Size in Original Frame:');
+    disp(['Width: ', num2str(boundingBoxOriginal(3)), ', Height: ', num2str(boundingBoxOriginal(4))]);
+
+    disp('Bounding Box Size in Created (Sheared) Frame:');
+    disp(['Width: ', num2str(boundingBoxCreated(3)), ', Height: ', num2str(boundingBoxCreated(4))]);
+
+    % Create a figure for displaying the frames and the identified regions
+    figure;
+
+    % Display the original frame with the pudding region highlighted
+    subplot(2, 2, 1);
+    imshow(maskedOriginal(:,:,1));
+    hold on;
+    rectangle('Position', boundingBoxOriginal, 'EdgeColor', 'r', 'LineWidth', 2);
+    title('Original Video - Identified Pudding Region');
+    
+    % Display the cropped pudding region from the original frame
+    subplot(2, 2, 2);
+    imshow(croppedPuddingOriginal);
+    title('Original Video - Cropped Pudding');
+
+    % Display the created frame (sheared) with the pudding region highlighted
+    subplot(2, 2, 3);
+    imshow(maskedCreated(:,:,1));
+    hold on;
+    rectangle('Position', boundingBoxCreated, 'EdgeColor', 'r', 'LineWidth', 2);
+    title('Created Video - Identified Pudding Region');
+    
+    % Display the cropped pudding region from the created (sheared) frame
+    subplot(2, 2, 4);
+    imshow(croppedPuddingCreated);
+    title('Created Video - Cropped Pudding');
+end
+%}
+
+function [maskedImage, boundingBox, croppedPudding, puddingMask] = identifyPuddingRegion(image)
+    % Convert the image to grayscale
+    grayImage = rgb2gray(image);
+
+    % Apply a threshold to segment the pudding
+    threshold = graythresh(grayImage); % Automatic thresholding
+    binaryMask = imbinarize(grayImage, threshold);
+
+    % Clean up the binary mask
+    binaryMask = imfill(binaryMask, 'holes'); % Fill holes
+    binaryMask = bwareafilt(binaryMask, 1);  % Keep the largest connected component
+
+    % Get the bounding box of the pudding region
+    props = regionprops(binaryMask, 'BoundingBox');
+    boundingBox = props.BoundingBox;
+
+    % Mask the image to show only the pudding region
+    maskedImage = image;
+    maskedImage(repmat(~binaryMask, [1, 1, 3])) = 255; % Replace background with white
+    figure;
+    imshow(maskedImage(:,:,1));
+
+    % Crop the pudding region using the bounding box
+    x = floor(boundingBox(1));
+    y = floor(boundingBox(2));
+    w = floor(boundingBox(3));
+    h = floor(boundingBox(4));
+
+    % Ensure that the bounding box stays within the image bounds
+    [imgHeight, imgWidth, ~] = size(image);
+    
+    % Clamp x, y to be at least 1
+    x = max(x, 1);
+    y = max(y, 1);
+    
+    % Ensure the bounding box doesn't exceed the image dimensions
+    w = min(w, imgWidth - x + 1);
+    h = min(h, imgHeight - y + 1);
+
+    % Crop the pudding region from the image
+    croppedPudding = imcrop(image, [x, y, w, h]);
+
+    % Create a mask for the pudding region inside the bounding box
+    puddingMask = binaryMask(y:y+h-1, x:x+w-1);  % Extract the mask for the region of interest
+
+end
+
+function shearedImg = scalePuddingRegion(shearedImg, puddingMask, boundingBox)
+    % Get the region of interest (ROI) from the mask within the bounding box
+    [height, width, channels] = size(shearedImg);
+    x = floor(boundingBox(1));
+    y = floor(boundingBox(2));
+    w = floor(boundingBox(3));
+    h = floor(boundingBox(4));
+
+    % Extract the pudding region based on the mask
+    puddingRegion = shearedImg(y:y+h-1, x:x+w-1, :);
+    
+    % Apply scaling to the pudding region
+    scaleFactor = 1.2; % Example scaling factor (can be adjusted)
+    scaledPudding = imresize(puddingRegion, scaleFactor);
+
+    % Place the scaled pudding region back into the sheared image
+    % Ensure the new scaled pudding fits within the bounding box
+    scaledHeight = size(scaledPudding, 1);
+    scaledWidth = size(scaledPudding, 2);
+
+    % Ensure it fits in the image by adjusting the bounding box if needed
+    shearedImg(y:y+scaledHeight-1, x:x+scaledWidth-1, :) = scaledPudding;
+end
+
+
+function [adjustedBoundingBox, expandedMask] = adjustBoundingBox(originalBoundingBox, shearFactor, imageSize)
+    % Unpack original bounding box values
+    x = originalBoundingBox(1);
+    y = originalBoundingBox(2);
+    w = originalBoundingBox(3);
+    h = originalBoundingBox(4);
+
+    % Calculate the maximum displacement due to shear
+    maxDisplacement = abs(shearFactor * h);
+
+    % Adjust the bounding box to account for shear
+    adjustedX = max(1, x - maxDisplacement); % Prevent negative start
+    adjustedY = max(1, y - maxDisplacement); % Prevent negative start
+    adjustedWidth = min(imageSize(2) - adjustedX, w + 2 * maxDisplacement); % Ensure within image bounds
+    adjustedHeight = min(imageSize(1) - adjustedY, h + 2 * maxDisplacement); % Ensure within image bounds
+
+    % Construct the adjusted bounding box
+    adjustedBoundingBox = [adjustedX, adjustedY, adjustedWidth, adjustedHeight];
+
+    % Create an expanded mask for visualization
+    expandedMask = false(imageSize(1), imageSize(2));
+    expandedMask(round(adjustedY):round(adjustedY+adjustedHeight-1), round(adjustedX):round(adjustedX+adjustedWidth-1)) = true;
+end
+
+% Function to expand canvas based on bounding box and shear factor
+function expandedImage = expandCanvas(image, boundingBox, shearFactor)
+    % Extract the bounding box dimensions
+    x = boundingBox(1);
+    y = boundingBox(2);
+    w = boundingBox(3);
+    h = boundingBox(4);
+
+    % Calculate the maximum displacement due to shear
+    maxDisplacementX = abs(shearFactor * h);
+    maxDisplacementY = abs(shearFactor * w);
+
+    % Calculate new canvas dimensions
+    [originalHeight, originalWidth, channels] = size(image);
+    newWidth = ceil(originalWidth + 2 * maxDisplacementX);
+    newHeight = ceil(originalHeight + 2 * maxDisplacementY);
+
+    % Create an expanded canvas with white background
+    expandedImage = uint8(255 * ones(newHeight, newWidth, channels));
+
+    % Copy the original image into the center of the expanded canvas
+    xOffset = ceil(maxDisplacementX);
+    yOffset = ceil(maxDisplacementY);
+    expandedImage(yOffset + 1:yOffset + originalHeight, xOffset + 1:xOffset + originalWidth, :) = image;
+end
+
+
+
