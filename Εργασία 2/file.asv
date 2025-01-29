@@ -1,0 +1,123 @@
+originalVideoPath = 'CV_2-TRANSFORMATIONS/photos/pudding.avi';
+createdVideoPath = 'CV_2-TRANSFORMATIONS/photos/sheared_pudding.avi';
+
+comparePuddingRegions(originalVideoPath, createdVideoPath);
+
+
+
+function comparePuddingRegions(originalVideoPath, createdVideoPath)
+    % Read the first frame of the original video
+    originalVideo = VideoReader(originalVideoPath);
+    originalFrame = read(originalVideo, 1);  % Read the first frame
+
+    % Read the first frame of the created video (sheared)
+    createdVideo = VideoReader(createdVideoPath);
+    createdFrame = read(createdVideo, 1);   % Read the first frame
+    
+    % Identify pudding region in the original frame
+    [ boundingBoxOriginal, croppedPuddingOriginal, puddingMaskOriginal] = identifyPuddingRegion(originalFrame);
+    
+    % Identify pudding region in the created (sheared) frame
+    [ boundingBoxCreated, croppedPuddingCreated, puddingMaskCreated] = identifyPuddingRegion(createdFrame);
+
+    % Calculate the percentage of white regions (pudding) in the original and created masks
+    originalWhitePercentage = calculateWhitePercentage(puddingMaskOriginal);
+    createdWhitePercentage = calculateWhitePercentage(puddingMaskCreated);
+    
+    % Display the percentages
+    fprintf('Original Video - White region percentage: %.2f%%\n', originalWhitePercentage);
+    fprintf('Created Video - White region percentage: %.2f%%\n', createdWhitePercentage);
+    
+    % Display the identified regions and cropped pudding in both frames
+    figure;
+
+    % Display the original frame with the pudding region highlighted
+    subplot(2, 2, 1);
+    imshow(puddingMaskOriginal(:,:,1));
+    hold on;
+    rectangle('Position', boundingBoxOriginal, 'EdgeColor', 'r', 'LineWidth', 2);
+    title('Original Video - Identified Pudding Region');
+    
+    % Display the cropped pudding region from the original frame
+    subplot(2, 2, 2);
+    imshow(croppedPuddingOriginal);
+    title('Original Video - Cropped Pudding');
+
+    % Display the created frame (sheared) with the pudding region highlighted
+    subplot(2, 2, 3);
+    imshow(puddingMaskCreated(:,:,1));
+    hold on;
+    rectangle('Position', boundingBoxCreated, 'EdgeColor', 'r', 'LineWidth', 2);
+    title('Created Video - Identified Pudding Region');
+    
+    % Display the cropped pudding region from the created (sheared) frame
+    subplot(2, 2, 4);
+    imshow(croppedPuddingCreated);
+    title('Created Video - Cropped Pudding');
+end
+
+function whitePercentage = calculateWhitePercentage(mask)
+    % Calculate the percentage of white (non-background) pixels in the binary mask
+    totalPixels = numel(mask);  % Total number of pixels in the mask
+    whitePixels = sum(mask(:)); % Count the number of white pixels (value = 1)
+
+    % Calculate the percentage of white pixels
+    whitePercentage = (whitePixels / totalPixels) * 100;
+end
+
+function [boundingBox, croppedPudding, puddingMask] = identifyPuddingRegion(image)
+    % Convert the image to grayscale
+    grayImage = rgb2gray(image);
+
+    % Create a binary mask where the pudding is non-white (dark) and background is white
+    binaryMask = grayImage < 240;  % Threshold to find darker regions (non-white areas)
+
+    % Clean up the binary mask
+    binaryMask = imfill(binaryMask, 'holes'); % Fill holes in the mask
+    binaryMask = bwareafilt(binaryMask, 1);  % Keep the largest connected component (the pudding)
+
+    % Get the bounding box of the pudding region
+    props = regionprops(binaryMask, 'BoundingBox');
+    boundingBox = props.BoundingBox;
+
+    % Crop the pudding region using the bounding box
+    x = floor(boundingBox(1));
+    y = floor(boundingBox(2));
+    w = floor(boundingBox(3));
+    h = floor(boundingBox(4));
+
+    % Ensure that the bounding box stays within the image bounds
+    [imgHeight, imgWidth, ~] = size(image);
+    
+    % Clamp x, y to be at least 1
+    x = max(x, 1);
+    y = max(y, 1);
+    
+    % Ensure the bounding box doesn't exceed the image dimensions
+    w = min(w, imgWidth - x + 1);
+    h = min(h, imgHeight - y + 1);
+
+    % Crop the pudding region from the image
+    croppedPudding = imcrop(image, [x, y, w, h]);
+
+    % Create a mask for the pudding region inside the bounding box
+    puddingMask = binaryMask(y:y+h-1, x:x+w-1);  % Extract the mask for the region of interest
+end
+
+% Function to play video frame by frame
+function playVideo(videoPath)
+    % Create VideoReader object
+    video = VideoReader(videoPath);
+    
+    % Loop through each frame of the video
+    while hasFrame(video)
+        % Read the current frame
+        frame = readFrame(video);
+        
+        % Display the frame
+        imshow(frame);
+        
+        % Pause to simulate video playback
+        pause(1 / video.FrameRate); % Pause based on the video frame rate
+    end
+end
