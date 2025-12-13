@@ -1,0 +1,26 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Abstract}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Θεωρία — Βασικές σχέσεις}{2}{subsection.1.1}%
+\contentsline {subsubsection}{\numberline {1.1.1}Γκαουσιανό Φίλτρο (1D Kernel)}{2}{subsubsection.1.1.1}%
+\contentsline {subsubsection}{\numberline {1.1.2}Μείωση (Reduce / Downsampling)}{3}{subsubsection.1.1.2}%
+\contentsline {subsubsection}{\numberline {1.1.3}Ανάπτυξη (Expand / Upsampling)}{3}{subsubsection.1.1.3}%
+\contentsline {subsubsection}{\numberline {1.1.4}Laplacian Επίπεδο}{3}{subsubsection.1.1.4}%
+\contentsline {subsubsection}{\numberline {1.1.5}Ανακατασκευή (Reconstruction)}{3}{subsubsection.1.1.5}%
+\contentsline {subsubsection}{\numberline {1.1.6}Σχέσεις μεταξύ Εξισώσεων}{4}{subsubsection.1.1.6}%
+\contentsline {subsection}{\numberline {1.2}Επιβεβαίωση Gaussian Πυρήνα}{4}{subsection.1.2}%
+\contentsline {paragraph}{1. Θεωρητική εξήγηση}{4}{section*.3}%
+\contentsline {paragraph}{Δυωνυμικός πυρήνας $h$}{4}{section*.4}%
+\contentsline {paragraph}{2. Σχέση με smoothing / χαμηλοπερατότητα}{5}{section*.5}%
+\contentsline {paragraph}{3. Οπτική σύγκριση με Gaussian}{5}{section*.6}%
+\contentsline {subsubsection}{\numberline {1.2.1}Γκαουσιανή Πυραμίδα}{6}{subsubsection.1.2.1}%
+\contentsline {paragraph}{Συνέλιξη με Gaussian πυρήνα}{6}{section*.8}%
+\contentsline {paragraph}{Downsampling (Reduce)}{6}{section*.9}%
+\contentsline {paragraph}{Toeplitz Matrix}{6}{section*.10}%
+\contentsline {paragraph}{Downsampling με DN}{6}{section*.11}%
+\contentsline {paragraph}{Kronecker Product}{6}{section*.12}%
+\contentsline {paragraph}{Δημιουργία Gaussian Πυραμίδας}{6}{section*.13}%
+\contentsline {paragraph}{Εφαρμογή σε παράδειγμα 1D σήματος}{7}{section*.14}%
+\contentsline {paragraph}{Εξήγηση των Plots}{7}{section*.16}%
+\contentsline {section}{\numberline {2}Μέρος 2 — Συρραφή εικόνων με Λαπλασιανές Πυραμίδες}{8}{section.2}%
+\contentsline {section}{\numberline {3}Μέρος 3 — Δημιουργία Σύνθεσης πολλών εικόνων}{8}{section.3}%
+\contentsline {section}{\numberline {4}Μέρος 4 — Semantic Segmentation με PSPNet}{8}{section.4}%
