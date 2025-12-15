@@ -1,0 +1,661 @@
+\documentclass[12pt]{article}
+\usepackage[LGR, T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[greek,english]{babel}
+\usepackage{alphabeta}
+\usepackage{multicol}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{microtype}
+\usepackage{csvsimple}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{algorithm} 
+\usepackage{algorithmic}
+\usepackage{csquotes}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{alphabeta}
+\usepackage{pgfgantt}
+\usepackage{xcolor}  
+\usepackage{framed}
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage{adjustbox}
+\usepackage{caption}
+\usepackage{minted}
+\usepackage{cite}
+\usepackage{textcomp}
+\usepackage{subfigure}
+\usepackage{subcaption}
+
+
+
+\title{Εργαστηριακή Άσκηση 1 \\ Πυραμίδες}
+\author{Μαριάνθη Θώδη}
+\date{Νοέμβριος 2025}
+
+\begin{document}
+\begin{figure}
+\begin{flushleft}
+  \includegraphics[width=6cm]{logo.png}
+  \hfill
+\end{flushleft}
+\end{figure}
+
+\maketitle
+\newpage
+\tableofcontents
+
+\section{Abstract}
+
+
+\section{Μέρος Α — Πυραμιδικές αναπαραστάσεις σε 1D }
+
+
+
+
+
+
+\subsection{Θεωρία — Βασικές σχέσεις}
+Σε αυτό το section παραθέτουμε τις βασικές μαθηματικές σχέσεις που χρησιμοποιούνται στην κατασκευή και ανάλυση Gaussian και Laplacian πυραμίδων. Οι εξισώσεις παρατίθενται σύμφωνα με τα μαθηματικά βήματα (5)–(9) από το φυλλάδιο.
+
+\subsubsection{Γκαουσιανό Φίλτρο (1D Kernel)}
+
+Ορίζουμε τον πυρήνα $h$ ως:
+\begin{equation}
+h = \frac{1}{16} [1,4,6,4,1]
+\label{eq:gaussian_kernel}
+\end{equation}
+
+\textbf{Ιδιότητες:}
+\begin{itemize}
+    \item \textbf{Συμμετρικό:} $h[n] = h[4-n]$, δηλαδή η κατανομή είναι συμμετρική γύρω από το κέντρο. \label{eq:symmetric}
+    \item \textbf{Normalized filter:} $\sum h[n] = 1$, ώστε η ένταση του σήματος να παραμένει σταθερή μετά το φίλτρο. \label{eq:normalized}
+    \item \textbf{Προσέγγιση Gaussian:} Πρόκειται για binomial approximation της Gaussian συνάρτησης. Τα στοιχεία του προκύπτουν από τον διωνυμικό συντελεστή:
+    \begin{equation}
+    (1+1)^4 = [1,4,6,4,1]
+    \label{eq:binomial}
+    \end{equation}
+\end{itemize}
+
+\textbf{Σκοπός:} Το φίλτρο χρησιμοποιείται για smoothing πριν από το downsampling ώστε να μειώνεται το aliasing, δηλαδή η παραμόρφωση που εμφανίζεται όταν μειώνεται η ανάλυση.
+
+\subsubsection{Μείωση (Reduce / Downsampling)}
+
+Η διαδικασία μείωσης ενός σήματος $x_j[n]$ σε ένα επόμενο επίπεδο $x_{j+1}[n]$ δίνεται από:
+\begin{equation}
+x_{j+1}[n] = (x_j * h)[2n]
+\label{eq:reduce1}
+\end{equation}
+ή συμβολικά:
+\begin{equation}
+x_{j+1} = \downarrow 2 (x_j * h)
+\label{eq:reduce2}
+\end{equation}
+
+
+\textbf{Σημειώσεις:}
+\begin{itemize}
+    \item $*$ = convolution (συσχέτιση σήματος με φίλτρο)
+    \item $\downarrow 2$ = κρατάμε κάθε δεύτερο δείγμα, μειώνοντας το μέγεθος κατά 2.
+\end{itemize}
+
+\textbf{Σκοπός:} Μείωση της ανάλυσης και του μεγέθους του σήματος, ενώ ταυτόχρονα διατηρούνται οι βασικές πληροφορίες μέσω smoothing.
+
+\subsubsection{Ανάπτυξη (Expand / Upsampling)}
+
+Η αντίστροφη διαδικασία αυξάνει την ανάλυση του σήματος $x_{j+1}[n]$ ώστε να ταιριάξει με το προηγούμενο επίπεδο $x_j[n]$:
+\begin{equation}
+\hat{x}_j[n] = ((\uparrow 2 \; x_{j+1}) * h')[n]
+\label{eq:expand}
+\end{equation}
+
+\textbf{Σημειώσεις:}
+\begin{itemize}
+    \item $\uparrow 2$ = upsample (ενθέτουμε μηδενικά ανάμεσα στα δείγματα)
+    \item $h' = 2h$, ώστε να διατηρείται η συνολική ενέργεια του σήματος.
+\end{itemize}
+
+\textbf{Σκοπός:} Επαναφορά του σήματος στο αρχικό μέγεθος για να υπολογίσουμε τη διαφορά laplacian, δηλαδή τα λεπτομερή στοιχεία που χάθηκαν κατά τη μείωση.
+
+\subsubsection{Laplacian Επίπεδο}
+
+Κάθε επίπεδο Laplacian ορίζεται ως η διαφορά μεταξύ του τρέχοντος gaussian επιπέδου και της επέκτασης του επόμενου επιπέδου:
+\begin{equation}
+L_j = x_j - \text{expand}(x_{j+1})
+\label{eq:laplacian}
+\end{equation}
+
+\textbf{Σημείωση:} Περιέχει λεπτομέρειες υψηλής συχνότητας που χάνονται στο downsampling. Είναι ουσιαστικά ένα band-pass σήμα.
+
+\textbf{Σκοπός:} Η αποθήκευση των διαφορών αυτών επιτρέπει ακριβή ανακατασκευή του σήματος ή της εικόνας αργότερα.
+
+\subsubsection{Ανακατασκευή (Reconstruction)}
+
+Το αρχικό σήμα $x_0$ μπορεί να ανακατασκευαστεί από την laplacian πυραμίδα $L_j$ και το τελευταίο gaussian επίπεδο $x_L$:
+\begin{equation}
+x_0 = \sum_{j=0}^{L-1} \text{expand}^{(j)}(L_j) + \text{expand}^{(L)}(x_L)
+\label{eq:reconstruction}
+\end{equation}
+
+\textbf{Σημειώσεις:}
+\begin{itemize}
+    \item Επεκτείνουμε κάθε Laplacian επίπεδο στην αρχική ανάλυση.
+    \item Προσθέτουμε όλα τα επίπεδα μαζί με το coarsest gaussian $x_L$.
+    \item Η διαδικασία διατηρεί την πληροφορία του αρχικού σήματος (εκτός από αριθμητικά σφάλματα).
+\end{itemize}
+
+\subsubsection{Blending Εικόνων}
+
+Για δύο εικόνες $A$ και $B$ με gaussian μάσκα $G^M_j$ σε κάθε επίπεδο, ορίζουμε το blended laplacian επίπεδο $B_j$ ως:
+
+\begin{equation}
+B_j = G^M_j \odot L^A_j + (1 - G^M_j) \odot L^B_j
+\label{eq:blending}
+\end{equation}
+
+όπου $\odot$ = στοιχειο-προς-στοιχείο (element-wise) πολλαπλασιασμός.  
+
+Αντιστοιχεί στη σχέση (4) του φυλλαδίου:
+
+\begin{equation}
+b_j(n) = g_j(n) \, l^1_j(n) + (1-g_j(n)) \, l^2_j(n)
+\end{equation}
+
+\textbf{Σημασία:} Η σχέση παίρνει κάθε pixel από δύο εικόνες και τα αναμειγνύει ανάλογα με τη μάσκα: όσο πιο μεγάλο είναι το βάρος της μάσκας, τόσο πιο πολύ παίρνουμε από την εικόνα A, και όσο πιο μικρό, τόσο πιο πολύ από την εικόνα B.
+Το κάνει αυτό ξεχωριστά σε κάθε επίπεδο της Laplacian πυραμίδας, δηλαδή για διαφορετικά επίπεδα λεπτομέρειας της εικόνας. 
+
+Το τελικό blended αποτέλεσμα ανακατασκευάζεται ως:
+
+\begin{equation}
+\text{Blended Image} = \sum_j \text{expand}^{(j)}(B_j) + \text{expand}(B_L)
+\label{eq:blended_reconstruction}
+\end{equation}
+
+Η χρήση της Gaussian μάσκας εξασφαλίζει ότι η μετάβαση μεταξύ των εικόνων είναι ομαλή, χωρίς ορατά όρια.
+
+\subsubsection{Σχέσεις μεταξύ Εξισώσεων}
+
+\begin{itemize}
+    \item \textbf{Reduce → Expand:} 
+    \begin{equation}
+    \text{expand}(\text{reduce}(x)) \approx x
+    \label{eq:reduce_expand}
+    \end{equation}
+    αν το φίλτρο είναι σωστά σχεδιασμένο.
+    
+    \item \textbf{Gaussian → Laplacian:} 
+    \begin{equation}
+    L_j = x_j - \text{expand}(x_{j+1})
+    \label{eq:gaussian_laplacian}
+    \end{equation}
+    
+    \item \textbf{Laplacian → Gaussian:} 
+    \begin{equation}
+    x_0 = \sum_j \text{expand}^{(j)}(L_j) + \text{expand}^{(L)}(x_L)
+    \label{eq:laplacian_gaussian}
+    \end{equation}
+\end{itemize}
+
+\textbf{Συμπέρασμα:} Ο κύκλος Gaussian → Laplacian → Gaussian αποτελεί τη βάση για τις πυραμιδικές αναπαραστάσεις, που χρησιμοποιούνται σε blending εικόνων και άλλες εφαρμογές επεξεργασίας εικόνας.
+
+
+
+
+
+
+
+
+
+
+\subsection{Α1: Επιβεβαίωση Gaussian Πυρήνα}
+
+\paragraph{1. Θεωρητική εξήγηση}
+\paragraph{Δυωνυμικός πυρήνας $h$}\mbox{} 
+
+Ο πυρήνας
+\[
+h = \frac{1}{16}[1, 4, 6, 4, 1]
+\]
+είναι ένας 5-σημείων δυωνυμικός πυρήνας, προερχόμενος από το τρίγωνο του Pascal (διωνυμικοί συντελεστές της τάξης 4).  
+
+Η κανονικοποίηση διατηρεί τη συνολική ένταση του σήματος:
+\[
+\sum h[n] = 1.
+\]
+
+Οι δυωνυμικοί πυρήνες αποτελούν διακριτές προσεγγίσεις του γκαουσιανού φίλτρου, και σύμφωνα με το κεντρικό οριακό θεώρημα, όταν το μήκος του πυρήνα αυξάνεται ($N \to \infty$), ο δυωνυμικός πυρήνας συγκλίνει σε συνεχή gaussian.  
+Η συνέλιξη με τον δυωνυμικό πυρήνα εξομαλύνει ένα σήμα όπως ένα gaussian φίλτρο, κάνοντας μέσο όρο τις γειτονικές τιμές και μειώνοντας τον θόρυβο υψηλής συχνότητας.
+
+\paragraph{2. Σχέση με smoothing / χαμηλοπερατότητα}\mbox{} 
+
+Ο δυωνυμικός πυρήνας λειτουργεί ως χαμηλοπερατό φίλτρο:
+
+\begin{itemize}
+    \item Διατηρεί τις χαμηλές συχνότητες του σήματος.
+    \item Μειώνει τις υψηλές συχνότητες, μειώνοντας aliasing πριν το downsampling.
+    \item Επιτρέπει ακριβή ανακατασκευή μέσω της laplacian πυραμίδας.
+\end{itemize}
+
+Αυτό συνδέεται άμεσα με τις πράξεις reduce/downsampling και expand/upsampling των gaussian \& laplacian πυραμίδων.
+
+\paragraph{2. Οπτική Σύγκριση με Gaussian}
+\mbox{}\\
+Μπορούμε να συγκρίνουμε το $h$ με ένα $h$ στο matlab χρησιμοποιώντας την εντολή:
+
+\begin{verbatim}
+G_fspecial = fspecial('gaussian',[1 5],1);
+\end{verbatim}
+
+Το \texttt{fspecial('gaussian')} δημιουργεί έναν 5-σημείων γκαουσιανό πυρήνα με τυπική απόκλιση 1 και κανονικοποιημένο άθροισμα 1.  
+
+Η σύγκριση δείχνει ότι:
+\begin{itemize}
+    \item Το σχήμα του δυωνυμικού πυρήνα  προσεγγίζει πολύ καλά την καμπύλη της γκαουσιανής στο χρόνο, καθιστώντας τον διακριτή προσέγγιση του gaussian.
+    \item Η frequency response μέσω fft  δείχνει ότι το φίλτρο συμπεριφέρεται χαμηλοπερατά, όπως ένα gaussian φίλτρο.
+\end{itemize}
+
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=10cm]{gaussian.png}
+\caption{Plots that shows that binomial kernel approximates the gaussian filter}
+\label{fig:drlagent}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Α2: Υλοποίηση 1D Gaussian Πυραμίδας}
+\label{sec:a2}
+Η Gaussian πυραμίδα δημιουργείται για 1D σήματα $x_0, x_1, \dots, x_L$ εφαρμόζοντας τις βασικές σχέσεις \eqref{eq:gaussian_kernel}–\eqref{eq:laplacian} της θεωρίας.
+
+\paragraph{Συνέλιξη με Gaussian πυρήνα}
+\mbox{}\\
+Ο πυρήνας 
+\[
+h = \frac{1}{16}[1,4,6,4,1]^T
+\]
+εξομαλύνει το σήμα πριν από τη μείωση (reduce), μειώνοντας τις υψηλές συχνότητες και περιορίζοντας το aliasing (βλ. \eqref{eq:gaussian_kernel}, \eqref{eq:binomial}).
+
+\paragraph{Downsampling (Reduce)} \mbox{} 
+
+Διατηρούμε κάθε δεύτερο δείγμα του φιλτραρισμένου σήματος για να μειωθεί η διακριτή ανάλυση κατά 2 (βλ. \eqref{eq:reduce1}, \eqref{eq:reduce2}).
+
+\paragraph{Toeplitz Matrix}\mbox{} 
+
+Ο Toeplitz πίνακας χρησιμοποιείται για να υλοποιηθεί η συνέλιξη μέσω γραμμικού πολλαπλασιασμού.  
+Κάθε γραμμή του πίνακα είναι μια μετατόπιση του gaussian φίλτρου.  
+Ο γραμμικός συνδυασμός των στοιχείων κάθε γραμμής με τα αντίστοιχα δείγματα του σήματος δίνει το αποτέλεσμα της συνέλιξης:
+\[
+y = T \cdot x
+\]
+Αυτό αντιστοιχεί στις εξισώσεις \eqref{eq:reduce1} και \eqref{eq:reduce2}.
+
+\paragraph{Downsampling με $D_N$}\mbox{} 
+
+Το $D_N$ matrix επιλέγει τα δείγματα που θα κρατηθούν μετά τη συνέλιξη:  
+έχει μονάδες στις θέσεις των στοιχείων που θα διατηρηθούν και μηδενικά αλλού.  
+Η εφαρμογή του στο φιλτραρισμένο σήμα υλοποιεί το downsampling,
+όπως περιγράφηκε παραπάνω και στις εξισώσεις \eqref{eq:reduce2}.
+Στην ουσία ο $D_N$ είναι ένας γραμμικός τελεστής που μειώνει τη δειγματοληψία ενός σήματος
+κατά έναν συντελεστή $N$, επιλέγοντας κάθε $N$-οστό στοιχείο, στην δικιά μας περίπτωση $N = 2$.
+
+\paragraph{Kronecker Product}
+\mbox{}\\
+
+Στην 1D περίπτωση το γινόμενο Kronecker δεν χρησιμοποιείται άμεσα.  
+Ωστόσο, σε γενικότερο πλαίσιο μπορεί να εφαρμοστεί για τη διεύρυνση του πίνακα δειγματοληψίας $D_N$ ή για 2D συνελίξεις, όπου η επεξεργασία είναι \textit{separable} κατά γραμμές και στήλες.
+
+\subparagraph{Ορισμός}
+\mbox{} \\
+Αν έχουμε δύο πίνακες
+\[
+A \in \mathbb{R}^{m \times n}, \quad B \in \mathbb{R}^{p \times q},
+\]
+τότε το γινόμενο Kronecker ορίζεται ως
+\[
+A \otimes B,
+\]
+και είναι πίνακας διαστάσεων
+\[
+(mp) \times (nq).
+\]
+
+Ορίζεται αναλυτικά ως:
+\[
+A \otimes B =
+\begin{bmatrix}
+a_{11}B & a_{12}B & \cdots & a_{1n}B \\
+a_{21}B & a_{22}B & \cdots & a_{2n}B \\
+\vdots  & \vdots  & \ddots & \vdots  \\
+a_{m1}B & a_{m2}B & \cdots & a_{mn}B
+\end{bmatrix}
+\]
+
+Κάθε στοιχείο του πίνακα $A$ πολλαπλασιάζει ολόκληρο τον πίνακα $B$.
+
+\subparagraph{Γιατί χρησιμοποιείται το Kronecker Product}
+\mbox{} \\
+Το γινόμενο Kronecker χρησιμοποιείται εκτενώς στην επεξεργασία σήματος και εικόνας διότι:
+
+\begin{itemize}
+    \item Μετατρέπει 2D πράξεις σε 1D (vectorized) μορφή.
+    \item Εκφράζει φυσικά \textit{separable φίλτρα}.
+    \item Απλοποιεί την ανάλυση και υλοποίηση πράξεων κατά γραμμές και στήλες.
+\end{itemize}
+
+\subparagraph{Separable Φίλτρα}
+
+Για ένα separable φίλτρο ισχύει:
+\[
+H_{2D} = H_y \otimes H_x
+\]
+δηλαδή το 2D φίλτρο προκύπτει ως Kronecker γινόμενο δύο 1D φίλτρων, ένα για τον άξονα $x$ και ένα για τον άξονα $y$.
+
+\subparagraph{Kronecker και Δειγματοληψία}
+\mbox{} \\
+Η 2D υποδειγματοληψία μπορεί να γραφτεί ως:
+\[
+D_{2D} = D_y \otimes D_x
+\]
+δηλαδή εφαρμόζεται Kronecker γινόμενο των 1D downsampling τελεστών σε κάθε άξονα.
+
+\subparagraph{Σύνδεση με FFT}
+\mbox{} \\
+Στην ανάλυση συχνοτήτων:
+
+\begin{itemize}
+    \item Κάθε άξονας (γραμμές και στήλες) αναλύεται ανεξάρτητα.
+    \item Το 2D FFT ισοδυναμεί με:
+    \begin{itemize}
+        \item FFT κατά τις γραμμές
+        \item FFT κατά τις στήλες
+    \end{itemize}
+\end{itemize}
+
+Για separable φίλτρο στο πεδίο συχνοτήτων ισχύει:
+\[
+H(\omega_x, \omega_y) = H_x(\omega_x)\, H_y(\omega_y)
+\]
+
+Δηλαδή, το 2D FFT του φίλτρου ισοδυναμεί με το γινόμενο δύο 1D FFT, ένα για κάθε άξονα.
+
+\paragraph{Δημιουργία Gaussian Πυραμίδας}\mbox{} 
+
+Η συνάρτηση \texttt{gaussianPyramid(x,L)} επαναλαμβάνει:
+\begin{enumerate}
+    \item Συνέλιξη με gaussian kernel (toeplitz) → smoothing (\eqref{eq:gaussian_kernel}, \eqref{eq:binomial})
+    \item Downsampling με $D_N$ (\eqref{eq:reduce1}, \eqref{eq:reduce2})
+    \item Αποθήκευση κάθε επιπέδου $x_j$ στο cell array $G\{j\}$
+\end{enumerate}
+Το αρχικό σήμα είναι το επίπεδο 0 ($x_0$). Κάθε επόμενο επίπεδο $x_{j+1}$ είναι πιο ομαλό και μικρότερο σε μέγεθος.
+
+\paragraph{Εφαρμογή σε παράδειγμα 1D σήματος}\mbox{} 
+
+Χρησιμοποιήθηκε το σήμα:
+\[
+x = \sin(2t) + 0.5 \sin(5t), \quad t \in [0,2\pi], \quad N=64
+\]
+Δημιουργήθηκαν 5 επίπεδα πυραμίδας ($x_0$ έως $x_4$).  
+Ξεκινώντας από το αρχικό σήμα $x_0$, σε κάθε επίπεδο εφαρμόζεται πρώτα το φίλτρο και μετά το downsampling, σύμφωνα με τις εξισώσεις \eqref{eq:reduce1}--\eqref{eq:reduce2}. Τα αντίστοιχα plots παρατίθενται παρακάτω, περιλαμβάνοντας και το αρχικό σήμα $x_0$.
+
+
+\begin{figure}[h!]
+    \begin{center}
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{x_0.png}
+        \caption{Αρχικό σήμα $x_0$}
+        \label{fig:original_signal}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{gaussian1D.png}
+        \caption{Gaussian πυραμίδα 1D: κάθε επίπεδο δείχνει το σήμα μετά Gaussian φίλτρο και downsampling}
+        \label{fig:gaussian_pyramid}
+    \end{minipage}
+    \end{center}
+\end{figure}
+
+\paragraph{Εξήγηση των Plots}\mbox{} 
+
+Στα plots παρουσιάζονται όλα τα επίπεδα της Gaussian πυραμίδας:
+\begin{itemize}
+    \item \textbf{Επίπεδο 0:} Το αρχικό σήμα με όλες τις συχνότητες.
+    \item \textbf{Επίπεδα 1–4:} Το σήμα γίνεται σταδιακά πιο ομαλό λόγω του gaussian φίλτρου. Η διακριτή ανάλυση μειώνεται επειδή διατηρούμε κάθε δεύτερο δείγμα.  
+    Τα plots δείχνουν οπτικά τη διαδικασία smoothing και υποδειγματοληψίας, όπως περιγράφεται στις εξισώσεις \eqref{eq:reduce1}–\eqref{eq:reduce2}.
+\end{itemize}
+
+Η διαδικασία αυτή αποτελεί τη βάση για την κατασκευή laplacian πυραμίδων (\eqref{eq:gaussian_laplacian}) και τελικά την ανακατασκευή του σήματος (\eqref{eq:reconstruction}).  
+
+Η ίδια λογική μπορεί να εφαρμοστεί σε 2D εικόνες με separable convolution: πρώτα κατά γραμμές, μετά κατά στήλες.
+
+
+
+
+
+
+
+
+
+
+\subsection{A3: Από Gaussian σε Laplacian και Ανακατασκευή (1D)}
+\label{sec:a3}
+
+\subsubsection{Κατασκευή Laplacian Πυραμίδας}
+
+Η laplacian πυραμίδα παράγεται από τα επίπεδα της γκαουσιανής πυραμίδας χρησιμοποιώντας την βασική σχέση της θεωρίας για laplacian επίπεδο (βλ. eq:\ref{eq:laplacian}), όπου η \texttt{expand} περιλαμβάνει upsampling κατά 2 και συνέλιξη με τον gaussian πυρήνα $h$ (βλ. eq:\ref{eq:expand}).  
+
+Κάθε επίπεδο λαπλασιανής περιέχει τις λεπτομέρειες υψηλών συχνοτήτων που αφαιρέθηκαν κατά το downsampling. Το τελευταίο επίπεδο laplacian είναι απλώς το coarsest gaussian επίπεδο (βλ. eq:\ref{eq:laplacian}).
+
+\subsubsection{Ανακατασκευή του Αρχικού Σήματος}
+
+Η ανακατασκευή του αρχικού σήματος $G_0$ γίνεται σύμφωνα με την βασική σχέση της θεωρίας (βλ. eq:\ref{eq:reconstruction}).  
+
+Ξεκινάμε από το πιο coarse επίπεδο $G_L$ και προσθέτουμε σταδιακά τις λεπτομέρειες από τα αντίστοιχα laplacian επίπεδα $L_j$.  
+Αυτό επιβεβαιώνει ότι η laplacian πυραμίδα περιέχει όλη την απαραίτητη πληροφορία για πλήρη ανακατασκευή, καθώς κάθε επίπεδο λειτουργεί ως ζώνη συχνοτήτων (band-pass).
+
+\subsubsection{MATLAB Υλοποίηση}
+
+\begin{itemize}
+    \item \textbf{Gaussian Pyramid:} \texttt{gaussianPyramid(x,L)} – δημιουργεί όλα τα επίπεδα gaussian πυραμίδας (βλ. \ref{sec:a2}).
+    \item \textbf{Expand / Upsample:} \texttt{gaussianExpand(x)} – επαναδειγματοληψία και συνέλιξη με gaussian kernel (βλ. eq:\ref{eq:expand}).
+    \item \textbf{Laplacian Pyramid:} \texttt{buildLaplacianPyramid(G)} – υπολογίζει κάθε επίπεδο laplacian (βλ. eq:\ref{eq:laplacian}).
+    \item \textbf{Reconstruction:} \texttt{reconstructFromLaplacian(L)} – ανακατασκευάζει το αρχικό σήμα από τη laplacian πυραμίδα και το coarsest gaussian επίπεδο (βλ. eq:\ref{eq:reconstruction}).
+\end{itemize}
+
+Ο κώδικας χρησιμοποιεί toeplitz matrices για συνέλιξη, DN matrices για downsampling και upsampling, διασφαλίζοντας την ακρίβεια της ανακατασκευής.
+
+\bigskip
+\noindent
+Παρακάτω παρατίθενται τα plots για την laplacian πυραμίδα και την ανακατασκευή του σήματος (το αρχικό σήμα $x_0$ υπάρχει ήδη στο figure (βλ. fig:\ref{fig:original_signal}) όπως και η gaussian πυραμίδα (βλ. fig:\ref{fig:gaussian_pyramid})):
+
+
+\begin{figure}[h!]
+    \begin{center}
+    \begin{minipage}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{laplacianpyramid.png}
+        \caption{Laplacian πυραμίδα 1D: λεπτομέρειες υψηλών συχνοτήτων}
+        \label{fig:laplacian_pyramid}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{reco.png}
+        \caption{Ανακατασκευή σήματος από laplacian πυραμίδα}
+        \label{fig:reconstructed_signal}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fftlaplacian.png}
+        \caption{FFT των laplacian levels: band-pass στα πρώτα, low-pass residual στο τελευταίο}
+        \label{fig:fft_laplacian}
+    \end{minipage}
+    \end{center}
+\end{figure}
+
+\subsubsection{Εξήγηση των Plots}
+
+\begin{itemize}
+    \item \textbf{Original Signal:} Το αρχικό σήμα $x_0$ εμφανίζεται ήδη στο figure (βλ. fig:\ref{fig:original_signal}).
+    \item \textbf{Gaussian Pyramid:} Κάθε επίπεδο δημιουργείται με gaussian φίλτρο και downsampling (βλ. \ref{sec:a2}, eq:\ref{eq:reduce1}, eq:\ref{eq:reduce2}). Παρατηρείται σταδιακή μείωση λεπτομέρειας, με το τελευταίο επίπεδο να περιέχει μόνο χαμηλές συχνότητες.
+    \item \textbf{Laplacian Pyramid:} Αναπαριστά τις λεπτομέρειες που αφαιρούνται σε κάθε στάδιο της gaussian πυραμίδας. Τα πρώτα επίπεδα περιέχουν υψηλές συχνότητες, ενώ το τελευταίο επίπεδο διατηρεί μόνο τις βασικές χαμηλές συχνότητες (βλ. eq:\ref{eq:laplacian}).
+    \item \textbf{Reconstruction:} Το σήμα ανακατασκευάζεται ξεκινώντας από το πιο coarse επίπεδο. Κάθε στάδιο προσθέτει τις λεπτομέρειες υψηλών συχνοτήτων από την laplacian πυραμίδα, μέχρι να φτάσουμε στο αρχικό σήμα $x_0$ (βλ. eq:\ref{eq:laplacian_gaussian}, eq:\ref{eq:reconstruction}).
+    \item \textbf{FFT των Laplacian Levels:} Στο plot των ftt των laplacian levels βλέπουμε ότι τα πρώτα επίπεδα $L_1,L_2,\dots,L_{end-1}$ είναι band-pass, με μηδενική σχεδόν ενέργεια γύρω από $f = 0$ και κορυφές σε ενδιάμεσες συχνότητες που μετατοπίζονται προς χαμηλότερες συχνότητες όσο προχωράμε στα βαθύτερα επίπεδα, ενώ το τελευταίο επίπεδο $L_{end}$ κρατάει τις πολύ χαμηλές συχνότητες ως low-pass residual. Αυτό δείχνει ότι κάθε επίπεδο αντιστοιχεί σε διαφορετική ζώνη συχνοτήτων.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+\subsection{A4 — Μελέτη Toolbox Πυραμίδων MATLAB}
+
+Η toolbox πυραμίδων του MATLAB  \url{https://www.mathworks.com/matlabcentral/fileexchange/30790-image-pyramid-gaussian-and-laplacian}
+ προσφέρει εργαλεία για τη δημιουργία gaussian και laplacian πυραμίδων, καθώς και για blending, τα οποία υλοποιούν άμεσα τις θεωρητικές αρχές που παρουσιάστηκαν στα \ref{sec:a2},\ref{sec:a3}.
+Οι κύριες συναρτήσεις είναι οι εξής:
+
+\begin{enumerate}
+    \item \textbf{gen\_Pyr()}: Δημιουργεί την gaussian ή laplacian πυραμίδα ενός σήματος ή εικόνας.  
+    Κάνει διαδοχικές κλήσεις στη \texttt{pyr\_Reduce} για όλα τα επίπεδα και παρέχει μια πλήρη αναπαράσταση του σήματος σε πολλαπλές κλίμακες.
+
+    \item \textbf{pyr\_Reduce()}: Εκτελεί συνέλιξη με Gaussian kernel και downsampling. Υλοποιεί τις πράξεις reduce που περιγράφονται στις σχέσεις (\eqref{eq:reduce1}, \eqref{eq:reduce2}, \eqref{eq:reduce_expand})  και μειώνει  το μέγεθος κάθε επιπέδου, διατηρώντας χαμηλές συχνότητες.
+
+    \item \textbf{pyr\_Expand()}:  Εκτελεί upsampling ενός επιπέδου και συνέλιξη με Gaussian kernel (\eqref{eq:expand}),
+    κλιμακώνοντας τους συντελεστές του φίλτρου ώστε να διατηρείται η συνολική ενέργεια, όπως στο παράδειγμα 1D (βλ. \ref{sec:a2}). 
+
+    \item \textbf{pyrBlend()}: Συνδυάζει δύο laplacian πυραμίδες χρησιμοποιώντας gaussian μάσκα σε κάθε επίπεδο (\eqref{eq:blending}, \eqref{eq:blended_reconstruction}). 
+
+    \item \textbf{pyr\_Reconstruct()}: Ανακατασκευάζει το αρχικό σήμα ή εικόνα από laplacian πυραμίδα και το coarsest gaussian επίπεδο.  
+    Υλοποιεί την ανακατασκευή από laplacian σε gaussian (\eqref{eq:laplacian_gaussian}, \eqref{eq:reconstruction}) και επιβεβαιώνει ότι η πυραμίδα διατηρεί όλες τις απαραίτητες λεπτομέρειες για πλήρη ανακατασκευή.
+\end{enumerate}
+
+
+
+\section{Μέρος Β — Image Blending \& Συρραφή} 
+\subsection{B1. Συρραφή apple.jpg \& orange.jpg}
+
+\subsubsection*{1. Feathered Mask}
+
+\textbf{Σκοπός:} Δημιουργία ομαλής μετάβασης ανάμεσα στις δύο εικόνες.
+\mbox{}\\
+\textbf{Λειτουργία:} Αριστερά λευκή (apple), δεξιά μαύρη (orange), με gaussian blur για smooth blending.
+
+
+\subsubsection{2. Gaussian Pyramid της μάσκας}
+
+\textbf{Σκοπός:} Ανάλυση της μάσκας σε διαφορετικές κλίμακες για σταδιακό blending.
+\mbox{}\\
+\textbf{Λειτουργία:} Με κάθε επίπεδο η ανάλυση μειώνεται και οι λεπτομέρειες θολώνουν.
+\mbox{}\\
+\textbf{Plotting:} 
+\begin{itemize}
+    \item Level 1: Σχεδόν ίδια με την αρχική μάσκα, υψηλή ανάλυση, καθαρά όρια.
+    \item Level 2-4: Σταδιακά πιο θολά, το κέντρο της μετάβασης γίνεται πιο ευρύ, smoother transition.
+    \item Level 5: Πολύ θολό, εμφανίζεται μόνο το γενικό σχήμα, χαμηλές συχνότητες χωρίς λεπτομέρειες.
+    \item Η αρχική μάσκα εμφανίζεται με σταδιακή μετάβαση από λευκό σε μαύρο, δείχνοντας πώς η περιοχή μετάβασης είναι εξομαλυμένη. Αυτό εξηγεί γιατί η τελική εικόνα δεν έχει απότομες ακμές στην περιοχή που συναντώνται οι δύο εικόνες.
+
+\end{itemize}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.6\textwidth]{gaussian_mask.png}
+\caption{Gaussian πυραμίδα της μάσκας}
+\label{fig:mask_gaussian_pyramid}
+\end{figure}
+
+\subsubsection{3. Laplacian Pyramid των εικόνων }
+
+\textbf{Σκοπός:} Διαχωρισμός των εικόνων σε επίπεδα συχνοτήτων ώστε να συνδυάζονται λεπτομέρειες και γενικές μορφές ξεχωριστά.
+\mbox{}\\
+\textbf{Λειτουργία:}
+\begin{itemize}
+    \item Χαμηλές συχνότητες → συνολική φωτεινότητα και σχήμα
+    \item Υψηλές συχνότητες → λεπτομέρειες και ακμές
+\end{itemize}
+\mbox{}\\
+\textbf{Plotting (apple):}
+\begin{itemize}
+    \item Level 1: Υψηλή ανάλυση, εμφανείς λεπτομέρειες (φλούδα, σκιές)
+    \item Level 2-4: Σταδιακά πιο θολά, λιγότερες λεπτομέρειες, κυριαρχούν οι χαμηλές συχνότητες
+    \item Level 5: Πολύ θολό, μόνο γενικό σχήμα της apple, υψηλή ένταση φωτεινότητας λόγω gaussian τελευταίου επιπέδου
+\end{itemize}
+
+Αντίστοιχα, η laplacian pyramid της orange εμφανίζει τις λεπτομέρειες και τη δομή σε διαφορετικές κλίμακες.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{LI1.png}
+\caption{Laplacian πυραμίδες της εικόνας apple}
+\label{fig:laplacian_pyramids}
+\end{figure}
+
+\subsubsection{4. Blended Pyramid (B)}
+
+\textbf{Σκοπός:} Συνδυασμός των laplacian πυραμίδων των δύο εικόνων βάσει της gaussian μάσκας για κάθε επίπεδο.
+\mbox{}\\
+\textbf{Λειτουργία:}
+\[
+B_i = G_i \cdot L_{Apple,i} + (1 - G_i) \cdot L_{Orange,i}
+\]
+όπως αναφέρθηκε και σην σχέση \ref{eq:blending}, όπου $G_i$ είναι το i-οστό επίπεδο της gaussian μάσκας, και $L_{Apple,i}$, $L_{Orange,i}$ τα αντίστοιχα επίπεδα laplacian των εικόνων apple και orange.
+\mbox{}\\
+\textbf{Plotting:} 
+\begin{itemize}
+    \item Επίπεδο 1–2 (Υψηλή ανάλυση): Οι λεπτές λεπτομέρειες και υφές και από τις δύο εικόνες είναι ορατές. Οι άκρες αναμειγνύονται σύμφωνα με τη μάσκα gauss, δείχνοντας αρχική ομαλή μετάβαση.
+    \item Επίπεδο 3–4 (Ενδιάμεση ανάλυση): Οι λεπτομέρειες σταδιακά θολώνουν. Οι άκρες μαλακώνουν και η μάσκα δημιουργεί ένα πιο ομοιογενές μείγμα μεταξύ apple και orange.
+    \item Επίπεδο 5 (Χαμηλή ανάλυση): Μόνο τα γενικά σχήματα παραμένουν. Οι λεπτές υφές εξαφανίζονται, αφήνοντας μια ομαλή συνολική μετάβαση που διασφαλίζει ότι η τελική ανακατασκευασμένη εικόνα φαίνεται "φυσική".
+
+\end{itemize}
+
+\newpage
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{blended_pyramid.png}
+\caption{Blended pyramid: συνδυασμός laplacian πυραμίδων βάσει της gaussian μάσκας}
+\label{fig:blended_pyramid}
+\end{figure}
+
+\subsubsection{5. Ανακατασκευή Τελικής Εικόνας}
+
+\textbf{Σκοπός:} Σύνθεση όλων των επιπέδων της blended pyramid σε μία τελική εικόνα.
+\mbox{}\\
+\textbf{Λειτουργία:} Οι λεπτομέρειες από τα χαμηλά επίπεδα και η γενική δομή από τα υψηλά επίπεδα συνδυάζονται με smooth transition χάρη στη μάσκα.
+\mbox{}\\
+\textbf{Plotting:} Η τελική blended εικόνα δείχνει ομαλή σύνδεση μεταξύ apple  και orange, χωρίς απότομες αλλαγές, με φυσικό gradient στη μέση.
+\mbox{}\\
+\newpage
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{blended.png}
+\caption{Σύγκριση αρχικών εικόνων και τελικής blended εικόνας}
+\label{fig:blended}
+\end{figure}
+
+\subsection{}
+
+\section{Μέρος Γ — Δημιουργία Σύνθεσης πολλών εικόνων}
+
+
+\section{Μέρος Δ — Semantic Segmentation με PSPNet}
+
+
+
+
+
+
+
+
+\end{document}
