@@ -1,0 +1,10 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Abstract}{2}{section.1}%
+\contentsline {section}{\numberline {2}Εξοικείωση με Βασικές Συναρτήσεις}{2}{section.2}%
+\contentsline {section}{\numberline {3}Κλιμάκωση Εικόνας}{2}{section.3}%
+\contentsline {section}{\numberline {4}Δημιουργία Βίντεο με Shearing Εικόνας}{3}{section.4}%
+\contentsline {section}{\numberline {5}Περιοδική Οριζόντια Διάτμηση με Σταθερή Βάση}{3}{section.5}%
+\contentsline {section}{\numberline {6}Ανεμόμυλος με μάσκα}{4}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Λογική}{4}{subsection.6.1}%
+\contentsline {section}{\numberline {7}Παράμετροι παρεμβολής}{4}{section.7}%
+\contentsline {section}{\numberline {8}Κίνηση μπάλας στην παραλία}{4}{section.8}%

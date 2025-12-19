@@ -1,5 +1,39 @@
+%% From Gaussian To Laplacian
+
+addpath('custom_api/');
+
 close all; clear;
-%% From Laplacian to reconstruction
+
+% Original signal
+N = 64;
+t = linspace(0, 2*pi, N);
+x = sin(2*t) + 0.5*sin(5*t);
+
+% Build gaussian pyramid
+L_levels = 4;
+G = gaussianPyramid(x, L_levels);
+
+% Build gaplacian pyramid
+Lap = buildLaplacianPyramid(G);
+
+% Reconstruct signal
+x_reconstructed = reconstructFromLaplacian(Lap);
+
+figure; plot(x,'-o','LineWidth',1.5); title('Original Signal');
+
+figure;
+for j = 1:L_levels+1
+    subplot(L_levels+1,1,j);
+    plot(G{j},'-o'); title(['Gaussian Level ' num2str(j-1)]);
+end
+
+figure;
+for j = 1:L_levels+1
+    subplot(L_levels+1,1,j);
+    plot(Lap{j},'-o'); title(['Laplacian Level ' num2str(j)]);
+end
+%{
+close all; clear;
 
 function x_next = gaussianReduce(x)
     % Gaussian kernel
@@ -185,3 +219,6 @@ for j=1:num_levels
     plot(f, magX, 'LineWidth',1.2);
     title(['FFT of Laplacian Level L_{' num2str(j) '}']); xlabel('Normalized Frequency'); ylabel('|X(f)|'); grid on;
 end
+%}
+
+

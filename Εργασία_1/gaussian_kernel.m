@@ -1,11 +1,11 @@
-%% Prove that binomial kernel approximates gaussian kernel 
+%% Prove That Binomial Kernel Approximates Gaussian 
 
 % Binomial kernel 
 h = [1 4 6 4 1]/16;
 x_discrete = -2:2;
 
 
-% Continuous Gaussian for time-domain visualization
+% Continuous gaussian for time domain visualization
 sigma = 1;
 x_cont = linspace(-2.5, 2.5, 100);
 G_cont = exp(-x_cont.^2/(2*sigma^2));
@@ -15,7 +15,7 @@ G_cont = G_cont / max(G_cont) * max(h);   % Scale to match binomial peak
 % Discrete Gaussian for frequency-domain comparison
 G_fspecial = fspecial('gaussian', [1 5], sigma);  % normalized sum = 1
 
-% ------------------------------
+
 % FFT for frequency comparison
 NFFT = 512;
 H = fft(h, NFFT);
@@ -27,7 +27,7 @@ G_shift = fftshift(G_fft);
 
 figure;
 
-% Time Domain
+% Time domain
 subplot(2,1,1);
 stem(x_discrete, h, 'filled'); hold on;
 plot(x_cont, G_cont, 'r', 'LineWidth', 2);
@@ -37,7 +37,7 @@ title('Binomial Kernel vs Gaussian (Time Domain)');
 legend('Binomial Kernel','Continuous Gaussian');
 grid on;
 
-% Frequency Domain 
+% Frequency domain 
 subplot(2,1,2);
 plot(f, abs(H_shift), 'b', 'LineWidth', 2); hold on;
 plot(f, abs(G_shift), 'r--', 'LineWidth', 2);
