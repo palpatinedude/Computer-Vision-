@@ -1,3 +1,28 @@
+## Multi-Scale Image Decomposition — Exercise 1
+
+---
+
+## Overview
+
+Exercise 1 focuses on the development of **multi-scale image decomposition** using filters such as Gaussian and Laplacian pyramids. The goal is to apply these techniques for:
+
+- Denoising images  
+- Extracting features and structures for efficient coding, compression, and enhancement  
+- Image blending and mosaicking with natural seamless results  
+
+The exercise emphasizes using Laplacian pyramids to combine multiple images into a composite where the transitions are smooth and visually almost invisible.
+
+---
+
+## Objectives
+
+- Understand Gaussian and Laplacian pyramids for multi-scale representation  
+- Implement image blending using masks and pyramid decomposition  
+- Analyze and reconstruct images from pyramid representations  
+- Explore the application of pyramids in deep learning through Spatial Pyramid Pooling (SPP)  
+
+---
+
 # Geometric Transformations — Exercise 2
 
 ---
@@ -23,68 +48,3 @@ The main objectives of Exercise 2 are:
 
 ---
 
-## Exercise Structure
-
-### Function Familiarization
-
-The exercise begins with an introduction to fundamental image processing
-functions used for reading images, applying geometric transformations,
-controlling spatial references, and visualizing image sequences.
-
----
-
-### Image Scaling Composition
-
-Multiple scaled versions of the same image are generated using different scaling
-factors. These scaled images are combined into a single composite image in order
-to demonstrate the effect of scaling transformations.
-
----
-
-### Periodic Shearing Transformation
-
-A periodic image sequence is created by applying horizontal shearing
-transformations. The shearing parameter varies smoothly over time, producing a
-continuous animation effect.
-
----
-
-### Fixed-Base Horizontal Shearing
-
-Horizontal shearing is applied while ensuring that the base of the image remains
-fixed. A periodic rule is used to control the variation of the shearing
-parameter, resulting in stable and realistic motion.
-
----
-
-### Image Animation with Masking
-
-An animated sequence is produced using rotation, scaling, and translation
-transformations. Masking techniques are applied to isolate specific regions of
-the image, allowing for natural image composition.
-
----
-
-### Interpolation Method Comparison
-
-The same transformations are repeated using different interpolation methods,
-such as nearest neighbor, linear, and cubic interpolation. The visual quality
-and smoothness of each method are evaluated and compared.
-
----
-
-### Object Motion and Depth Simulation
-
-A final animation is created in which an object moves across a background
-following a modified trajectory. Gradual scaling is applied to simulate depth,
-giving the impression that the object moves toward the horizon and eventually
-disappears.
-
----
-
-## Conclusion
-
-Exercise 2 provides a structured and practical introduction to geometric
-transformations in image processing. Through the use of affine transformations,
-interpolation techniques, and masking, dynamic and realistic animations are
-created from static images.
