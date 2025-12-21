@@ -1,4 +1,4 @@
-## Multi-Scale Image Decomposition — Exercise 1
+# Multi-Scale Image Decomposition — Exercise 1
 
 ---
 
