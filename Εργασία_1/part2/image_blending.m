@@ -1,9 +1,12 @@
 %% IMAGE BLENDING: Apple + Orange using Laplacian Pyramids
+
+addpath('../../image_pyramid');
+
 close all; clear;
 
 % Read images and convert to double
-I1 = im2double(imread('CV_1-PYRAMIDS/photos/apple.jpg'));
-I2 = im2double(imread('CV_1-PYRAMIDS/photos/orange.jpg'));
+I1 = im2double(imread('../CV_1-PYRAMIDS/photos/apple.jpg'));
+I2 = im2double(imread('../CV_1-PYRAMIDS/photos/orange.jpg'));
 
 % Resize I2 to match I1
 I2 = imresize(I2, [size(I1,1), size(I1,2)]);

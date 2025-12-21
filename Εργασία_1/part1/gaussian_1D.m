@@ -1,6 +1,6 @@
 %% Implement Gaussian pyramid function
 
-addpath('custom_api/');
+addpath('../custom_api/');
 
 close all; clear;
 

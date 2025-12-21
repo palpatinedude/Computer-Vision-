@@ -1,9 +1,12 @@
-% IMAGE BLENDING: Woman + Hand using Laplacian Pyramids
+%% IMAGE BLENDING: Woman + Hand using Laplacian Pyramids
+
+addpath('../../image_pyramid');
+
 close all; clear;
 
-% Load images
-I1 = im2double(imread('CV_1-PYRAMIDS/photos/woman.png'));
-I2 = im2double(imread('CV_1-PYRAMIDS/photos/hand.png'));
+
+I1 = im2double(imread('../CV_1-PYRAMIDS/photos/woman.png'));
+I2 = im2double(imread('../CV_1-PYRAMIDS/photos/hand.png'));
 
 % Resize I2 to match I1
 I2 = imresize(I2, [size(I1,1), size(I1,2)]);

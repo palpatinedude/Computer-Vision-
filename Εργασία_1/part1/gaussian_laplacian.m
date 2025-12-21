@@ -1,6 +1,6 @@
 %% From Gaussian To Laplacian
 
-addpath('custom_api/');
+addpath('../custom_api/');
 
 close all; clear;
 
