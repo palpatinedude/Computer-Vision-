@@ -5,7 +5,7 @@
 \contentsline {section}{\numberline {4}Δημιουργία Βίντεο με Shearing Εικόνας}{4}{section.4}%
 \contentsline {section}{\numberline {5}Περιοδική Οριζόντια Διάτμηση με Σταθερή Βάση}{4}{section.5}%
 \contentsline {section}{\numberline {6}Ανεμόμυλος με Μάσκα}{4}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Λογική}{5}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.1}Λογική Υλοποίησης}{5}{subsection.6.1}%
 \contentsline {section}{\numberline {7}Σύγκριση παρεμβολών}{5}{section.7}%
 \contentsline {subsection}{\numberline {7.1}Τι είναι οι τρεις μέθοδοι παρεμβολής}{5}{subsection.7.1}%
 \contentsline {section}{\numberline {8}Κίνηση Μπάλας στην Παραλία}{6}{section.8}%
@@ -15,3 +15,8 @@
 \contentsline {paragraph}{Περιστροφή μπάλας}{7}{section*.7}%
 \contentsline {paragraph}{Σύνθεση καρέ }{7}{section*.8}%
 \contentsline {section}{\numberline {9}Αλλαγή Πορείας Μπάλας προς Ορίζοντα}{7}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Λογική Υλοποίησης}{8}{subsection.9.1}%
+\contentsline {paragraph}{Translation}{8}{section*.9}%
+\contentsline {paragraph}{Scaling}{8}{section*.10}%
+\contentsline {paragraph}{Rotation}{8}{section*.11}%
+\contentsline {paragraph}{Masking}{8}{section*.12}%
