@@ -44,6 +44,31 @@ The main objectives of Exercise 2 are:
 - Apply affine transformations such as scaling, rotation, translation, and shearing
 - Create composite images and animated sequences
 - Compare different interpolation methods
+
+## Scale Invariant Feature Transform (SIFT) — Exercise 3
+
+---
+
+## Overview
+
+Exercise 3 focuses on the analysis and implementation of the
+Scale Invariant Feature Transform (SIFT) algorithm. SIFT is a widely
+used and robust computer vision technique for extracting distinctive
+features that are invariant to scale, rotation, and illumination changes.
+
+---
+
+## Objectives
+
+The main objectives of this laboratory exercise are:
+
+- Understand the principles of scale-space representation
+- Detect stable and repeatable keypoints across different image scales
+- Construct distinctive feature descriptors for image matching
+- Filter out unstable or noisy keypoints
+- Apply geometric verification using robust estimation techniques
+
+---
 - Use masking techniques for realistic image composition
 
 ---
