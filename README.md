@@ -45,7 +45,7 @@ The main objectives of Exercise 2 are:
 - Create composite images and animated sequences
 - Compare different interpolation methods
 
-## Scale Invariant Feature Transform (SIFT) — Exercise 3
+# Scale Invariant Feature Transform (SIFT) — Exercise 3
 
 ---
 
