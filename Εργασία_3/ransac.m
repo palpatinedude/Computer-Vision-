@@ -1,0 +1,43 @@
+%% This function performs RANSAC on matched feature points 
+function ransac(img1, img2, p1, p2)
+    % Filters out "outliers" 
+    % It finds a subset of points that all agree on a single geometric transformation
+    [tform, inlierIdx] = estimateGeometricTransform2D(p1, p2, 'affine', ...
+        'MaxDistance', 5, 'MaxNumTrials', 2000);
+    
+    num_inliers = sum(inlierIdx);
+    
+    num_pts = size(p1, 1);
+    
+    % Statistics
+    % Inliers represent the true physical matches between the two scenes.
+    fprintf('RANSAC Inliers: %d\n', num_inliers);
+    fprintf('Inlier Ratio: %.2f%%\n', (num_inliers/num_pts)*100);
+
+    % Inliers vs outliers
+    figure('Name', 'RANSAC: Inliers vs Outliers');
+
+
+    showMatchedFeatures(img1, img2, ...
+    p1(inlierIdx,:), p2(inlierIdx,:), ...
+    'montage', ...
+    'PlotOptions', {'go','go','g-'});
+
+    hold on;
+
+    w1 = size(img1, 2);
+
+    % Draw outlier matches 
+    for i = find(~inlierIdx)'
+        plot([p1(i,1), p2(i,1) + w1], ...
+        [p1(i,2), p2(i,2)], 'r-');
+    end
+
+    title('RANSAC Verification: Green = Inliers, Red = Outliers');
+    hold off;
+
+    
+    figure('Name', 'Final Validated Matches');
+    showMatchedFeatures(img1, img2, p1(inlierIdx, :), p2(inlierIdx, :), 'montage');
+    title(sprintf('SIFT Matches: %d Validated Inliers', num_inliers));
+end

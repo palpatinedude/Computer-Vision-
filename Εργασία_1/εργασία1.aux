@@ -15,7 +15,7 @@
 \newlabel{eq:binomial}{{2}{3}{Γκαουσιανό Φίλτρο (1D Kernel)}{equation.2.2}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.0.2}Μείωση (Reduce / Downsampling)}{3}{subsubsection.2.0.2}\protected@file@percent }
 \newlabel{eq:reduce1}{{3}{3}{Μείωση (Reduce / Downsampling)}{equation.2.3}{}}
-\newlabel{eq:reduce2}{{4}{3}{Μείωση (Reduce / Downsampling)}{equation.2.4}{}}
+\newlabel{eq:reduce2}{{4}{4}{Μείωση (Reduce / Downsampling)}{equation.2.4}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.0.3}Ανάπτυξη (Expand / Upsampling)}{4}{subsubsection.2.0.3}\protected@file@percent }
 \newlabel{eq:expand}{{5}{4}{Ανάπτυξη (Expand / Upsampling)}{equation.2.5}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.0.4}Laplacian Επίπεδο}{4}{subsubsection.2.0.4}\protected@file@percent }
@@ -105,12 +105,30 @@
 \@writefile{toc}{\contentsline {paragraph}{Reconstruction}{19}{section*.36}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Συρραφή 6 εικόνων με πολυκλιμακωτό blending}}{19}{figure.caption.37}\protected@file@percent }
 \newlabel{fig:6_images}{{12}{19}{Συρραφή 6 εικόνων με πολυκλιμακωτό blending}{figure.caption.37}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Μέρος Δ — Semantic Segmentation με PSPNet}{19}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Μέρος Δ — PSPNet: Semantic Segmentation Evaluation}{19}{section.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Τι είναι το Semantic Segmentation}{20}{subsection.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Τι είναι το PSPNet (Pyramid Scene Parsing Network)}{20}{subsection.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Στόχος Αξιολόγησης}{20}{subsection.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Intersection over Union (IoU)}{20}{section*.38}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Mean IoU (mIoU)}{21}{section*.39}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Pixel Accuracy}{21}{section*.40}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Αποτελέσματα Αξιολόγησης}{21}{subsection.5.4}\protected@file@percent }
-\gdef \@abspage@last{21}
+\@writefile{toc}{\contentsline {paragraph}{Έξοδος:}{20}{section*.38}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Είσοδος:}{20}{section*.39}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Έξοδος:}{20}{section*.40}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Εκπαίδευση:}{20}{section*.41}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Dataset: Cityscapes}{20}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Τι είναι το PSPNet (Pyramid Scene Parsing Network)}{20}{subsection.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Spatial Pyramid Pooling (SPP)}{21}{section*.42}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Pyramid Pooling Module (PPM)}{21}{section*.43}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Μετρικές Αξιολόγησης}{21}{subsection.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Intersection over Union (IoU)}{21}{section*.44}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Σημαντικές παρατηρήσεις:}{21}{section*.45}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Mean IoU (mIoU)}{22}{section*.46}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Pixel Accuracy}{22}{section*.47}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}Στατιστικά ανά κλάση και ανά εικόνα}{22}{subsection.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.5.1}Per-class IoU (ανά κλάση)}{22}{subsubsection.5.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Μέση τιμή}{22}{section*.48}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Διασπορά }{22}{section*.49}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.5.2}Per-image IoU (ανά εικόνα)}{22}{subsubsection.5.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Μέση τιμή ανά εικόνα}{22}{section*.50}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Μέση τιμή όλων των εικόνων}{22}{section*.51}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Διασπορά εικόνων}{22}{section*.52}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Overall mIoU}{23}{section*.53}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.6}Λογική Αξιολόγησης}{23}{subsection.5.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.7}Συμπέρασμα}{23}{subsection.5.7}\protected@file@percent }
+\gdef \@abspage@last{23}

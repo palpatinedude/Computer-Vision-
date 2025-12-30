@@ -12,7 +12,12 @@ clear;
 clc;
 row=256;
 colum=256;
-img=imread('cameraman.tif');
+
+%img=imread('cameraman.tif');
+%img=imread('coins.png');
+%img=imread('pout.tif');
+%img=imread('rice.png');
+img=imread('moon.tif');
 img=imresize(img,[row,colum]);
 img=im2double(img);
 origin=img;
@@ -342,3 +347,39 @@ end
 index=find(sum(feature));
 feature=feature(:,index);
 toc
+
+
+%% 5. FINAL VISUALIZATION 
+% This section converts the pyramid coordinates back to the original image scale
+[img_m, img_n] = size(origin);
+
+figure('Name', 'SIFT Keypoint Detection');
+imshow(origin); hold on;
+
+% Recalculate display coordinates for the plot
+% Note: In MATLAB imshow, x is horizontal (columns), y is vertical (rows)
+x_coords = floor((extrema(3:4:end)-1) ./ (n./(2.^(extrema(1:4:end)-2)))) + 1;
+y_coords = mod((extrema(3:4:end)-1), m./(2.^(extrema(1:4:end)-2))) + 1;
+
+% Scaling factors to map octave coordinates back to 256x256
+plot_y = y_coords ./ 2.^(octave-1-extrema(1:4:end));
+plot_x = x_coords ./ 2.^(octave-1-extrema(1:4:end));
+
+for k = 1:extr_volume
+    % Center of the keypoint
+    cx = plot_y(k); 
+    cy = plot_x(k);
+    
+    % Radius proportional to the scale (Octave)
+    % Higher octaves = larger circles
+    current_octave = extrema(4*(k-1)+1);
+    rad = 2^(current_octave-1) * 3; 
+    
+    % Draw the circle
+    viscircles([cx cy], rad, 'Color', 'r', 'LineWidth', 0.7);
+end
+
+title(['Final SIFT Keypoints: ', num2str(extr_volume), ' points detected']);
+hold off;
+
+fprintf('Process finished. Total keypoints visualized: %d\n', extr_volume);

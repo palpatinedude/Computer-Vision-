@@ -774,65 +774,152 @@ B_j = \sum_{k=1}^{5} G^M_{k,j} \cdot L_{k,j} + G^M_{\text{bg},j} \cdot L_{\text{
     \end{figure}
 
 
-\section{Μέρος Δ — Semantic Segmentation με PSPNet}
-Να αξιολογήσουμε ένα εκπαιδευμένο PSPNet μοντέλο πάνω στο validation dataset Cityscapes και να υπολογίσουμε μετρικές επίδοσης κατάτμησης.
-
-\subsection{Τι είναι το Semantic Segmentation}
-Το semantic segmentation είναι μια διαδικασία στην επεξεργασία εικόνας και στην όραση υπολογιστή όπου κάθε pixel μιας εικόνας ταξινομείται σε μια κατηγορία. Σε αντίθεση με την απλή ταξινόμηση εικόνας, όπου δίνεται μια μόνο ετικέτα για ολόκληρη την εικόνα, στο semantic segmentation:
-
-\begin{itemize}
-    \item Κάθε pixel παίρνει μια ετικέτα (π.χ. δρόμος, αυτοκίνητο, άνθρωπος, κτίριο).
-    \item Η εικόνα χωρίζεται σε περιοχές που αντιστοιχούν σε διαφορετικά αντικείμενα ή κλάσεις.
-\end{itemize}
-Με άλλα λόγια, μετατρέπει μια εικόνα σε ένα χάρτη κατηγοριών ανά pixel, επιτρέποντας λεπτομερή ανάλυση της σκηνής.
-
-\subsection{Τι είναι το PSPNet (Pyramid Scene Parsing Network)}
-Το PSPNet είναι ένα βαθύ νευρωνικό δίκτυο σχεδιασμένο ειδικά για semantic segmentation που βασίζεται στο Pyramid Pooling Module (PPM)
-
-
-\begin{enumerate}
-    \item Spatial Pyramid Pooling (SPP):
+    \section{Μέρος Δ — PSPNet: Semantic Segmentation Evaluation}
+    Στόχος είναι να αξιολογήσουμε ένα εκπαιδευμένο PSPNet μοντέλο πάνω στο validation dataset \textit{Cityscapes} και να υπολογίσουμε μετρικές επίδοσης κατάτμησης.
+    
+    \subsection{Τι είναι το Semantic Segmentation}
+    Το \textit{Semantic Segmentation} είναι η διαδικασία κατά την οποία κάθε pixel μιας εικόνας ταξινομείται σε μια κατηγορία, όπως δρόμος, αυτοκίνητο, άνθρωπος ή κτίριο.  
+    Διαφέρει από την απλή ταξινόμηση εικόνας γιατί αντί να βγάζει μια μόνο ετικέτα για ολόκληρη την εικόνα, δίνει ετικέτα σε κάθε pixel.
+    
+    \paragraph{Έξοδος:}   \mbox{}\\Feature map \(H \times W \times C\) (Height × Width × Classes)  
+    Κάθε pixel παίρνει πιθανότητες για κάθε κλάση και η πρόβλεψη γίνεται ως:
+    \[
+    \hat{y}^{i,j} = \arg\max_c P(y_{i,j} = c)
+    \]
+    
+    \paragraph{Είσοδος:}   \mbox{}\\εικόνα \(I \in \mathbb{R}^{H \times W \times 3}\)  
+    \paragraph{Έξοδος:}   \mbox{}\\μάσκα \(\hat{Y} \in \{0,1,\dots,C-1\}^{H \times W}\) με \(C=35\)
+    
+    \paragraph{Εκπαίδευση:}  \mbox{}\\ Cross-Entropy Loss ανά pixel:
+    \[
+    \mathcal{L} = - \frac{1}{H \cdot W} \sum_{h=1}^{H} \sum_{w=1}^{W} \log \hat{Y}^{h,w}_{Y_{h,w}}
+    \]
+    
+    \subsection{Dataset: Cityscapes}
+    Το \textit{Cityscapes} χρησιμοποιείται για αστικό περιβάλλον:
+    \begin{itemize}
+        \item Διαστάσεις εικόνων: \(2048 \times 1024\) pixels
+        \item Περιοχή: αστικά τοπία
+        \item Κλάσεις: 35 
+    \end{itemize}
+    
+    Κάθε εικόνα περιλαμβάνει:
+    \begin{itemize}
+        \item RGB εικόνα
+        \item Ground truth mask: κάθε pixel = αριθμός κλάσης (0–34)
+    \end{itemize}
+    
+    \subsection{Τι είναι το PSPNet (Pyramid Scene Parsing Network)}
+    Το PSPNet είναι ένα βαθύ νευρωνικό δίκτυο σχεδιασμένο ειδικά για semantic segmentation που βασίζεται στην Pyramid Pooling Module (PPM).
+    \paragraph{Spatial Pyramid Pooling (SPP)}
+    \mbox{}\\
     \begin{itemize}
         \item Λύνει το πρόβλημα του σταθερού μεγέθους εισόδου στα CNN.
-        \item Δέχεται χάρτες χαρακτηριστικών από τα προηγούμενα συνελικτικά επίπεδα και εφαρμόζει pooling σε διαφορετικά επίπεδα πλέγματος .
+        \item Δέχεται feature map από τα προηγούμενα συνελικτικά επίπεδα και εφαρμόζει pooling σε διαφορετικά grids (π.χ., \(1\times1, 2\times2, 3\times3, 6\times6\) bins).
         \item Κωδικοποιεί χωρική πληροφορία σε πολλαπλές κλίμακες χωρίς να χρειάζεται να αλλάξεις το μέγεθος εισόδου εικόνας.
     \end{itemize}
     
-    \item Pyramid Pooling Module:
+    \paragraph{Pyramid Pooling Module (PPM)}
+    \mbox{}\\
+    Το PPM βοηθά το δίκτυο να βλέπει τόσο ολόκληρη τη σκηνή όσο και λεπτομέρειες:
     \begin{itemize}
-        \item Συγχωνεύει τα χαρακτηριστικά από διαφορετικές κλίμακες για να ενισχύσει την αντίληψη του πλαισίου της σκηνής.
-        \item Επιτρέπει στο μοντέλο να "βλέπει" τόσο global (π.χ. ολόκληρος δρόμος) όσο και τοπικές λεπτομέρειες (π.χ. μικρές πινακίδες ή άνθρωποι).
+        \item Παίρνει τα features maps από το CNN backbone.
+        \item Κάνει pooling σε διαφορετικά επίπεδα .
+        \item Συνενώνει όλα τα pooled maps με concatenation:
+        \[
+        F_l = \text{Pooling}_{n_l \times n_l}(F), \quad F_\text{concat} = \text{Concat}(F_1, F_2, \dots, F_L)
+        \]
     \end{itemize}
-\end{enumerate}   
+    
+    Με αυτό τον τρόπο, το PSPNet:
+    \begin{itemize}
+        \item Βλέπει global context (π.χ. ολόκληρος δρόμος)
+        \item Κρατά local λεπτομέρειες (π.χ. άνθρωποι, πινακίδες)
+        \item Ανιχνεύει αντικείμενα διαφορετικών μεγεθών
+    \end{itemize}
+    
+    \subsection{Μετρικές Αξιολόγησης}
+    \mbox{}\\
+    \paragraph{Intersection over Union (IoU)}
+    Μετράει πόσο καλά η πρόβλεψη επικαλύπτεται με την πραγματική μάσκα για κάθε κλάση:
+    \[
+    \text{IoU}_c = \frac{|\text{Prediction}_c \cap \text{GT}_c|}{|\text{Prediction}_c \cup \text{GT}_c|}
+    \]
+    
+    \paragraph{Σημαντικές παρατηρήσεις:}
+    \mbox{}\\
+    \begin{itemize}
+        \item \(\text{Prediction}_c\): pixels που προβλέφθηκαν ως κλάση \(c\)
+        \item \(\text{GT}_c\): pixels που πραγματικά ανήκουν στην κλάση \(c\)
+        \item Όσο πιο κοντά στο 1, τόσο καλύτερη η πρόβλεψη για την κλάση
+    \end{itemize}
+    
+    \paragraph{Mean IoU (mIoU)}
+    \mbox{}\\
+    Μέσος όρος όλων των κλάσεων:
+    \[
+    \text{mIoU} = \frac{1}{C} \sum_{c=1}^{C} \text{IoU}_c
+    \]
+    
+    \paragraph{Pixel Accuracy}
+    \mbox{}\\
+    \[
+    \text{Pixel Accuracy} = \frac{\text{Σωστά ταξινομημένα pixels}}{\text{Σύνολο pixels}}
+    \]
+    Μετράει το ποσοστό των pixels που προβλέφθηκαν σωστά. Είναι απλή αλλά δεν ξεχωρίζει σπάνιες κλάσεις.
+    
+    \subsection{Στατιστικά ανά κλάση και ανά εικόνα}
+    
+    \subsubsection{Per-class IoU (ανά κλάση)}
+    \paragraph{Μέση τιμή}
+    \mbox{}\\
+    Ο μέσος όρος όλων των IoU μιας κλάσης σε όλες τις εικόνες:
+    \[
+    \mu_c = \frac{1}{N_c} \sum_{i=1}^{N_c} \text{IoU}_{i,c}
+    \]
+    
+    \paragraph{Διασπορά }
+    \mbox{}\\
+    Η διασπορά δείχνει πόσο διαφέρει η επίδοση για την ίδια κλάση από εικόνα σε εικόνα:
+    \[
+    \sigma_c^2 = \frac{1}{N_c} \sum_{i=1}^{N_c} (\text{IoU}_{i,c} - \mu_c)^2
+    \]
+    Μικρή διασπορά υποδηλώνει σταθερό μοντέλο για την κλάση \(c\).
+    
+    \subsubsection{Per-image IoU (ανά εικόνα)}
+    \paragraph{Μέση τιμή ανά εικόνα}
+    \mbox{}\\
+    \[
+    \text{mIoU}_i = \frac{1}{|C_i|} \sum_{c \in C_i} \text{IoU}_{i,c}
+    \]
+    
+    \paragraph{Μέση τιμή όλων των εικόνων}
+    \mbox{}\\
+    \[
+    \mu_\text{image} = \frac{1}{N} \sum_{i=1}^{N} \text{mIoU}_i
+    \]
+    
+    \paragraph{Διασπορά εικόνων}
+    \mbox{}\\
+    \[
+    \sigma_\text{image}^2 = \frac{1}{N} \sum_{i=1}^{N} (\text{mIoU}_i - \mu_\text{image})^2
+    \]
+    Μικρή διασπορά = το μοντέλο είναι σταθερό για όλες τις εικόνες.
+    
+    \paragraph{Overall mIoU}
+    \mbox{}\\
+    Ο συνολικός μέσος όρος όλων των IoU των κλάσεων και όλων των εικόνων:
+    \[
+    \text{Overall mIoU} = \frac{1}{C} \sum_{c=1}^{C} \mu_c = \frac{1}{C} \sum_{c=1}^{C} \frac{1}{N_c} \sum_{i=1}^{N_c} \text{IoU}_{i,c}
+    \]
+    Δείχνει τη συνολική ποιότητα του μοντέλου σε όλο το dataset.
+    
 
-\subsection{Στόχος Αξιολόγησης}
-Αξιολόγηση του PSPNet στο validation set του Cityscapes dataset με μετρικές segmentation, υπολογίζοντας τη μέση τιμή και τη διασπορά της επίδοσης ανά κλάση και ανά εικόνα σε επίπεδο pixel.
+\subsection{Λογική Αξιολόγησης}
 
-\paragraph{Intersection over Union (IoU)} 
-\mbox{}\\
-Η μετρική IoU για μια κλάση \(c\) ορίζεται ως 
-\[
-\text{IoU}_c = \frac{TP_c}{TP_c + FP_c + FN_c},
-\] 
-όπου \(TP_c\) είναι τα \textit{true positives}, \(FP_c\) τα \textit{false positives} και \(FN_c\) τα \textit{false negatives} για την κλάση \(c\). Η IoU μετράει την επικάλυψη μεταξύ των προβλέψεων και των πραγματικών ετικετών για κάθε κλάση.
 
-\paragraph{Mean IoU (mIoU)} 
-\mbox{}\\
-Η μέση τιμή IoU υπολογίζεται ως
-\[
-\text{mIoU} = \frac{1}{N_\text{classes}} \sum_{c=1}^{N_\text{classes}} \text{IoU}_c,
-\] 
-όπου \(N_\text{classes}\) είναι ο αριθμός των κλάσεων. Το mIoU δείχνει την συνολική επίδοση του μοντέλου σε όλες τις κλάσεις.
+\subsection{Συμπέρασμα}
 
-\paragraph{Pixel Accuracy} 
-\mbox{}\\
-Η \textit{Pixel Accuracy} ορίζεται ως
-\[
-\text{Pixel Accuracy} = \frac{\text{Σωστά ταξινομημένα pixels}}{\text{Σύνολο pixels}}.
-\] 
-Αποτελεί έναν απλό δείκτη που μετράει το ποσοστό των pixels που ταξινομήθηκαν σωστά.
-
-\subsection{Αποτελέσματα Αξιολόγησης}
 
 
  

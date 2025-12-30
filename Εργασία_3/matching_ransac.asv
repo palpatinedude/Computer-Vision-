@@ -1,0 +1,537 @@
+%{
+%% SIFT Matching, RANSAC and Experimental Results
+
+clear; clc; close all;   
+
+%% Configuration
+ratio_threshold = 0.75; % Lowe's ratio test threshold
+ransac_iters = 3000;    % Number of RANSAC iterations
+ransac_dist_thresh = 2; % Distance threshold (pixels) for inliers
+
+img1_orig = imread('cameraman.tif');  % First image
+img2_orig = imresize(imrotate(img1_orig, 15), 0.8); 
+
+%% Feature Extraction using SIFT 
+fprintf('Extracting SIFT features...\n');
+[kp1, desc1] = sift(img1_orig); % Keypoints and descriptors image 1
+[kp2, desc2] = sift(img2_orig); % Keypoints and descriptors image 2
+
+%% Descriptor Matching (Nearest Neighbor + Ratio Test) 
+fprintf('Matching descriptors...\n');
+matches = []; % Store matched descriptor indices: [idx_desc1, idx_desc2]
+
+for i = 1:size(desc1, 1)
+    % Compute Euclidean distances from descriptor i in image 1 to all descriptors in image 2
+    distances = sqrt(sum((desc2 - desc1(i,:)).^2, 2));
+    
+    % Sort distances to find the two nearest neighbors
+    [sorted_dist, sorted_idx] = sort(distances);
+    
+    % Lowe's ratio test: keep only good matches
+    if sorted_dist(1) < ratio_threshold * sorted_dist(2)
+        matches = [matches; i, sorted_idx(1)]; % Store the match
+    end
+end
+
+num_matches = size(matches, 1);
+
+
+%% RANSAC for Homography Estimation 
+fprintf('Running RANSAC...\n');
+best_inliers = [];     % Track best inlier indices
+best_H = eye(3);       % Initialize best homography
+
+% Extract coordinates of matched points
+p1 = kp1(matches(:,1), 1:2); % Points in image 1: [x,y]
+p2 = kp2(matches(:,2), 1:2); % Points in image 2: [x,y]
+
+for iter = 1:ransac_iters
+    %% Randomly select 4 matches 
+    idx = randperm(num_matches, 4);
+    sample_p1 = p1(idx, :);
+    sample_p2 = p2(idx, :);
+    
+    %% Compute Homography using DLT
+    A = zeros(8, 9);
+    for i = 1:4
+        x = sample_p1(i,1); y = sample_p1(i,2);
+        u = sample_p2(i,1); v = sample_p2(i,2);
+        A(2*i-1, :) = [x, y, 1, 0, 0, 0, -u*x, -u*y, -u];
+        A(2*i, :)   = [0, 0, 0, x, y, 1, -v*x, -v*y, -v];
+    end
+    [~, ~, V] = svd(A);           % Solve using SVD
+    H = reshape(V(:, end), [3, 3])'; % Homography matrix
+    
+    %% Evaluate inliers
+    % Project p1 points using estimated homography H
+    p1_homo = [p1, ones(num_matches, 1)]'; % Homogeneous coordinates
+    p2_proj_homo = H * p1_homo;
+    p2_proj = (p2_proj_homo(1:2, :) ./ p2_proj_homo(3, :))'; % Convert back to 2D
+    
+    % Compute distances between projected points and actual points in image 2
+    dist = sqrt(sum((p2 - p2_proj).^2, 2));
+    inliers = find(dist < ransac_dist_thresh); % Points within distance threshold
+    
+    % Update best homography if more inliers found
+    if length(inliers) > length(best_inliers)
+        best_inliers = inliers;
+        best_H = H;
+    end
+end
+
+num_inliers = length(best_inliers);
+
+%% Visualization of matches 
+figure;
+% Concatenate images side-by-side for visualization
+imshow([imresize(img1_orig, [256 256]), imresize(img2_orig, [256 256])]); 
+hold on;
+
+offset = 256; % Horizontal offset for coordinates in second image
+
+% Plot all initial matches (thin yellow lines)
+for i = 1:num_matches
+    plot([p1(i,1), p2(i,1) + offset], [p1(i,2), p2(i,2)], 'y', 'LineWidth', 0.5);
+end
+
+% Plot RANSAC inliers (thick green lines)
+for i = 1:length(best_inliers)
+    idx = best_inliers(i);
+    plot([p1(idx,1), p2(idx,1) + offset], [p1(idx,2), p2(idx,2)], 'g', 'LineWidth', 1.5);
+    plot(p1(idx,1), p1(idx,2), 'ro', 'MarkerSize', 5);          % Keypoint in image 1
+    plot(p2(idx,1) + offset, p2(idx,2), 'ro', 'MarkerSize', 5); % Keypoint in image 2
+end
+
+title(['SIFT Matching: Inliers = ', num2str(num_inliers)]);
+
+%% Experimental Results 
+fprintf('\n--- EXPERIMENTAL RESULTS ---\n');
+fprintf('Image Pair: Original vs Rotated/Scaled\n');
+fprintf('Keypoints in Image 1: %d\n', size(kp1, 1));
+fprintf('Keypoints in Image 2: %d\n', size(kp2, 1));
+fprintf('Total Initial Matches: %d\n', num_matches);
+fprintf('RANSAC Inliers: %d\n', num_inliers);
+
+%}
+
+
+%{
+%% Fully Vectorized SIFT Matching + Vectorized RANSAC
+clear; clc; close all;
+
+%% Configuration
+ratio_threshold = 0.9;
+ransac_iters = 2000;
+ransac_dist_thresh = 3;
+
+%% Load Images
+img1_orig = imread('cameraman.tif');
+img2_orig = imresize(imrotate(img1_orig,15,'bicubic','crop'),0.8);
+
+img1 = im2double(img1_orig);
+img2 = im2double(img2_orig);
+
+%% Feature Extraction using new SIFT
+fprintf('Extracting SIFT features...\n');
+tic;
+[keypoints1, descriptors1] = sift(img1);
+[keypoints2, descriptors2] = sift(img2);
+fprintf('SIFT Extraction Time: %.2f seconds\n', toc);
+
+p1 = keypoints1(:,1:2);
+p2 = keypoints2(:,1:2);
+
+%% Vectorized Descriptor Matching
+fprintf('Matching descriptors (vectorized)...\n');
+tic;
+desc1_sq = sum(descriptors1.^2,2);
+desc2_sq = sum(descriptors2.^2,2);
+dist_matrix = sqrt(bsxfun(@plus,desc1_sq,desc2_sq') - 2*(descriptors1*descriptors2'));
+[sorted_dist, sorted_idx] = sort(dist_matrix,2);
+valid_matches = sorted_dist(:,1) < ratio_threshold*sorted_dist(:,2);
+matches = [find(valid_matches), sorted_idx(valid_matches,1)];
+num_matches = size(matches,1);
+fprintf('Matching Time: %.4f sec, Matches: %d\n', toc, num_matches);
+
+%% Vectorized RANSAC
+fprintf('Running Vectorized RANSAC...\n');
+tic;
+if num_matches < 4
+    error('Not enough matches for RANSAC.');
+end
+
+p1_match = p1(matches(:,1),:);
+p2_match = p2(matches(:,2),:);
+num_pts = size(p1_match,1);
+
+% Precompute homogeneous coordinates
+p1_homo = [p1_match, ones(num_pts,1)];
+
+% Pre-generate random indices for all iterations
+rand_idx = randi(num_pts, [4, ransac_iters]);
+
+best_inliers = [];
+best_H = eye(3);
+
+% Vectorized loop over iterations
+for iter = 1:ransac_iters
+    idx = rand_idx(:,iter);
+    s1 = p1_match(idx,:);
+    s2 = p2_match(idx,:);
+    
+    % DLT Homography
+    x = s1(:,1); y = s1(:,2); u = s2(:,1); v = s2(:,2);
+    A = [x y ones(4,1) zeros(4,3) -u.*x -u.*y -u;
+         zeros(4,3) x y ones(4,1) -v.*x -v.*y -v];
+    [~,~,V] = svd(A,0);
+    H = reshape(V(:,end),3,3)';
+    
+    % Project all points
+    p2_proj_h = (H * p1_homo')';
+    p2_proj = p2_proj_h(:,1:2) ./ p2_proj_h(:,3);
+    
+    % Compute distances
+    dist_sq = sum((p2_match - p2_proj).^2,2);
+    inliers = find(dist_sq < ransac_dist_thresh^2);
+    
+    if length(inliers) > length(best_inliers)
+        best_inliers = inliers;
+        best_H = H;
+    end
+end
+num_inliers = length(best_inliers);
+fprintf('Vectorized RANSAC Time: %.4f sec, Inliers: %d\n', toc, num_inliers);
+
+%% Visualization
+figure('Name','Vectorized SIFT RANSAC Inliers');
+imshow([imresize(img1_orig,[256 256]), imresize(img2_orig,[256 256])]); hold on;
+offset = 256;
+for i = 1:num_inliers
+    idx = best_inliers(i);
+    plot([p1_match(idx,1), p2_match(idx,1)+offset], ...
+         [p1_match(idx,2), p2_match(idx,2)], 'g','LineWidth',1.5);
+    plot(p1_match(idx,1), p1_match(idx,2),'ro','MarkerSize',4);
+    plot(p2_match(idx,1)+offset,p2_match(idx,2),'ro','MarkerSize',4);
+end
+title(['Inliers: ', num2str(num_inliers), ' / Matches: ', num2str(num_pts)]);
+
+%% Results
+fprintf('\n--- RESULTS ---\n');
+fprintf('Keypoints in Image 1: %d\n', size(keypoints1,1));
+fprintf('Keypoints in Image 2: %d\n', size(keypoints2,1));
+fprintf('Total Initial Matches: %d\n', num_pts);
+fprintf('RANSAC Inliers: %d\n', num_inliers);
+fprintf('Inlier Ratio: %.2f%%\n', num_inliers/num_pts*100);
+
+%{
+%% Canonical SIFT Matching + RANSAC (Corrected & Clean)
+clear; clc; close all;
+
+%% PARAMETERS
+ratio_thresh  = 0.75;     % Lowe ratio 
+ransac_iters  = 3000;
+ransac_thresh = 5;       % reprojection error (pixels)
+
+%% LOAD IMAGES
+img1 = imread('cameraman.tif');
+img2 = imresize(imrotate(img1,15,'bicubic','crop'),0.8);
+
+%% EXTRACT SIFT
+fprintf('Extracting SIFT features...\n');
+[kp1, desc1] = sift(im2double(img1));
+[kp2, desc2] = sift(im2double(img2));
+
+%% NORMALIZE DESCRIPTORS
+desc1 = desc1 ./ (sqrt(sum(desc1.^2,2)) + eps);
+desc2 = desc2 ./ (sqrt(sum(desc2.^2,2)) + eps);
+
+%% PAIRWISE DISTANCES
+D = sqrt( ...
+    bsxfun(@plus,sum(desc1.^2,2),sum(desc2.^2,2)') ...
+    - 2*(desc1*desc2') );
+
+%% NEAREST NEIGHBORS
+[dist12, idx12] = sort(D,2);    % 1 → 2
+[dist21, idx21] = sort(D',2);   % 2 → 1
+
+%% LOWE RATIO TEST
+ratio_pass = dist12(:,1) < ratio_thresh * dist12(:,2);
+
+%% MUTUAL NEAREST NEIGHBOR
+matches = [];
+for i = find(ratio_pass)'
+    j = idx12(i,1);
+    if idx21(j,1) == i
+        matches = [matches; i j];
+    end
+end
+
+fprintf('Matches after MNN + ratio: %d\n', size(matches,1));
+if size(matches,1) < 4
+    error('Not enough matches for RANSAC');
+end
+
+%% POINT CORRESPONDENCES
+p1 = kp1(matches(:,1),1:2);
+p2 = kp2(matches(:,2),1:2);
+
+%% RANSAC HOMOGRAPHY
+best_inliers = [];
+best_H = eye(3);
+
+for it = 1:ransac_iters
+    idx = randperm(size(matches,1),4);
+    x1 = p1(idx,:); 
+    x2 = p2(idx,:);
+    
+    % DLT (4-point)
+    A = [];
+    for k = 1:4
+        X = x1(k,1); Y = x1(k,2);
+        u = x2(k,1); v = x2(k,2);
+        A = [A;
+             X Y 1 0 0 0 -u*X -u*Y -u;
+             0 0 0 X Y 1 -v*X -v*Y -v];
+    end
+    
+    [~,~,V] = svd(A);
+    H = reshape(V(:,end),3,3)';
+    
+    % Reprojection
+    p1h = [p1 ones(size(p1,1),1)]';
+    p2p = H * p1h;
+    p2p = (p2p(1:2,:) ./ p2p(3,:))';
+    
+    d = sqrt(sum((p2 - p2p).^2,2));
+    inliers = find(d < ransac_thresh);
+    
+    if numel(inliers) > numel(best_inliers)
+        best_inliers = inliers;
+        best_H = H;
+    end
+end
+
+fprintf('RANSAC inliers: %d / %d\n', ...
+        numel(best_inliers), size(matches,1));
+
+%% RE-ESTIMATE H FROM ALL INLIERS
+if numel(best_inliers) >= 4
+    x1 = p1(best_inliers,:);
+    x2 = p2(best_inliers,:);
+    
+    A = [];
+    for k = 1:size(x1,1)
+        X = x1(k,1); Y = x1(k,2);
+        u = x2(k,1); v = x2(k,2);
+        A = [A;
+             X Y 1 0 0 0 -u*X -u*Y -u;
+             0 0 0 X Y 1 -v*X -v*Y -v];
+    end
+    [~,~,V] = svd(A);
+    best_H = reshape(V(:,end),3,3)';
+end
+
+%% VISUALIZATION (NO RESIZE → CORRECT GEOMETRY)
+%% VISUALIZATION (HEIGHT-PRESERVING)
+h1 = size(img1,1);  w1 = size(img1,2);
+h2 = size(img2,1);  w2 = size(img2,2);
+
+H = max(h1,h2);
+
+img1v = zeros(H,w1,'like',img1);
+img2v = zeros(H,w2,'like',img2);
+
+img1v(1:h1,1:w1) = img1;
+img2v(1:h2,1:w2) = img2;
+
+figure; imshow([img1v img2v]); hold on;
+offset = w1;
+
+for i = best_inliers'
+    plot([p1(i,1) p2(i,1)+offset], ...
+         [p1(i,2) p2(i,2)], ...
+         'g','LineWidth',1.2);
+end
+
+title('Canonical SIFT Matching (MNN + Lowe + RANSAC)');
+
+
+%% RESULTS
+fprintf('\n--- RESULTS ---\n');
+fprintf('Keypoints in Image 1: %d\n', size(kp1,1));
+fprintf('Keypoints in Image 2: %d\n', size(kp2,1));
+fprintf('Total Matches: %d\n', size(matches,1));
+fprintf('RANSAC Inliers: %d\n', numel(best_inliers));
+fprintf('Inlier Ratio: %.2f%%\n', ...
+        100 * numel(best_inliers) / size(matches,1));
+%}
+%}
+
+
+%{
+function matching_ransac(img1, img2)
+    %% 1. Εξαγωγή Χαρακτηριστικών (SIFT)
+    fprintf('Extracting SIFT features...\n');
+    [keypoints1, descriptors1] = sift(img1);
+    [keypoints2, descriptors2] = sift(img2);
+    
+    keypoints1_pts = keypoints1(:, 1:2);
+    keypoints2_pts = keypoints2(:, 1:2);
+    
+    fprintf('Keypoints in Image 1: %d\n', size(keypoints1,1));
+    fprintf('Keypoints in Image 2: %d\n', size(keypoints2,1));
+
+    %% 2. MANUAL EUCLIDEAN DISTANCE & LOWE'S RATIO TEST
+    fprintf('Computing Manual Euclidean Distances...\n');
+    
+    n1 = size(descriptors1, 1);
+    n2 = size(descriptors2, 1);
+    
+    % Προετοιμασία πινάκων για τα αποτελέσματα
+    matches_idx = [];
+    best_matches_in_2 = [];
+    
+    % Threshold για το Lowe's Ratio
+    ratio_thresh = 0.7;
+
+    % Υπολογισμός τετραγώνων των νορμών για ταχύτερο calculation
+    norm1 = sum(descriptors1.^2, 2); % (n1 x 1)
+    norm2 = sum(descriptors2.^2, 2); % (n2 x 1)
+
+    % Για κάθε descriptor στην εικόνα 1, βρίσκουμε τους 2 καλύτερους στην εικόνα 2
+    for i = 1:n1
+        % Manual υπολογισμός Ευκλείδειας απόστασης:
+        % dist = sqrt( ||A||^2 + ||B||^2 - 2*A*B' )
+        dists_sq = max(0, norm1(i) + norm2' - 2 * (descriptors1(i, :) * descriptors2'));
+        dists = sqrt(dists_sq);
+        
+        % Εύρεση των δύο μικρότερων αποστάσεων
+        [sorted_dists, sorted_idx] = sort(dists, 'ascend');
+        
+        d1 = sorted_dists(1); % Κοντινότερος γείτονας
+        d2 = sorted_dists(2); % Δεύτερος κοντινότερος
+        
+        % Lowe's Ratio Test
+        if d1 < ratio_thresh * d2
+            matches_idx = [matches_idx; i];
+            best_matches_in_2 = [best_matches_in_2; sorted_idx(1)];
+        end
+    end
+    
+    num_pts = length(matches_idx);
+    if num_pts < 4
+        error('Πολύ λίγα matches (%d) για την εκτέλεση RANSAC.', num_pts);
+    end
+    
+    p1 = keypoints1_pts(matches_idx, :);
+    p2 = keypoints2_pts(best_matches_in_2, :);
+    
+    fprintf('Total Initial Matches: %d\n', num_pts);
+
+    %% 3. RANSAC GEOMETRIC VERIFICATION
+    % Χρησιμοποιούμε το μοντέλο 'affine' για να επιτρέψουμε περιστροφή, κλίμακα και μετάθεση
+    [tform, inlierIdx] = estimateGeometricTransform2D(p1, p2, 'affine', ...
+        'MaxDistance', 3, 'MaxNumTrials', 2000);
+    
+    num_inliers = sum(inlierIdx);
+    
+    % 4. ΕΚΤΥΠΩΣΗ ΣΤΑΤΙΣΤΙΚΩΝ
+    fprintf('RANSAC Inliers: %d\n', num_inliers);
+    fprintf('Inlier Ratio: %.2f%%\n', (num_inliers/num_pts)*100);
+
+    %% 5. ΟΠΤΙΚΟΠΟΙΗΣΗ
+    figure('Name', 'Manual SIFT Matching');
+    showMatchedFeatures(img1, img2, p1(inlierIdx, :), p2(inlierIdx, :), 'montage');
+    title(sprintf('SIFT Matches: %d Inliers', num_inliers));
+end
+%}
+
+function matching_ransac(img1, img2)
+
+
+    % Feature Extraction
+    % Call the SIFT function to find interest points and their 128D descriptors
+    fprintf('Extracting SIFT features...\n');
+    [keypoints1, descriptors1] = sift(img1);
+    [keypoints2, descriptors2] = sift(img2);
+    
+    % Isolate the (x, y) coordinates for geometric mapping later
+    keypoints1_pts = keypoints1(:, 1:2);
+    keypoints2_pts = keypoints2(:, 1:2);
+    
+    fprintf('Keypoints in Image 1: %d\n', size(keypoints1,1));
+    fprintf('Keypoints in Image 2: %d\n', size(keypoints2,1));
+
+    % Euclidean distance and EST
+    % We need to find which descriptor in Image 1 is most similar to one in Image 2.
+    fprintf('Computing Manual Euclidean Distances...\n');
+    
+    n1 = size(descriptors1, 1);
+    n2 = size(descriptors2, 1);
+    
+    % Initialize arrays to store valid match indices
+    matches_idx = [];
+    best_matches_in_2 = [];
+    
+    % Lowe's Ratio Threshold (Standard value: 0.7)
+    % This handles "ambiguous" matches by ensuring the best match is significantly
+    % better than the second-best match.
+    ratio_thresh = 0.7;
+    
+    % Optimization: Pre-calculate squared norms to speed up the distance formula:
+    % Dist(A,B) = sqrt( ||A||^2 + ||B||^2 - 2*A*B' )
+    norm1 = sum(descriptors1.^2, 2); % (n1 x 1)
+    norm2 = sum(descriptors2.^2, 2); % (n2 x 1)
+    
+    
+
+    % Iterate through every descriptor in the first image
+    for i = 1:n1
+        % Manual Euclidean distance calculation using matrix operations for speed
+        % max(0,...) ensures we don't get imaginary numbers due to tiny precision errors
+        dists_sq = max(0, norm1(i) + norm2' - 2 * (descriptors1(i, :) * descriptors2'));
+        dists = sqrt(dists_sq);
+        
+        % Sort distances to find the two closest neighbors in Image 2
+        [sorted_dists, sorted_idx] = sort(dists, 'ascend');
+        
+        d1 = sorted_dists(1); % Closest neighbor (Best match candidate)
+        d2 = sorted_dists(2); % Second closest neighbor
+        
+        % --- Lowe's Ratio Test ---
+        % If the best match isn't much better than the second best, it's likely 
+        % a repetitive pattern (like windows on a building) and should be discarded.
+        if d1 < ratio_thresh * d2
+            matches_idx = [matches_idx; i];
+            best_matches_in_2 = [best_matches_in_2; sorted_idx(1)];
+        end
+    end
+    
+
+    num_pts = length(matches_idx);
+    
+    % Extract the paired coordinates for the matched points
+    p1 = keypoints1_pts(matches_idx, :);
+    p2 = keypoints2_pts(best_matches_in_2, :);
+    
+    fprintf('Total Initial Matches: %d\n', num_pts);
+
+    %% 3. RANSAC GEOMETRIC VERIFICATION
+    % Filters out "outliers" 
+    % It finds a subset of points that all agree on a single geometric transformation
+    [tform, inlierIdx] = estimateGeometricTransform2D(p1, p2, 'affine', ...
+        'MaxDistance', 3, 'MaxNumTrials', 2000);
+    
+    num_inliers = sum(inlierIdx);
+    
+    %% 4. STATISTICS PRINTING
+    % Inliers represent the true physical matches between the two scenes.
+    fprintf('RANSAC Inliers: %d\n', num_inliers);
+    fprintf('Inlier Ratio: %.2f%%\n', (num_inliers/num_pts)*100);
+
+    %% 5. VISUALIZATION
+    % Display the images side-by-side with lines connecting the verified inlier points.
+    figure('Name', 'Manual SIFT Matching with RANSAC');
+    showMatchedFeatures(img1, img2, p1(inlierIdx, :), p2(inlierIdx, :), 'montage');
+    title(sprintf('SIFT Matches: %d Validated Inliers', num_inliers));
+end
