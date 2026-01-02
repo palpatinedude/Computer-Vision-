@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.12.13)  3 JAN 2026 01:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.12.13)  2 JAN 2026 20:20
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
-**/home/marianthi/Desktop/ceid/semester_9/θεματα_ορασης/Εργασία_1/εργασία1
-(/home/marianthi/Desktop/ceid/semester_9/θεματα_ορασης/Εργασία_1/εργασία1.tex
+**/home/marianthi/Desktop/ceid/semester_9/θεματα_ορασης/Εργασία_4/εργασία4
+(/home/marianthi/Desktop/ceid/semester_9/θεματα_ορασης/Εργασία_4/εργασία4.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -1221,10 +1221,10 @@ Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
 )) (/usr/share/texlive/texmf-dist/tex/generic/iftex/ifluatex.sty
 Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
 )
-runsystem(uname -s > "εργασία1.w18")...executed.
+runsystem(uname -s > "εργασία4.w18")...executed.
 
- (./εργασία1.w18)
-runsystem(rm -- "εργασία1.w18")...executed.
+ (./εργασία4.w18)
+runsystem(rm -- "εργασία4.w18")...executed.
 
 ) (/usr/share/texlive/texmf-dist/tex/generic/xstring/xstring.sty (/usr/share/texlive/texmf-dist/tex/generic/xstring/xstring.tex
 \xs_counta=\count411
@@ -1240,7 +1240,7 @@ Package: xstring 2023/08/22 v1.86 String manipulations (CT)
 \@float@every@listing=\toks50
 \c@listing=\count415
 )
-runsystem(mkdir -p _minted-εργασία1)...executed.
+runsystem(mkdir -p _minted-εργασία4)...executed.
 
  (/usr/share/texlive/texmf-dist/tex/latex/cite/cite.sty
 LaTeX Info: Redefining \cite on input line 302.
@@ -1277,16 +1277,16 @@ Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'english'.
-runsystem(command -v pygmentize && touch εργασία1.aex)...executed.
+runsystem(command -v pygmentize && touch εργασία4.aex)...executed.
 
-runsystem(rm εργασία1.aex)...executed.
+runsystem(rm εργασία4.aex)...executed.
 
  (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count420
 \l__pdf_internal_box=\box128
-) (./εργασία1.aux)
-\openout1 = `εργασία1.aux'.
+) (./εργασία4.aux)
+\openout1 = `εργασία4.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
 LaTeX Font Info:    ... okay on input line 39.
@@ -1435,15 +1435,15 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 Package hyperref Info: Link coloring OFF on input line 39.
- (./εργασία1.out) (./εργασία1.out)
+ (./εργασία4.out) (./εργασία4.out)
 \@outlinefile=\write7
-\openout7 = `εργασία1.out'.
+\openout7 = `εργασία4.out'.
 
 \c@lstlisting=\count427
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfigure package is loaded.
 Package caption Info: End \AtBeginDocument code.
-<logo.png, id=187, 488.5452pt x 177.3024pt>
+<logo.png, id=19, 488.5452pt x 177.3024pt>
 File: logo.png Graphic file (type png)
 <use logo.png>
 Package pdftex.def Info: logo.png  used on input line 42.
@@ -1461,240 +1461,38 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 ) [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc} <./logo.png>] (./εργασία1.toc [2])
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc} <./logo.png>] (./εργασία4.toc)
 \tf@toc=\write8
-\openout8 = `εργασία1.toc'.
+\openout8 = `εργασία4.toc'.
 
-
-Overfull \hbox (10.07535pt too wide) in paragraph at lines 58--59
-\LGR/cmr/m/n/12 Se aut� to \T1/cmr/m/n/12 (-20) sec-tion \LGR/cmr/m/n/12 para-j�-toume tic basik�c ma-jh-matik�c sq�-seic pou qrhsi-mopoio�n-tai sthn kataskeu�
- []
-
-
-Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 60.
-
-[3{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [4] [5]
-LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 239.
- (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
-File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
-)
-Package microtype Info: Loading generic protrusion settings for font family
-(microtype)             `cmtt' (encoding: T1).
-(microtype)             For optimal results, create family-specific settings.
-(microtype)             See the microtype manual for details.
-LaTeX Font Info:    Trying to load font information for TS1+cmtt on input line 241.
- (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmtt.fd
-File: ts1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
-)
-Package microtype Info: Loading generic protrusion settings for font family
-(microtype)             `cmtt' (encoding: TS1).
-(microtype)             For optimal results, create family-specific settings.
-(microtype)             See the microtype manual for details.
-<gaussian.png, id=292, 836.12375pt x 562.1pt>
-File: gaussian.png Graphic file (type png)
-<use gaussian.png>
-Package pdftex.def Info: gaussian.png  used on input line 254.
-(pdftex.def)             Requested size: 284.52756pt x 191.283pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[6] [7 <./gaussian.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 299--300
-
- []
-
-[8]
-<x_0.png, id=344, 557.08125pt x 510.90875pt>
-File: x_0.png Graphic file (type png)
-<use x_0.png>
-Package pdftex.def Info: x_0.png  used on input line 402.
-(pdftex.def)             Requested size: 224.39664pt x 205.79431pt.
-<gaussian1D.png, id=345, 1335.99126pt x 724.7075pt>
-File: gaussian1D.png Graphic file (type png)
-<use gaussian1D.png>
-Package pdftex.def Info: gaussian1D.png  used on input line 409.
-(pdftex.def)             Requested size: 224.39664pt x 121.71686pt.
-
-Underfull \hbox (badness 1205) in paragraph at lines 410--410
-[]\T1/cmr/m/n/12 (+20) Figure 3: |Gaus-sian \LGR/cmr/m/n/12 pu-ram�da \T1/cmr/m/n/12 (+20) 1D: \LGR/cmr/m/n/12 k�je
- []
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[9] [10 <./x_0.png> <./gaussian1D.png>]
-<laplacianpyramid.png, id=378, 1068.99374pt x 831.105pt>
-File: laplacianpyramid.png Graphic file (type png)
-<use laplacianpyramid.png>
-Package pdftex.def Info: laplacianpyramid.png  used on input line 474.
-(pdftex.def)             Requested size: 159.57567pt x 124.06433pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 475--475
-\T1/cmr/m/n/12 (+20) 1D: \LGR/cmr/m/n/12 lep-tom�reiec uyh-l�n
- []
-
-<reco.png, id=379, 884.30376pt x 721.69624pt>
-File: reco.png Graphic file (type png)
-<use reco.png>
-Package pdftex.def Info: reco.png  used on input line 481.
-(pdftex.def)             Requested size: 159.57567pt x 130.23009pt.
-<fftlaplacian.png, id=380, 1023.825pt x 798.985pt>
-File: fftlaplacian.png Graphic file (type png)
-<use fftlaplacian.png>
-Package pdftex.def Info: fftlaplacian.png  used on input line 488.
-(pdftex.def)             Requested size: 159.57567pt x 124.52411pt.
-
-Overfull \hbox (6.03436pt too wide) in paragraph at lines 517--520
-\LGR/cmr/m/n/12 H \T1/cmr/m/n/12 (-20) tool-box \LGR/cmr/m/n/12 pu-ram�dwn tou \T1/cmr/m/n/12 (-20) MAT-LAB []$\T1/cmtt/m/n/12 https : / / www . mathworks . com / matlabcentral / fileexchange /
- []
-
-[11 <./laplacianpyramid.png> <./reco.png> <./fftlaplacian.png>]
-<gaussian_mask.png, id=408, 1265.72874pt x 689.57625pt>
-File: gaussian_mask.png Graphic file (type png)
-<use gaussian_mask.png>
-Package pdftex.def Info: gaussian_mask.png  used on input line 565.
-(pdftex.def)             Requested size: 299.20059pt x 162.99742pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[12]
-<LI1.png, id=420, 1197.47375pt x 592.2125pt>
-File: LI1.png Graphic file (type png)
-<use LI1.png>
-Package pdftex.def Info: LI1.png  used on input line 591.
-(pdftex.def)             Requested size: 398.93158pt x 197.29222pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[13 <./gaussian_mask.png>] [14 <./LI1.png>]
-<blended_pyramid.png, id=435, 1386.17876pt x 576.1525pt>
-File: blended_pyramid.png Graphic file (type png)
-<use blended_pyramid.png>
-Package pdftex.def Info: blended_pyramid.png  used on input line 617.
-(pdftex.def)             Requested size: 398.93158pt x 165.81398pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 624--630
-
- []
-
-[15 <./blended_pyramid.png>]
-<blended.png, id=443, 1327.96124pt x 494.84875pt>
-File: blended.png Graphic file (type png)
-<use blended.png>
-Package pdftex.def Info: blended.png  used on input line 633.
-(pdftex.def)             Requested size: 349.06227pt x 130.06963pt.
-<woman_hand.png, id=447, 1797.71625pt x 608.2725pt>
-File: woman_hand.png Graphic file (type png)
-<use woman_hand.png>
-Package pdftex.def Info: woman_hand.png  used on input line 675.
-(pdftex.def)             Requested size: 349.06227pt x 118.10681pt.
- [16 <./blended.png>] [17 <./woman_hand.png>] [18]
-<6images.png, id=473, 1270.7475pt x 884.30376pt>
-File: 6images.png Graphic file (type png)
-<use 6images.png>
-Package pdftex.def Info: 6images.png  used on input line 771.
-(pdftex.def)             Requested size: 294.20909pt x 204.73492pt.
- [19 <./6images.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 815--816
-
- []
-
-[20]
-Underfull \hbox (badness 10000) in paragraph at lines 842--843
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 850--851
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 865--866
-
- []
-
-[21]
-Underfull \hbox (badness 10000) in paragraph at lines 891--892
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 897--898
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 903--904
-
- []
-
-[22]
-Underfull \hbox (badness 10000) in paragraph at lines 942--943
-
- []
-
-[23]
-Overfull \hbox (11.14912pt too wide) in paragraph at lines 962--963
-[]\LGR/cmr/bx/n/12 Ermhne�a\T1/cmr/bx/n/12 (-20) : \LGR/cmr/m/n/12 Oi sug-kekrim�nec kl�-seic qarak-thr�-zon-tai ap� meg�lec kai suneqe�c epif�neiec
- []
-
-[24]
-Underfull \hbox (badness 10000) in paragraph at lines 993--994
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1007--1008
-
- []
-
-[25]
-Underfull \hbox (badness 10000) in paragraph at lines 1037--1038
-
- []
-
-[26]
-<barplot.png, id=547, 1081.03876pt x 786.94pt>
-File: barplot.png Graphic file (type png)
-<use barplot.png>
-Package pdftex.def Info: barplot.png  used on input line 1051.
-(pdftex.def)             Requested size: 299.20059pt x 217.79605pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 1057--1058
-
- []
-
-<prediction.png, id=548, 1551.7975pt x 691.58376pt>
-File: prediction.png Graphic file (type png)
-<use prediction.png>
-Package pdftex.def Info: prediction.png  used on input line 1067.
-(pdftex.def)             Requested size: 349.06227pt x 155.55742pt.
-[27 <./barplot.png> <./prediction.png>] (./εργασία1.aux)
+ [2] (./εργασία4.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
-Package rerunfilecheck Info: File `εργασία1.out' has not changed.
-(rerunfilecheck)             Checksum: 259756D065EA755E9F5A0217AFCF9BD1;11802.
+
+
+Package rerunfilecheck Warning: File `εργασία4.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `εργασία4.out':
+(rerunfilecheck)             Before: 0F7B3D5B820D9B67BA06DFA5CE1418CF;490
+(rerunfilecheck)             After:  41367878D64D814220E4788CC1815C1B;700.
  ) 
 Here is how much of TeX's memory you used:
- 37322 strings out of 474222
- 707898 string characters out of 5748732
- 1940975 words of memory out of 5000000
- 58669 multiletter control sequences out of 15000+600000
- 585581 words of font info for 150 fonts, out of 8000000 for 9000
+ 36745 strings out of 474222
+ 698544 string characters out of 5748732
+ 1928975 words of memory out of 5000000
+ 58357 multiletter control sequences out of 15000+600000
+ 571783 words of font info for 81 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 81i,9n,117p,1150b,679s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grmi1200.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grmn1200.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grmn1440.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grmn2074.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grxn1200.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grxn1440.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grxn1728.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm2074.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on εργασία1.pdf (27 pages, 3578205 bytes).
+ 81i,6n,117p,1091b,547s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grmn1200.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grmn1440.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grmn2074.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grxn1200.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grxn1440.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grxn1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm2074.pfb>
+Output written on εργασία4.pdf (2 pages, 532009 bytes).
 PDF statistics:
- 709 PDF objects out of 1000 (max. 8388607)
- 591 compressed objects within 6 object streams
- 171 named destinations out of 1000 (max. 500000)
- 40384 words of extra memory for PDF output out of 42996 (max. 10000000)
+ 107 PDF objects out of 1000 (max. 8388607)
+ 76 compressed objects within 1 object stream
+ 10 named destinations out of 1000 (max. 500000)
+ 20522 words of extra memory for PDF output out of 20736 (max. 10000000)
 

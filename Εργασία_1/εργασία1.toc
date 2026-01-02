@@ -2,24 +2,24 @@
 \contentsline {section}{\numberline {1}Abstract}{3}{section.1}%
 \contentsline {section}{\numberline {2}Θεωρία — Βασικές σχέσεις}{3}{section.2}%
 \contentsline {subsubsection}{\numberline {2.0.1}Γκαουσιανό Φίλτρο (1D Kernel)}{3}{subsubsection.2.0.1}%
-\contentsline {subsubsection}{\numberline {2.0.2}Μείωση (Reduce / Downsampling)}{3}{subsubsection.2.0.2}%
+\contentsline {subsubsection}{\numberline {2.0.2}Μείωση (Reduce / Downsampling)}{4}{subsubsection.2.0.2}%
 \contentsline {subsubsection}{\numberline {2.0.3}Ανάπτυξη (Expand / Upsampling)}{4}{subsubsection.2.0.3}%
 \contentsline {subsubsection}{\numberline {2.0.4}Laplacian Επίπεδο}{4}{subsubsection.2.0.4}%
 \contentsline {subsubsection}{\numberline {2.0.5}Ανακατασκευή (Reconstruction)}{4}{subsubsection.2.0.5}%
 \contentsline {subsubsection}{\numberline {2.0.6}Blending Εικόνων}{5}{subsubsection.2.0.6}%
 \contentsline {subsubsection}{\numberline {2.0.7}Σχέσεις μεταξύ Εξισώσεων}{5}{subsubsection.2.0.7}%
-\contentsline {section}{\numberline {3}Μέρος Α — Πυραμιδικές αναπαραστάσεις σε 1D }{5}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Α1: Επιβεβαίωση Gaussian Πυρήνα}{5}{subsection.3.1}%
-\contentsline {paragraph}{1. Θεωρητική εξήγηση}{5}{section*.3}%
+\contentsline {section}{\numberline {3}Μέρος Α — Πυραμιδικές αναπαραστάσεις σε 1D }{6}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Α1: Επιβεβαίωση Gaussian Πυρήνα}{6}{subsection.3.1}%
+\contentsline {paragraph}{1. Θεωρητική εξήγηση}{6}{section*.3}%
 \contentsline {paragraph}{Δυωνυμικός πυρήνας $h$}{6}{section*.4}%
 \contentsline {paragraph}{2. Σχέση με smoothing / χαμηλοπερατότητα}{6}{section*.5}%
 \contentsline {paragraph}{2. Οπτική Σύγκριση με Gaussian}{6}{section*.6}%
-\contentsline {subsection}{\numberline {3.2}Α2: Υλοποίηση 1D Gaussian Πυραμίδας}{6}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.2}Α2: Υλοποίηση 1D Gaussian Πυραμίδας}{7}{subsection.3.2}%
 \contentsline {paragraph}{Συνέλιξη με Gaussian πυρήνα}{7}{section*.8}%
 \contentsline {paragraph}{Downsampling (Reduce)}{7}{section*.9}%
 \contentsline {paragraph}{Toeplitz Matrix}{7}{section*.10}%
 \contentsline {paragraph}{Downsampling με $D_N$}{7}{section*.11}%
-\contentsline {paragraph}{Kronecker Product}{7}{section*.12}%
+\contentsline {paragraph}{Kronecker Product}{8}{section*.12}%
 \contentsline {subparagraph}{Ορισμός}{8}{section*.13}%
 \contentsline {subparagraph}{Γιατί χρησιμοποιείται το Kronecker Product}{8}{section*.14}%
 \contentsline {subparagraph}{Separable Φίλτρα}{8}{section*.15}%
@@ -79,5 +79,18 @@
 \contentsline {paragraph}{Μέση τιμή όλων των εικόνων}{22}{section*.51}%
 \contentsline {paragraph}{Διασπορά εικόνων}{22}{section*.52}%
 \contentsline {paragraph}{Overall mIoU}{23}{section*.53}%
-\contentsline {subsection}{\numberline {5.6}Λογική Αξιολόγησης}{23}{subsection.5.6}%
-\contentsline {subsection}{\numberline {5.7}Συμπέρασμα}{23}{subsection.5.7}%
+\contentsline {subsection}{\numberline {5.6}Σύνοψη Αξιολόγησης Μοντέλου}{23}{subsection.5.6}%
+\contentsline {paragraph}{Σκοπός και Πλαίσιο Πειράματος}{23}{section*.54}%
+\contentsline {paragraph}{Μεθοδολογία Αξιολόγησης}{23}{section*.55}%
+\contentsline {paragraph}{Λογική και Λειτουργία του Κώδικα}{23}{section*.56}%
+\contentsline {subsection}{\numberline {5.7}Ανάλυση Αποτελεσμάτων}{24}{subsection.5.7}%
+\contentsline {subsubsection}{\numberline {5.7.1}Στατιστική Ανάλυση}{24}{subsubsection.5.7.1}%
+\contentsline {paragraph}{Per-Class IoU}{24}{section*.57}%
+\contentsline {paragraph}{Σταθερότητα ανά Εικόνα}{24}{section*.58}%
+\contentsline {subsubsection}{\numberline {5.7.2}Benchmarking}{25}{subsubsection.5.7.2}%
+\contentsline {paragraph}{Throughput}{25}{section*.59}%
+\contentsline {paragraph}{Θερμική Συμπεριφορά}{25}{section*.60}%
+\contentsline {paragraph}{Cost of Context}{25}{section*.61}%
+\contentsline {subsubsection}{\numberline {5.7.3}Οπτικοποίηση}{26}{subsubsection.5.7.3}%
+\contentsline {paragraph}{Bar Plot}{26}{section*.62}%
+\contentsline {paragraph}{Ground Truth vs Prediction}{27}{section*.64}%
