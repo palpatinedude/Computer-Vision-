@@ -1,0 +1,84 @@
+%% Thsi script runs the ECC–LK alignment algorithm on selected frame pairs from video1_low
+
+clear; close all; clc;
+addpath("../CV_4-ALIGNMENT_mdl/")
+
+load(fullfile("results","A0_data.mat"), "data");
+
+
+frames = data.video1.low.frames;
+
+levels    = 2;              % Number of pyramid levels
+noi       = 30;             % Iterations per level
+transform = 'affine';       % Motion model
+
+delta_p_init = zeros(2,3);  % Initial affine parameters
+
+
+% Template frame = 1, Image frames = 5, 20, 50
+tid = 1;
+test_iids = [5 20 50];
+
+% Structure to store all runs together
+allRuns = struct();
+
+% Run ECC–LK for each frame 
+for r = 1:numel(test_iids)
+    iid = test_iids(r);
+
+    % Select template and target image
+    template = frames{tid};
+    image    = frames{iid};
+
+    fprintf("\n=== Run %d: template=%d, image=%d ===\n", r, tid, iid);
+
+    % Run ECC + LK alignment
+    [results, results_lk, MSE, rho, MSELK] = ...
+        ecc_lk_alignment(image, template, levels, noi, transform, delta_p_init);
+
+    runName = sprintf('v1low_t%d_i%d', tid, iid);
+    allRuns.(runName).results    = results;
+    allRuns.(runName).results_lk = results_lk;
+    allRuns.(runName).MSE        = MSE;
+    allRuns.(runName).rho        = rho;
+    allRuns.(runName).MSELK      = MSELK;
+
+    % Plot convergence 
+    fig = figure('Name', ['Convergence - ' runName], 'Visible','on');
+
+    % ECC correlation over iterations
+    subplot(2,1,1);
+    plot(rho, 'LineWidth', 1.5);
+    grid on;
+    xlabel('Iteration');
+    ylabel('\rho (ECC)');
+    title(['ECC correlation \rho - ' runName]);
+
+    % PSNR-like metric for ECC and LK
+    subplot(2,1,2);
+    psnr_ecc = 20*log10(255 ./ MSE);
+    psnr_lk  = 20*log10(255 ./ MSELK);
+    plot(psnr_ecc, 'k', 'LineWidth', 1.5); hold on;
+    plot(psnr_lk,  'r', 'LineWidth', 1.5); hold off;
+    grid on;
+    xlabel('Iteration');
+    ylabel('PSNR-like (dB)');
+    legend('ECC','LK');
+    title(['PSNR-like vs iteration - ' runName]);
+
+    % Save convergence plot
+    exportgraphics(fig, fullfile('results', [runName '_convergence.png']));
+
+    save(fullfile("results', [runName ".mat"]), ...
+        "results", "results_lk", "MSE", "rho", "MSELK", ...
+        "levels", "noi", "transform", "delta_p_init", "tid", "iid");
+end
+
+save(fullfile('results', [runName '.mat']), ...
+    'results', 'results_lk', 'MSE', 'rho', 'MSELK', ...
+    'levels', 'noi', 'transform', 'delta_p_init', 'tid', 'iid');
+
+save(fullfile('results','A1_allRuns.mat'), ...
+    'allRuns', 'levels','noi','transform','delta_p_init','tid','test_iids');
+
+fprintf("\nSaved all A1 runs into results/A1_allRuns.mat\n");

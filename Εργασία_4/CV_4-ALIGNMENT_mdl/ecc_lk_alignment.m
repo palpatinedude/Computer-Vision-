@@ -172,11 +172,26 @@ im_lk=im;
 
         disp(['Level: ' num2str(nol) ', Iteration: ' num2str(i)])
         %Image interpolation method
+        %{
         str='bilinear'; % bilinear interpolation
         wim = spatial_interp(im, warp, str, transform, nx, ny);
         wim = wim-mean(wim(:));% zero-mean image; is useful for brithness change compensation, otherwise you can comment this line
         wim_lk = spatial_interp(im_lk, warp_lk, str, transform, nx, ny);
         wim_lk = wim_lk-mean(wim_lk(:));% zero-mean image; is useful for brithness change compensation, otherwise you can comment this line
+        %}
+        str='bilinear';
+        warp_full = warp;
+        warp_lk_full = warp_lk;
+        if strcmp(transform,'affine')
+            warp_full(1:2,1:2)    = warp_full(1:2,1:2)    + eye(2);
+            warp_lk_full(1:2,1:2) = warp_lk_full(1:2,1:2) + eye(2);
+        end
+
+        wim    = spatial_interp(im,warp_full,str, transform, nx, ny);
+        wim    = wim-mean(wim(:));
+
+        wim_lk = spatial_interp(im_lk, warp_lk_full, str, transform, nx, ny);
+        wim_lk = wim_lk-mean(wim_lk(:));
         %Save current transform
         if strcmp(transform,'affine')
             results(nol,i).warp = warp(1:2,:);
@@ -199,8 +214,8 @@ im_lk=im;
         end
 
         % Gradient Image interpolation (warped gradients)
-        wvx = spatial_interp(vx, warp, str, transform, nx, ny);
-        wvy = spatial_interp(vy, warp, str, transform, nx, ny);
+        wvx = spatial_interp(vx, warp_full, str, transform, nx, ny);
+        wvy = spatial_interp(vy, warp_full, str, transform, nx, ny);
 
 
         % Compute the jacobian of warp transform
@@ -223,14 +238,14 @@ im_lk=im;
         Gt = G' * temp(:);
         Gw = G' * wim(:);
 
-%LK 
-% Gradient Image interpolation (warped gradients)
-        wvx_lk = spatial_interp(vx_lk, warp_lk, str, transform, nx, ny);
-        wvy_lk = spatial_interp(vy_lk, warp_lk, str, transform, nx, ny);
+        %LK 
+        % Gradient Image interpolation (warped gradients)
+        wvx_lk = spatial_interp(vx_lk, warp_lk_full, str, transform, nx, ny);
+        wvy_lk = spatial_interp(vy_lk, warp_lk_full, str, transform, nx, ny);
 
 
         % Compute the jacobian of warp transform
-        J_lk = warp_jacobian(nx, ny, warp_lk, transform);
+        J_lk = warp_jacobian(nx, ny, warp_lk_full, transform);
 
         % Compute the jacobian of wim wrt parameters (matrix G in paper)
         G_lk = image_jacobian(wvx_lk, wvy_lk, J_lk, nop);
@@ -337,8 +352,23 @@ if break_flag==1 % this conditional part is only executed when algorithm stops d
 end
 
 % store the final warped image
-results(nol,i).image = spatial_interp(image, results(nol,i).warp, str, transform, nx, ny);
-results_lk(nol,i).image = spatial_interp(image, results_lk(nol,i).warp, str, transform, nx, ny);
+warp_final = results(nol,i).warp;
+warp_lk_final = results_lk(nol,i).warp;
+
+if strcmp(transform,'affine')
+    if size(warp_final,1)==2
+        warp_final = [warp_final; zeros(1,3)];
+    end
+    if size(warp_lk_final,1)==2
+        warp_lk_final = [warp_lk_final; zeros(1,3)];
+    end
+    warp_final(1:2,1:2)    = warp_final(1:2,1:2)    + eye(2);
+    warp_lk_final(1:2,1:2) = warp_lk_final(1:2,1:2) + eye(2);
+end
+
+results(nol,i).image    = spatial_interp(image, warp_final,    str, transform, nx, ny);
+results_lk(nol,i).image = spatial_interp(image, warp_lk_final, str, transform, nx, ny);
+
 % project ROI corners through final warp
 ROI_corners=[nx(1) nx(1) nx(end) nx(end);...
     ny(1) ny(end) ny(1) ny(end)];
@@ -356,7 +386,7 @@ if strcmp(transform,'homography')
 end
 
 
-if plot_flag==1
+if plot_flag==0
     figure(1)
     % plot images for highest-resolution level of pyramid
     subplot(2,2,1)

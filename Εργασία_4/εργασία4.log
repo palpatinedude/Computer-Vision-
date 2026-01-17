@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.12.13)  2 JAN 2026 20:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.12.13)  16 JAN 2026 01:56
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1285,7 +1285,8 @@ runsystem(rm εργασία4.aex)...executed.
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count420
 \l__pdf_internal_box=\box128
-) (./εργασία4.aux)
+)
+No file εργασία4.aux.
 \openout1 = `εργασία4.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
@@ -1304,7 +1305,7 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 39.
 LaTeX Font Info:    ... okay on input line 39.
 LaTeX Font Info:    Checking defaults for LGR/cmr/m/n on input line 39.
 LaTeX Font Info:    Trying to load font information for LGR+cmr on input line 39.
- (/usr/share/texlive/texmf-dist/tex/latex/cbfonts-fd/lgrcmr.fd
+(/usr/share/texlive/texmf-dist/tex/latex/cbfonts-fd/lgrcmr.fd
 File: lgrcmr.fd 2017/07/29 v1.2 Greek European Computer Regular
 )
 LaTeX Font Info:    ... okay on input line 39.
@@ -1435,7 +1436,6 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 Package hyperref Info: Link coloring OFF on input line 39.
- (./εργασία4.out) (./εργασία4.out)
 \@outlinefile=\write7
 \openout7 = `εργασία4.out'.
 
@@ -1443,7 +1443,7 @@ Package hyperref Info: Link coloring OFF on input line 39.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfigure package is loaded.
 Package caption Info: End \AtBeginDocument code.
-<logo.png, id=19, 488.5452pt x 177.3024pt>
+<logo.png, id=7, 488.5452pt x 177.3024pt>
 File: logo.png Graphic file (type png)
 <use logo.png>
 Package pdftex.def Info: logo.png  used on input line 42.
@@ -1461,11 +1461,190 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 ) [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc} <./logo.png>] (./εργασία4.toc)
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc} <./logo.png>]
+No file εργασία4.toc.
 \tf@toc=\write8
 \openout8 = `εργασία4.toc'.
 
- [2] (./εργασία4.aux)
+[2{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [3] [4] [5]
+Underfull \hbox (badness 10000) in paragraph at lines 336--337
+
+ []
+
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 380--381
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 401--402
+
+ []
+
+[7] [8] [9] [10] [11]
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 758.
+ (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
+File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
+)
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `cmtt' (encoding: T1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+
+Overfull \hbox (15.06627pt too wide) detected at line 759
+\OT1/cmr/m/n/12 [[]\OML/cmm/m/it/12 ; []; []; ^^Z; []\OT1/cmr/m/n/12 ] = []([]\OML/cmm/m/it/12 ; []; []; []; []; []\OT1/cmr/m/n/12 )\OML/cmm/m/it/12 :
+ []
+
+[12] [13]
+Underfull \hbox (badness 10000) in paragraph at lines 817--818
+
+ []
+
+
+Overfull \hbox (3.52373pt too wide) in paragraph at lines 842--846
+\LGR/cmr/m/n/12 eu-ju-gr�m-mishc xek-in� ap� to ep�pedo qamh-l�terhc an�lushc kai h ek-t�mhsh tou gewmetriko� metasqh-
+ []
+
+[14] [15]
+<Untitled.png, id=170, 513.92pt x 725.71124pt>
+File: Untitled.png Graphic file (type png)
+<use Untitled.png>
+Package pdftex.def Info: Untitled.png  used on input line 856.
+(pdftex.def)             Requested size: 170.71652pt x 241.06895pt.
+
+Overfull \hbox (3.25027pt too wide) in paragraph at lines 890--892
+\LGR/cmr/m/n/12 H sun�rthsh \T1/cmtt/m/n/12 image_jacobian.m \LGR/cmr/m/n/12 sun-du�zei ta \T1/cmr/m/n/12 (-20) gra-di-ents \LGR/cmr/m/n/12 thc eik�nac me ton \T1/cmr/m/n/12 (-20) ja-co-bian \LGR/cmr/m/n/12 tou gewmetriko�
+ []
+
+[16 <./Untitled.png>]
+Overfull \hbox (1.01933pt too wide) in paragraph at lines 922--925
+\LGR/cmr/m/n/12 Met� thn olok-l�r-wsh twn epanal�yewn se �na ep�pedo thc eikonop-u-ram�-dac\T1/cmr/m/n/12 (-20) , \LGR/cmr/m/n/12 o ek-tim�-menoc metasqh-
+ []
+
+[17]
+Underfull \hbox (badness 10000) in paragraph at lines 941--942
+
+ []
+
+[18]
+Underfull \hbox (badness 10000) in paragraph at lines 995--996
+
+ []
+
+[19] [20]
+<part1/results/video1_high_t1_i50_convergence.png, id=215, 388.8126pt x 300.1614pt>
+File: part1/results/video1_high_t1_i50_convergence.png Graphic file (type png)
+<use part1/results/video1_high_t1_i50_convergence.png>
+Package pdftex.def Info: part1/results/video1_high_t1_i50_convergence.png  used on input line 1043.
+(pdftex.def)             Requested size: 213.39566pt x 164.74576pt.
+ [21 <./part1/results/video1_high_t1_i50_convergence.png (PNG copy)>]
+<part1/results/video1_low_t1_i50_convergence.png, id=223, 367.1316pt x 300.1614pt>
+File: part1/results/video1_low_t1_i50_convergence.png Graphic file (type png)
+<use part1/results/video1_low_t1_i50_convergence.png>
+Package pdftex.def Info: part1/results/video1_low_t1_i50_convergence.png  used on input line 1073.
+(pdftex.def)             Requested size: 213.39566pt x 174.4693pt.
+ [22 <./part1/results/video1_low_t1_i50_convergence.png (PNG copy)>]
+<part1/results/video2_high_t1_i50_convergence.png, id=231, 386.8854pt x 300.1614pt>
+File: part1/results/video2_high_t1_i50_convergence.png Graphic file (type png)
+<use part1/results/video2_high_t1_i50_convergence.png>
+Package pdftex.def Info: part1/results/video2_high_t1_i50_convergence.png  used on input line 1110.
+(pdftex.def)             Requested size: 213.39566pt x 165.56102pt.
+
+Overfull \hbox (6.15411pt too wide) in paragraph at lines 1115--1117
+[]\LGR/cmr/m/n/12 To \T1/cmr/m/it/12 (-20) video2 \LGR/cmr/m/n/12 apeikon�zei thn �dia skhn� me to \T1/cmr/m/it/12 (-20) video1\T1/cmr/m/n/12 (-20) , \LGR/cmr/m/n/12 all� per-il-am-b�nei epi-pl�on oriz�n-tia metat�pish
+ []
+
+<part1/results/video2_low_t1_i50_convergence.png, id=232, 372.9132pt x 300.1614pt>
+File: part1/results/video2_low_t1_i50_convergence.png Graphic file (type png)
+<use part1/results/video2_low_t1_i50_convergence.png>
+Package pdftex.def Info: part1/results/video2_low_t1_i50_convergence.png  used on input line 1143.
+(pdftex.def)             Requested size: 213.39566pt x 171.76247pt.
+[23 <./part1/results/video2_high_t1_i50_convergence.png (PNG copy)>] [24 <./part1/results/video2_low_t1_i50_convergence.png (PNG copy)>]
+Overfull \hbox (4.04018pt too wide) in paragraph at lines 1189--1192
+[]\LGR/cmr/m/n/12 Ant�jeta\T1/cmr/m/n/12 (-20) , \LGR/cmr/m/n/12 sth qamhl� an�lush \T1/cmr/m/n/12 (-20) (\T1/cmr/m/it/12 (-20) low\T1/cmr/m/n/12 (-20) ) \LGR/cmr/m/n/12 h di-a-j�simh plhro-for�a mei�ne-tai\T1/cmr/m/n/12 (-20) , \LGR/cmr/m/n/12 h an-tikeimenik� sun�rthsh
+ []
+
+[25]
+<part1/results/video1_high_seq_psnr_sequence.png, id=258, 367.6134pt x 307.3884pt>
+File: part1/results/video1_high_seq_psnr_sequence.png Graphic file (type png)
+<use part1/results/video1_high_seq_psnr_sequence.png>
+Package pdftex.def Info: part1/results/video1_high_seq_psnr_sequence.png  used on input line 1224.
+(pdftex.def)             Requested size: 213.39566pt x 178.43547pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1238--1239
+
+ []
+
+<part1/results/video1_low_seq_psnr_sequence.png, id=259, 367.1316pt x 307.3884pt>
+File: part1/results/video1_low_seq_psnr_sequence.png Graphic file (type png)
+<use part1/results/video1_low_seq_psnr_sequence.png>
+Package pdftex.def Info: part1/results/video1_low_seq_psnr_sequence.png  used on input line 1253.
+(pdftex.def)             Requested size: 213.39566pt x 178.67pt.
+[26 <./part1/results/video1_high_seq_psnr_sequence.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 1268--1269
+
+ []
+
+[27 <./part1/results/video1_low_seq_psnr_sequence.png (PNG copy)>]
+<part1/results/video2_high_seq_psnr_sequence.png, id=274, 367.1316pt x 307.3884pt>
+File: part1/results/video2_high_seq_psnr_sequence.png Graphic file (type png)
+<use part1/results/video2_high_seq_psnr_sequence.png>
+Package pdftex.def Info: part1/results/video2_high_seq_psnr_sequence.png  used on input line 1282.
+(pdftex.def)             Requested size: 213.39566pt x 178.67pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1296--1297
+
+ []
+
+
+Overfull \hbox (1.43292pt too wide) in paragraph at lines 1301--1302
+[]\LGR/cmr/m/n/12 To \T1/cmr/m/n/12 (-20) correlation-based \LGR/cmr/m/n/12 krit�rio thc \T1/cmr/m/n/12 (-20) ECC \LGR/cmr/m/n/12 param�nei an-jek-tik� se aut�c tic metabol�c\T1/cmr/m/n/12 (-20) , \LGR/cmr/m/n/12 apotr�pon-
+ []
+
+[28 <./part1/results/video2_high_seq_psnr_sequence.png (PNG copy)>]
+<part1/results/video2_low_seq_psnr_sequence.png, id=283, 367.1316pt x 307.3884pt>
+File: part1/results/video2_low_seq_psnr_sequence.png Graphic file (type png)
+<use part1/results/video2_low_seq_psnr_sequence.png>
+Package pdftex.def Info: part1/results/video2_low_seq_psnr_sequence.png  used on input line 1311.
+(pdftex.def)             Requested size: 213.39566pt x 178.67pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1324--1325
+
+ []
+
+[29 <./part1/results/video2_low_seq_psnr_sequence.png (PNG copy)>]
+
+! LaTeX Error: \begin{itemize} on input line 1371 ended by \end{enumerate}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1374 \end{enumerate}
+                      
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: \begin{itemize} on input line 1376 ended by \end{enumerate}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1380 \end{enumerate}
+                      
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+[30] [31] [32] [33] [34] [35]
+Overfull \hbox (32.61441pt too wide) in paragraph at lines 1742--1745
+\LGR/cmr/m/n/12 To mon-t�lo epil�ge-tai �tsi �ste na elaqistopoie� th di�meso twn tetrag-wnik�n sfalm�twn epanaprobol�c\T1/cmr/m/n/12 (-20) ,
+ []
+
+[36] [37] [38] (./εργασία4.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
@@ -1477,22 +1656,22 @@ Package rerunfilecheck Warning: File `εργασία4.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `εργασία4.out':
-(rerunfilecheck)             Before: 0F7B3D5B820D9B67BA06DFA5CE1418CF;490
-(rerunfilecheck)             After:  41367878D64D814220E4788CC1815C1B;700.
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  F0377BABE83A20EA5317BB6D257CA728;6830.
  ) 
 Here is how much of TeX's memory you used:
- 36745 strings out of 474222
- 698544 string characters out of 5748732
- 1928975 words of memory out of 5000000
- 58357 multiletter control sequences out of 15000+600000
- 571783 words of font info for 81 fonts, out of 8000000 for 9000
+ 37242 strings out of 474222
+ 707493 string characters out of 5748732
+ 1938975 words of memory out of 5000000
+ 58544 multiletter control sequences out of 15000+600000
+ 587420 words of font info for 169 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 81i,6n,117p,1091b,547s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grmn1200.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grmn1440.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grmn2074.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grxn1200.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grxn1440.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grxn1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm2074.pfb>
-Output written on εργασία4.pdf (2 pages, 532009 bytes).
+ 81i,8n,117p,1091b,727s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmmib8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grmn1200.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grmn1440.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grmn2074.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grxn1200.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grxn1440.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cbfonts/grxn1728.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm2074.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1200.pfb>
+Output written on εργασία4.pdf (38 pages, 1170558 bytes).
 PDF statistics:
- 107 PDF objects out of 1000 (max. 8388607)
- 76 compressed objects within 1 object stream
- 10 named destinations out of 1000 (max. 500000)
- 20522 words of extra memory for PDF output out of 20736 (max. 10000000)
+ 530 PDF objects out of 1000 (max. 8388607)
+ 416 compressed objects within 5 object streams
+ 194 named destinations out of 1000 (max. 500000)
+ 42559 words of extra memory for PDF output out of 42996 (max. 10000000)
 
