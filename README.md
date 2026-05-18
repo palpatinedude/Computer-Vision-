@@ -73,3 +73,31 @@ The main objectives of this laboratory exercise are:
 
 ---
 
+
+# Image Alignment & Image Mosaicing — Exercise 4
+
+---
+
+## Overview
+
+Exercise 4 focuses on image registration and panoramic image mosaicing.
+The exercise is divided into two main parts. The first part examines
+gradient-based image alignment algorithms using MATLAB, while the second
+part involves the implementation of a complete image stitching pipeline
+using Simulink.
+
+---
+
+## Objectives
+
+The main objectives of this laboratory exercise are:
+
+- Analyze gradient-based alignment algorithms such as ECC and Lucas-Kanade
+- Evaluate image registration performance under geometric and photometric distortions
+- Understand two-dimensional geometric transformations
+- Implement affine and projective motion models
+- Develop an end-to-end image mosaicing system
+- Apply robust estimation techniques to eliminate incorrect matches
+
+---
+

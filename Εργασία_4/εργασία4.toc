@@ -1,65 +1,65 @@
 \babel@toc {english}{}\relax 
 \contentsline {section}{\numberline {1}Abstract}{2}{section.1}%
-\contentsline {section}{\numberline {2}Μέρος Α – Image Alignment}{2}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Θεωρία}{2}{subsection.2.1}%
-\contentsline {subsubsection}{\numberline {2.1.1}Optical Flow}{2}{subsubsection.2.1.1}%
+\contentsline {section}{\numberline {2}Μέρος Α – Image Alignment}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Θεωρία}{3}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}Optical Flow}{3}{subsubsection.2.1.1}%
 \contentsline {paragraph}{Optical Flow vs Motion Field}{3}{section*.3}%
-\contentsline {paragraph}{Υπόθεση Σταθερότητας Φωτεινότητας}{3}{section*.4}%
-\contentsline {subsubsection}{\numberline {2.1.2}Optical Flow Constraint Equation}{3}{subsubsection.2.1.2}%
+\contentsline {paragraph}{Υπόθεση Σταθερότητας Φωτεινότητας}{4}{section*.4}%
+\contentsline {subsubsection}{\numberline {2.1.2}Optical Flow Constraint Equation}{4}{subsubsection.2.1.2}%
 \contentsline {paragraph}{Aperture Problem:}{4}{section*.5}%
 \contentsline {subsubsection}{\numberline {2.1.3}Lucas-Kanade}{4}{subsubsection.2.1.3}%
-\contentsline {paragraph}{Τοπικό Μοντέλο Σταθερής Κίνησης}{4}{section*.6}%
-\contentsline {paragraph}{Μορφή Μητρώων}{4}{section*.7}%
+\contentsline {paragraph}{Τοπικό Μοντέλο Σταθερής Κίνησης}{5}{section*.6}%
+\contentsline {paragraph}{Μορφή Μητρώων}{5}{section*.7}%
 \contentsline {paragraph}{Λύση μέσω Ελαχίστων Τετραγώνων}{5}{section*.8}%
-\contentsline {paragraph}{Structure Tensor}{5}{section*.9}%
-\contentsline {paragraph}{Ανάλυση ιδιοτιμών του \(A^T A\):}{5}{section*.10}%
+\contentsline {paragraph}{Structure Tensor}{6}{section*.9}%
+\contentsline {paragraph}{Ανάλυση ιδιοτιμών του \(A^T A\):}{6}{section*.10}%
 \contentsline {subsubsection}{\numberline {2.1.4}Enhanced Correlation Coefficient}{6}{subsubsection.2.1.4}%
-\contentsline {paragraph}{Πλεονεκτήματα του ECC:}{6}{section*.11}%
-\contentsline {paragraph}{Μορφή του ECC σε δύο διαστάσεις:}{6}{section*.12}%
-\contentsline {subsubsection}{\numberline {2.1.5}Μετρικές}{6}{subsubsection.2.1.5}%
+\contentsline {paragraph}{Πλεονεκτήματα του ECC:}{7}{section*.11}%
+\contentsline {paragraph}{Μορφή του ECC σε δύο διαστάσεις:}{7}{section*.12}%
+\contentsline {subsubsection}{\numberline {2.1.5}Μετρικές}{7}{subsubsection.2.1.5}%
 \contentsline {paragraph}{MSE – Mean Squared Error }{7}{section*.13}%
 \contentsline {paragraph}{Ερμηνεία MSE:}{7}{section*.14}%
-\contentsline {paragraph}{PSNR – Peak Signal-to-Noise Ratio }{7}{section*.15}%
-\contentsline {paragraph}{Ερμηνεία PSNR:}{7}{section*.16}%
-\contentsline {subsubsection}{\numberline {2.1.6}Γεωμετρικοί Μετασχηματισμοί}{7}{subsubsection.2.1.6}%
+\contentsline {paragraph}{PSNR – Peak Signal-to-Noise Ratio }{8}{section*.15}%
+\contentsline {paragraph}{Ερμηνεία PSNR:}{8}{section*.16}%
+\contentsline {subsubsection}{\numberline {2.1.6}Γεωμετρικοί Μετασχηματισμοί}{8}{subsubsection.2.1.6}%
 \contentsline {paragraph}{Affine Transformation}{8}{section*.17}%
-\contentsline {subparagraph}{Παράμετροι}{8}{section*.18}%
-\contentsline {subparagraph}{Ιδιότητες}{8}{section*.19}%
+\contentsline {subparagraph}{Παράμετροι}{9}{section*.18}%
+\contentsline {subparagraph}{Ιδιότητες}{9}{section*.19}%
 \contentsline {paragraph}{Projective Transformation (Homography)}{9}{section*.20}%
-\contentsline {subparagraph}{Μετάβαση σε Καρτεσιανές Συντεταγμένες}{9}{section*.21}%
-\contentsline {subparagraph}{Παράμετροι και Βαθμοί Ελευθερίας}{9}{section*.22}%
-\contentsline {subparagraph}{Εκτίμηση Homography - Μέθοδος DLT}{9}{section*.23}%
+\contentsline {subparagraph}{Μετάβαση σε Καρτεσιανές Συντεταγμένες}{10}{section*.21}%
+\contentsline {subparagraph}{Παράμετροι και Βαθμοί Ελευθερίας}{10}{section*.22}%
+\contentsline {subparagraph}{Εκτίμηση Homography - Μέθοδος DLT}{10}{section*.23}%
 \contentsline {subparagraph}{Σχέση με Affine Μετασχηματισμό}{10}{section*.24}%
-\contentsline {subparagraph}{Χαρακτηριστικά}{10}{section*.25}%
-\contentsline {subsubsection}{\numberline {2.1.7}Διατύπωση του Προβλήματος Image Alignment}{10}{subsubsection.2.1.7}%
-\contentsline {paragraph}{Template και Input Εικόνα}{10}{section*.26}%
-\contentsline {paragraph}{Ο Γεωμετρικός Μετασχηματισμός (Warp)}{10}{section*.27}%
+\contentsline {subparagraph}{Χαρακτηριστικά}{11}{section*.25}%
+\contentsline {subsubsection}{\numberline {2.1.7}Διατύπωση του Προβλήματος Image Alignment}{11}{subsubsection.2.1.7}%
+\contentsline {paragraph}{Template και Input Εικόνα}{11}{section*.26}%
+\contentsline {paragraph}{Ο Γεωμετρικός Μετασχηματισμός (Warp)}{11}{section*.27}%
 \contentsline {subsubsection}{\numberline {2.1.8}Inverse Warping και Bilinear Interpolation}{11}{subsubsection.2.1.8}%
 \contentsline {paragraph}{Inverse Warping}{11}{section*.28}%
-\contentsline {paragraph}{Bilinear Interpolation}{11}{section*.29}%
-\contentsline {subsubsection}{\numberline {2.1.9}Συνάρτηση Σφάλματος}{11}{subsubsection.2.1.9}%
-\contentsline {paragraph}{Μέθοδος Lucas-Kanade}{11}{section*.30}%
-\contentsline {subsubsection}{\numberline {2.1.10}Γραμμικοποίηση και Επίλυση (Gauss-Newton / Lucas-Kanade)}{11}{subsubsection.2.1.10}%
-\contentsline {paragraph}{Μικρό Update Παραμέτρων}{11}{section*.31}%
+\contentsline {paragraph}{Bilinear Interpolation}{12}{section*.29}%
+\contentsline {subsubsection}{\numberline {2.1.9}Συνάρτηση Σφάλματος}{12}{subsubsection.2.1.9}%
+\contentsline {paragraph}{Μέθοδος Lucas-Kanade}{12}{section*.30}%
+\contentsline {subsubsection}{\numberline {2.1.10}Γραμμικοποίηση και Επίλυση (Gauss-Newton / Lucas-Kanade)}{12}{subsubsection.2.1.10}%
+\contentsline {paragraph}{Μικρό Update Παραμέτρων}{12}{section*.31}%
 \contentsline {paragraph}{Gradient, Warp Jacobian και Image Jacobian}{12}{section*.32}%
-\contentsline {paragraph}{Γραμμικοποιημένο Πρόβλημα Ελαχίστων Τετραγώνων}{12}{section*.33}%
-\contentsline {paragraph}{Προσέγγιση Hessian (Gauss-Newton)}{12}{section*.34}%
-\contentsline {subsection}{\numberline {2.2}Υλοποίηση}{12}{subsection.2.2}%
-\contentsline {subsubsection}{\numberline {2.2.1}Χρήση της συνάρτησης ecc\_lk}{12}{subsubsection.2.2.1}%
-\contentsline {paragraph}{Κλήση της Συνάρτησης}{12}{section*.35}%
+\contentsline {paragraph}{Γραμμικοποιημένο Πρόβλημα Ελαχίστων Τετραγώνων}{13}{section*.33}%
+\contentsline {paragraph}{Προσέγγιση Hessian (Gauss-Newton)}{13}{section*.34}%
+\contentsline {subsection}{\numberline {2.2}Υλοποίηση}{13}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Χρήση της συνάρτησης ecc\_lk}{13}{subsubsection.2.2.1}%
+\contentsline {paragraph}{Κλήση της Συνάρτησης}{13}{section*.35}%
 \contentsline {paragraph}{Δεδομένα Εισόδου}{13}{section*.36}%
-\contentsline {paragraph}{Δεδομένα Εξόδου}{13}{section*.37}%
-\contentsline {subparagraph}{\textbf {results}}{13}{section*.38}%
-\contentsline {subparagraph}{\textbf {results\_lk}}{13}{section*.39}%
-\contentsline {subparagraph}{\textbf {MSE(i)}}{13}{section*.40}%
+\contentsline {paragraph}{Δεδομένα Εξόδου}{14}{section*.37}%
+\contentsline {subparagraph}{\textbf {results}}{14}{section*.38}%
+\contentsline {subparagraph}{\textbf {results\_lk}}{14}{section*.39}%
+\contentsline {subparagraph}{\textbf {MSE(i)}}{14}{section*.40}%
 \contentsline {subparagraph}{\textbf {rho(i)}}{14}{section*.41}%
 \contentsline {subparagraph}{\textbf {MSELK(i)}}{14}{section*.42}%
 \contentsline {paragraph}{Τι GUI/plots εμφανίζει η συνάρτηση}{14}{section*.43}%
 \contentsline {subparagraph}{Figure 1 -Ευθυγράμμιση με ECC}{14}{section*.44}%
-\contentsline {subparagraph}{Figure 2 -Ευθυγράμμιση με Lucas-Kanade}{14}{section*.45}%
-\contentsline {subparagraph}{Figure 3 -Σύγκριση ECC και LK (PSNR-like)}{14}{section*.46}%
-\contentsline {subsubsection}{\numberline {2.2.2}Αναλυτική χρησιμότητα των 4 key files}{14}{subsubsection.2.2.2}%
-\contentsline {paragraph}{Προεπεξεργασία και Αρχικοποίηση}{14}{section*.47}%
+\contentsline {subparagraph}{Figure 2 -Ευθυγράμμιση με Lucas-Kanade}{15}{section*.45}%
+\contentsline {subparagraph}{Figure 3 -Σύγκριση ECC και LK (PSNR-like)}{15}{section*.46}%
+\contentsline {subsubsection}{\numberline {2.2.2}Αναλυτική χρησιμότητα των 4 key files}{15}{subsubsection.2.2.2}%
+\contentsline {paragraph}{Προεπεξεργασία και Αρχικοποίηση}{15}{section*.47}%
 \contentsline {paragraph}{Κύρια Ροή Αλγορίθμου}{15}{section*.48}%
 \contentsline {paragraph}{spatial\_interp.m -Warp και Παρεμβολή}{16}{section*.50}%
 \contentsline {paragraph}{warp\_jacobian.m -Jacobian του Μετασχηματισμού}{16}{section*.51}%
@@ -107,33 +107,41 @@
 \contentsline {subparagraph}{High vs Low Ανάλυση}{30}{section*.99}%
 \contentsline {subparagraph}{Video1 vs Video2 (Επίδραση Οριζόντιας Κίνησης)}{30}{section*.100}%
 \contentsline {subsubsection}{\numberline {2.2.5}Φωτομετρικές Παραμορφώσεις}{30}{subsubsection.2.2.5}%
-\contentsline {paragraph}{Φωτομετρικό Μοντέλο Παραμόρφωσης}{30}{section*.101}%
-\contentsline {section}{\numberline {3}Μέρος Β – Video Processing}{31}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Θεωρία}{31}{subsection.3.1}%
-\contentsline {subsubsection}{\numberline {3.1.1}Απεικόνιση Εικόνας και Ακολουθίας Εικόνων}{31}{subsubsection.3.1.1}%
-\contentsline {paragraph}{Εικόνα}{31}{section*.102}%
-\contentsline {paragraph}{Video}{31}{section*.103}%
-\contentsline {paragraph}{Intensity vs Color – Μετατροπή σε Intensity}{32}{section*.104}%
-\contentsline {subsubsection}{\numberline {3.1.2}Μεταβολή Εμβαδού σε Affine}{32}{subsubsection.3.1.2}%
-\contentsline {paragraph}{Ιακωβιανός Μετασχηματισμού}{32}{section*.105}%
-\contentsline {paragraph}{Ρόλος των Ολοκληρωμάτων}{32}{section*.106}%
-\contentsline {paragraph}{Ερμηνεία του Determinant}{33}{section*.107}%
-\contentsline {subsubsection}{\numberline {3.1.3}Inverse Warping και Παρεμβολή}{33}{subsubsection.3.1.3}%
-\contentsline {paragraph}{Bilinear Interpolation}{33}{section*.108}%
-\contentsline {subsubsection}{\numberline {3.1.4}Corner Detection}{34}{subsubsection.3.1.4}%
-\contentsline {subsubsection}{\numberline {3.1.5}Corner Matching}{34}{subsubsection.3.1.5}%
-\contentsline {subsubsection}{\numberline {3.1.6}Εκτίμηση Γεωμετρικού Μετασχηματισμού από Αντιστοιχίσεις}{34}{subsubsection.3.1.6}%
-\contentsline {paragraph}{Εκτίμηση Affine}{35}{section*.109}%
-\contentsline {subparagraph}{Λύση με Ελάχιστα Τετράγωνα}{35}{section*.110}%
-\contentsline {paragraph}{Εκτίμηση Homography}{35}{section*.111}%
-\contentsline {subparagraph}{Ελάχιστο Πλήθος Αντιστοιχίσεων}{36}{section*.112}%
-\contentsline {subsubsection}{\numberline {3.1.7}Robust Estimation}{36}{subsubsection.3.1.7}%
-\contentsline {paragraph}{RANSAC}{36}{section*.113}%
-\contentsline {subparagraph}{Βήματα Αλγορίθμου}{36}{section*.114}%
-\contentsline {subparagraph}{Αριθμός Επαναλήψεων}{36}{section*.115}%
-\contentsline {paragraph}{Least Median of Squares (LMedS)}{37}{section*.116}%
-\contentsline {subparagraph}{Ιδιότητες}{37}{section*.117}%
-\contentsline {paragraph}{Μη Γραμμική Βελτιστοποίηση Παραμέτρων}{37}{section*.118}%
-\contentsline {subparagraph}{Ιδιότητες}{37}{section*.119}%
-\contentsline {subsubsection}{\numberline {3.1.8}Image Stiching}{37}{subsubsection.3.1.8}%
-\contentsline {paragraph}{Blending και Οπτική Συνέχεια}{38}{section*.120}%
+\contentsline {paragraph}{Περίπτωση 1: Παραμόρφωση μόνο στο Template}{31}{section*.101}%
+\contentsline {paragraph}{Περίπτωση 2: Παραμόρφωση μόνο στο Image}{32}{section*.103}%
+\contentsline {subparagraph}{Saturation λόγω Φωτομετρικής Παραμόρφωσης}{32}{section*.105}%
+\contentsline {paragraph}{Περίπτωση 3: Παραμόρφωση και στο Template και στο Image}{34}{section*.107}%
+\contentsline {paragraph}{Συμπεράσματα}{35}{section*.109}%
+\contentsline {subsubsection}{\numberline {2.2.6}Επίδραση Προσθετικού Θορύβου — Monte Carlo}{35}{subsubsection.2.2.6}%
+\contentsline {paragraph}{Gaussian Θόρυβος}{35}{section*.110}%
+\contentsline {paragraph}{Uniform Θόρυβος}{36}{section*.112}%
+\contentsline {paragraph}{Συμπεράσματα}{36}{section*.114}%
+\contentsline {section}{\numberline {3}Μέρος Β – Video Processing}{37}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Θεωρία}{37}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Απεικόνιση Εικόνας και Ακολουθίας Εικόνων}{37}{subsubsection.3.1.1}%
+\contentsline {paragraph}{Εικόνα}{37}{section*.115}%
+\contentsline {paragraph}{Video}{37}{section*.116}%
+\contentsline {paragraph}{Intensity vs Color – Μετατροπή σε Intensity}{38}{section*.117}%
+\contentsline {subsubsection}{\numberline {3.1.2}Μεταβολή Εμβαδού σε Affine}{38}{subsubsection.3.1.2}%
+\contentsline {paragraph}{Ιακωβιανός Μετασχηματισμού}{38}{section*.118}%
+\contentsline {paragraph}{Ρόλος των Ολοκληρωμάτων}{38}{section*.119}%
+\contentsline {paragraph}{Ερμηνεία του Determinant}{39}{section*.120}%
+\contentsline {subsubsection}{\numberline {3.1.3}Inverse Warping και Παρεμβολή}{39}{subsubsection.3.1.3}%
+\contentsline {paragraph}{Bilinear Interpolation}{39}{section*.121}%
+\contentsline {subsubsection}{\numberline {3.1.4}Corner Detection}{40}{subsubsection.3.1.4}%
+\contentsline {subsubsection}{\numberline {3.1.5}Corner Matching}{40}{subsubsection.3.1.5}%
+\contentsline {subsubsection}{\numberline {3.1.6}Εκτίμηση Γεωμετρικού Μετασχηματισμού από Αντιστοιχίσεις}{40}{subsubsection.3.1.6}%
+\contentsline {paragraph}{Εκτίμηση Affine}{41}{section*.122}%
+\contentsline {subparagraph}{Λύση με Ελάχιστα Τετράγωνα}{41}{section*.123}%
+\contentsline {paragraph}{Εκτίμηση Homography}{41}{section*.124}%
+\contentsline {subparagraph}{Ελάχιστο Πλήθος Αντιστοιχίσεων}{42}{section*.125}%
+\contentsline {subsubsection}{\numberline {3.1.7}Robust Estimation}{42}{subsubsection.3.1.7}%
+\contentsline {paragraph}{RANSAC}{42}{section*.126}%
+\contentsline {subparagraph}{Βήματα Αλγορίθμου}{42}{section*.127}%
+\contentsline {subparagraph}{Αριθμός Επαναλήψεων}{42}{section*.128}%
+\contentsline {paragraph}{Least Median of Squares (LMedS)}{43}{section*.129}%
+\contentsline {subparagraph}{Ιδιότητες}{43}{section*.130}%
+\contentsline {paragraph}{Μη Γραμμική Βελτιστοποίηση Παραμέτρων}{43}{section*.131}%
+\contentsline {subparagraph}{Ιδιότητες}{43}{section*.132}%
+\contentsline {subsubsection}{\numberline {3.1.8}Image Stiching}{43}{subsubsection.3.1.8}%
+\contentsline {paragraph}{Blending και Οπτική Συνέχεια}{44}{section*.133}%
