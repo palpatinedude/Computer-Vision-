@@ -139,11 +139,11 @@ Additionally, the project includes migration and debugging of legacy Simulink Co
 
 ---
 
-# Part A — Image Alignment
+## Part A — Image Alignment
 
 ---
 
-## Overview
+### Overview
 
 Part A investigates gradient-based image registration algorithms for aligning image sequences under:
 - geometric distortions,
@@ -157,7 +157,7 @@ The following algorithms are studied:
 
 ---
 
-## Experiments
+### Experiments
 
 The following experiments were implemented:
 
@@ -175,7 +175,7 @@ Monte Carlo simulations were performed using 100 runs for each noise configurati
 
 ---
 
-## Implemented MATLAB Modules
+### Implemented MATLAB Modules
 
 Core modules:
 
@@ -198,7 +198,7 @@ noise_montecarlo.m
 
 ---
 
-## Topics Covered
+### Topics Covered
 
 - Image Registration
 - Lucas-Kanade Alignment
@@ -212,11 +212,11 @@ noise_montecarlo.m
 
 ---
 
-# Part B — Geometric Vision & Image Mosaicing
+## Part B — Geometric Vision & Image Mosaicing
 
 ---
 
-## Overview
+### Overview
 
 Part B focuses on geometric computer vision and panoramic image stitching using Simulink.
 
@@ -233,7 +233,7 @@ A complete mosaic generation pipeline was implemented in Simulink.
 
 ---
 
-## Geometric Transformations
+### Geometric Transformations
 
 The following affine transformation experiments were implemented:
 
@@ -246,7 +246,7 @@ Additionally, projective geometric transformations were analyzed and compared wi
 
 ---
 
-## Corner Detection
+### Corner Detection
 
 Corner detection experiments were implemented using:
 
@@ -257,7 +257,7 @@ Detected feature points were visualized using marker overlays.
 
 ---
 
-## Mosaic / Stitching Pipeline
+### Mosaic / Stitching Pipeline
 
 The implemented image mosaicing pipeline follows:
 
@@ -280,7 +280,7 @@ The system performs:
 
 ---
 
-## Robust Estimation
+### Robust Estimation
 
 The project investigates robust geometric estimation techniques including:
 
@@ -291,7 +291,7 @@ These methods were used to eliminate incorrect feature correspondences and impro
 
 ---
 
-## Legacy Simulink Migration
+### Legacy Simulink Migration
 
 The original Simulink models relied on deprecated VIP Toolbox libraries:
 
@@ -312,7 +312,7 @@ The project therefore included:
 
 ---
 
-## Numerical Stability Challenges
+### Numerical Stability Challenges
 
 Several compatibility and numerical stability issues were encountered during implementation, including:
 
@@ -329,7 +329,7 @@ Controlled affine transformation experiments were used to validate the Warp and 
 
 ---
 
-## Topics Covered
+### Topics Covered
 
 - Affine Transformations
 - Projective Geometry
@@ -345,7 +345,7 @@ Controlled affine transformation experiments were used to validate the Warp and 
 
 ---
 
-# Technologies Used
+## Technologies Used
 
 - MATLAB
 - Simulink
