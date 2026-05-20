@@ -1,3 +1,20 @@
+# Computer Vision Laboratory Exercises
+
+This repository contains a collection of laboratory exercises developed for the Computer Vision course. The projects focus on image processing, geometric vision, feature extraction, image alignment, and image mosaicing using MATLAB and Simulink.
+
+---
+
+# Repository Structure
+
+```text
+Exercise_1/   → Multi-Scale Image Decomposition
+Exercise_2/   → Geometric Transformations
+Exercise_3/   → Scale Invariant Feature Transform (SIFT)
+Exercise_4/   → Image Alignment & Image Mosaicing
+```
+
+---
+
 # Multi-Scale Image Decomposition — Exercise 1
 
 ---
@@ -100,4 +117,242 @@ The main objectives of this laboratory exercise are:
 - Apply robust estimation techniques to eliminate incorrect matches
 
 ---
+
+# Image Alignment & Image Mosaicing — Exercise 4
+
+---
+
+## Overview
+
+Exercise 4 focuses on image registration, geometric alignment, and panoramic image mosaicing using MATLAB and Simulink.
+
+The exercise is divided into two main parts:
+
+- Part A — Gradient-based Image Alignment
+- Part B — Geometric Vision & Image Stitching
+
+The first part investigates iterative image alignment algorithms such as Enhanced Correlation Coefficient (ECC) and Lucas-Kanade (LK).
+
+The second part focuses on affine/projective geometric transformations and the implementation of a complete image stitching pipeline in Simulink.
+
+Additionally, the project includes migration and debugging of legacy Simulink Computer Vision Toolbox models to MATLAB R2024b.
+
+---
+
+# Part A — Image Alignment
+
+---
+
+## Overview
+
+Part A investigates gradient-based image registration algorithms for aligning image sequences under:
+- geometric distortions,
+- photometric variations,
+- and additive noise.
+
+The following algorithms are studied:
+
+- Enhanced Correlation Coefficient (ECC)
+- Lucas-Kanade (LK)
+
+---
+
+## Experiments
+
+The following experiments were implemented:
+
+- Large geometric deformation analysis
+- Sequential frame alignment
+- PSNR evaluation across sequences
+- Photometric distortion experiments
+- Monte Carlo noise robustness experiments
+
+Noise experiments included:
+- Gaussian noise
+- Uniform noise
+
+Monte Carlo simulations were performed using 100 runs for each noise configuration.
+
+---
+
+## Implemented MATLAB Modules
+
+Core modules:
+
+```text
+ecc_lk_alignment.m
+spatial_interp.m
+image_jacobian.m
+warp_jacobian.m
+param_update.m
+```
+
+Analysis scripts:
+
+```text
+large_deformations.m
+psnr_sequence.m
+photometric.m
+noise_montecarlo.m
+```
+
+---
+
+## Topics Covered
+
+- Image Registration
+- Lucas-Kanade Alignment
+- Enhanced Correlation Coefficient (ECC)
+- Gradient-Based Optimization
+- Image Jacobians
+- Warp Jacobians
+- Photometric Robustness
+- Monte Carlo Evaluation
+- PSNR Analysis
+
+---
+
+# Part B — Geometric Vision & Image Mosaicing
+
+---
+
+## Overview
+
+Part B focuses on geometric computer vision and panoramic image stitching using Simulink.
+
+The exercise explores:
+- affine transformations,
+- projective transformations,
+- corner detection,
+- feature matching,
+- robust geometric estimation,
+- image warping,
+- and image stitching.
+
+A complete mosaic generation pipeline was implemented in Simulink.
+
+---
+
+## Geometric Transformations
+
+The following affine transformation experiments were implemented:
+
+- Scaling
+- Rotation
+- Translation
+- Shear deformation
+
+Additionally, projective geometric transformations were analyzed and compared with affine transformations.
+
+---
+
+## Corner Detection
+
+Corner detection experiments were implemented using:
+
+- Harris & Stephens detector
+- Shi-Tomasi detector
+
+Detected feature points were visualized using marker overlays.
+
+---
+
+## Mosaic / Stitching Pipeline
+
+The implemented image mosaicing pipeline follows:
+
+```text
+Video
+→ Corner Detection
+→ Corner Matching
+→ Estimate Geometric Transformation
+→ Warp
+→ Image Stitching
+→ Video Viewer
+```
+
+The system performs:
+- feature detection,
+- feature matching,
+- geometric transformation estimation,
+- affine image warping,
+- and image stitching.
+
+---
+
+## Robust Estimation
+
+The project investigates robust geometric estimation techniques including:
+
+- RANSAC (Random Sample Consensus)
+- Least Median of Squares (LMedS)
+
+These methods were used to eliminate incorrect feature correspondences and improve affine transformation stability.
+
+---
+
+## Legacy Simulink Migration
+
+The original Simulink models relied on deprecated VIP Toolbox libraries:
+
+```text
+vipanalysis
+vipgeotforms
+viptextngfix
+```
+
+which are no longer supported in MATLAB R2024b.
+
+The project therefore included:
+- migration of legacy Simulink models,
+- replacement of deprecated blocks,
+- debugging dimensional mismatches,
+- resolving variable-size signal issues,
+- and reconstruction of the mosaic pipeline using modern Computer Vision Toolbox blocks.
+
+---
+
+## Numerical Stability Challenges
+
+Several compatibility and numerical stability issues were encountered during implementation, including:
+
+- singular affine transformation matrices,
+- unstable feature correspondences,
+- black warped outputs,
+- transpose mismatches between:
+  - \(2 \times M\)
+  - and \(M \times 2\) feature representations,
+- variable-size signal incompatibilities,
+- and deprecated ROI processing.
+
+Controlled affine transformation experiments were used to validate the Warp and Image Stitching subsystems.
+
+---
+
+## Topics Covered
+
+- Affine Transformations
+- Projective Geometry
+- Corner Detection
+- Feature Matching
+- Image Warping
+- Image Stitching
+- Panoramic Mosaicing
+- Robust Estimation
+- RANSAC
+- Geometric Computer Vision
+- Numerical Optimization
+
+---
+
+# Technologies Used
+
+- MATLAB
+- Simulink
+- Computer Vision Toolbox
+- Image Processing Toolbox
+- DSP System Toolbox
+
+---
+
 
