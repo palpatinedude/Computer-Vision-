@@ -1,0 +1,8 @@
+.venv/
+cv5_env/
+__pycache__/
+Exercise_5/data/
+Exercise_5/**/results/
+Exercise_5/**/figures/
+*.npy
+*.pt

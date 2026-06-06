@@ -11,6 +11,7 @@ Exercise_1/   → Multi-Scale Image Decomposition
 Exercise_2/   → Geometric Transformations
 Exercise_3/   → Scale Invariant Feature Transform (SIFT)
 Exercise_4/   → Image Alignment & Image Mosaicing
+Exercise_5/   → Autoencodrs & Variatonal AE
 ```
 
 ---
@@ -352,6 +353,79 @@ Controlled affine transformation experiments were used to validate the Warp and 
 - Computer Vision Toolbox
 - Image Processing Toolbox
 - DSP System Toolbox
+
+---
+
+# Autoencoders & Variational Autoencoders — Exercise 5
+
+---
+
+## Overview
+
+Exercise 5 focuses on dimensionality reduction, representation learning, and generative modeling using both classical machine learning and deep learning techniques.
+
+The exercise explores linear and nonlinear latent-space representations of handwritten digit images from the MNIST dataset. Principal Component Analysis (PCA) and Kernel Principal Component Analysis (KPCA) are investigated as classical dimensionality reduction methods, while several Autoencoder architectures are implemented and compared in terms of reconstruction performance and latent-space representations.
+
+The final part of the exercise introduces Variational Autoencoders (VAEs), which extend traditional Autoencoders by learning probabilistic latent representations that can be used for data generation and interpolation.
+
+---
+
+## Objectives
+
+The main objectives of this laboratory exercise are:
+
+- Understand dimensionality reduction using Principal Component Analysis (PCA)
+- Explore nonlinear dimensionality reduction through Kernel PCA (KPCA)
+- Implement image reconstruction using low-dimensional latent representations
+- Study the relationship between PCA and Linear Autoencoders
+- Implement and compare multiple Autoencoder architectures
+- Analyze latent-space representations of handwritten digits
+- Evaluate reconstruction quality using quantitative metrics
+- Investigate weight-sharing and pseudo-inverse decoding techniques
+- Understand probabilistic latent-variable models
+- Implement Variational Autoencoders using the reparameterization trick
+- Generate and interpolate handwritten digits in latent space
+- Explore modern deep learning approaches for unsupervised representation learning
+
+---
+
+## Implemented Methods
+
+The following methods were implemented and evaluated:
+
+- Principal Component Analysis (PCA)
+- Kernel Principal Component Analysis (KPCA)
+- Linear Autoencoder
+- Nonlinear Autoencoder
+- Tied Weights Autoencoder
+- Pseudo-Inverse Autoencoder
+- Variational Autoencoder (VAE)
+
+---
+
+## Topics Covered
+
+- Principal Component Analysis (PCA)
+- Kernel PCA (KPCA)
+- Dimensionality Reduction
+- Autoencoders
+- Linear Autoencoders
+- Nonlinear Autoencoders
+- Latent Space Learning
+- Representation Learning
+- Unsupervised Learning
+
+---
+
+## Technologies Used
+
+- Python
+- NumPy
+- Pandas
+- Matplotlib
+- Scikit-Learn
+- PyTorch
+- MNIST Dataset
 
 ---
 
