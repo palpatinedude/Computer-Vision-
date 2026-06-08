@@ -10,20 +10,30 @@ sys.path.append(
     )
 )
 
-from utils import (
+from core.config import (
     ensure_dirs,
-    load_mnist_csv,
-    fit_pca,
-    reconstruct,
-    mse,
-    sample_mse,
-    normalize_image_for_display,
-    save_image_grid,
     L_VALUES,
     DIGITS,
     FIG_DPI,
     TRAIN_PATH,
 )
+
+from core.data_utils import load_mnist_csv
+from core.pca_utils import (
+    fit_pca,
+    reconstruct,
+)
+
+from core.metrics import (
+    mse,
+    sample_mse,
+)
+
+from core.plot_utils import (
+    normalize_image_for_display,
+    save_image_grid,
+)
+
 
 OUT_DIR = "results"
 FIG_DIR = "figures"

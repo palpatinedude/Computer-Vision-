@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 import numpy as np
 import pandas as pd
 
@@ -9,16 +9,21 @@ sys.path.append(
     )
 )
 
-from utils import (
+from core.config import (
     ensure_dirs,
-    load_mnist_csv,
-    fit_pca,
-    reconstruct,
-    mse,
-    save_original_reconstruction_pairs,
     TRAIN_PATH,
     TEST_PATH,
 )
+
+from core.data_utils import load_mnist_csv
+from core.pca_utils import (
+    fit_pca,
+    reconstruct,
+)
+
+from core.metrics import mse
+from core.plot_utils import save_original_reconstruction_pairs
+
 
 OUT_DIR = "results"
 FIG_DIR = "figures"

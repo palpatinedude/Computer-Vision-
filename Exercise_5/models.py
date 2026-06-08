@@ -170,3 +170,87 @@ class PseudoInverseAE(nn.Module):
         x_hat = self.decode(z)
 
         return x_hat
+
+
+class VAE(nn.Module):
+
+    def __init__(self, latent_dim=2):
+        super().__init__()
+
+        self.latent_dim = latent_dim
+
+        # creates encoder network
+        self.encoder = nn.Sequential(
+            nn.Linear(784, 512, bias=False),
+            nn.ReLU(),
+            nn.Linear(512, 256, bias=False),
+            nn.ReLU(),
+            nn.Linear(256, 128, bias=False),
+            nn.ReLU()
+        )
+
+        # predicts latent mean
+        self.fc_mu = nn.Linear(
+            128,
+            latent_dim,
+            bias=False
+        )
+
+        # predicts latent log-variance
+        self.fc_logvar = nn.Linear(
+            128,
+            latent_dim,
+            bias=False
+        )
+
+        # creates decoder network
+        self.decoder = nn.Sequential(
+            nn.Linear(latent_dim, 128, bias=False),
+            nn.ReLU(),
+            nn.Linear(128, 256, bias=False),
+            nn.ReLU(),
+            nn.Linear(256, 512, bias=False),
+            nn.ReLU(),
+            nn.Linear(512, 784, bias=False),
+            nn.Sigmoid()
+        )
+
+    # computes latent distribution parameters
+    def encode(self, x):
+        h = self.encoder(x)
+
+        mu = self.fc_mu(h)
+        logvar = self.fc_logvar(h)
+
+        return mu, logvar
+
+    # samples latent vector using reparameterization trick
+    def reparameterize(self, mu, logvar):
+        # computes latent standard deviation
+        std = torch.exp(0.5 * logvar)
+
+        # samples standard Gaussian noise
+        eps = torch.randn_like(std)
+
+        # generates latent sample
+        z = mu + std * eps
+
+        return z
+
+    # reconstructs input from latent vector
+    def decode(self, z):
+        x_hat = self.decoder(z)
+
+        return x_hat
+
+    def forward(self, x):
+        # computes latent distribution
+        mu, logvar = self.encode(x)
+
+        # samples latent vector
+        z = self.reparameterize(mu, logvar)
+
+        # reconstructs input image
+        x_hat = self.decode(z)
+
+        return x_hat, mu, logvar

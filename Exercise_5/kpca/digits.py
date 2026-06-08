@@ -3,6 +3,7 @@ import sys
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+
 from sklearn.decomposition import KernelPCA
 
 sys.path.append(
@@ -11,16 +12,18 @@ sys.path.append(
     )
 )
 
-from utils import (
+from core.config import (
     ensure_dirs,
-    load_mnist_csv,
-    mse,
-    save_image_grid,
     TRAIN_PATH,
     DIGITS,
     L_VALUES,
     FIG_DPI,
 )
+
+from core.data_utils import load_mnist_csv
+
+from core.plot_utils import save_image_grid
+
 
 FIG_DIR = "figures"
 OUT_DIR = "results"
@@ -62,7 +65,12 @@ def save_error_histograms(all_errors, digit):
     plt.figure(figsize=(10, 6))
 
     for L, errors in all_errors.items():
-        plt.hist(errors, bins=40, alpha=0.5, label=f"L={L}")
+        plt.hist(
+            errors,
+            bins=40,
+            alpha=0.5,
+            label=f"L={L}"
+        )
 
     plt.xlabel("Reconstruction MSE")
     plt.ylabel("Number of samples")
@@ -110,7 +118,11 @@ def run_kernel_pca_for_digit(X, y, digit):
         X_hat = np.clip(X_hat, 0, 1)
 
         # computes reconstruction error per image
-        errors = np.mean((X_digit - X_hat) ** 2, axis=1)
+        errors = np.mean(
+            (X_digit - X_hat) ** 2,
+            axis=1
+        )
+
         mean_mse = np.mean(errors)
 
         histogram_errors[L] = errors

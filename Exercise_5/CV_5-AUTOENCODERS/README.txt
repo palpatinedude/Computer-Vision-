@@ -1,1 +1,0 @@
-Download mnist_train.csv & mnist_test.csv from https://www.kaggle.com/oddrationale/mnist-in-csv
