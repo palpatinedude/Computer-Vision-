@@ -4,5 +4,9 @@ __pycache__/
 Exercise_5/data/
 Exercise_5/**/results/
 Exercise_5/**/figures/
+Exercise_6/**/results/
+Exercise_6/**/figures/
+Exercise_6/val2017/
+Exercise_6/annotations_trainval2017/
 *.npy
 *.pt

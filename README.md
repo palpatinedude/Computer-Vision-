@@ -12,6 +12,7 @@ Exercise_2/   → Geometric Transformations
 Exercise_3/   → Scale Invariant Feature Transform (SIFT)
 Exercise_4/   → Image Alignment & Image Mosaicing
 Exercise_5/   → Autoencodrs & Variatonal AE
+Exercise_6/   → CNN-Based Object Detectio
 ```
 
 ---
@@ -426,6 +427,90 @@ The following methods were implemented and evaluated:
 - Scikit-Learn
 - PyTorch
 - MNIST Dataset
+
+---
+
+# Convolutional Neural Networks & Object Detection — Exercise 6
+
+---
+
+## Overview
+
+Exercise 6 focuses on object detection using modern Convolutional Neural Networks (CNNs).
+
+The exercise investigates state-of-the-art object detection architectures and their ability to simultaneously perform object classification and object localization. Pretrained object detectors from the PyTorch torchvision library are evaluated on the COCO2017 dataset and compared in terms of detection accuracy and computational performance.
+
+The project explores region-based detection methods, object localization through bounding boxes, and the evaluation metrics commonly used in object detection systems.
+
+---
+
+## Objectives
+
+The main objectives of this laboratory exercise are:
+
+- Understand the fundamentals of object detection and object localization
+- Study region-based object detection architectures
+- Explore the evolution of R-CNN, Fast R-CNN, and Faster R-CNN detectors
+- Understand the role of Region Proposal Networks (RPNs)
+- Understand anchor boxes and object proposals
+- Evaluate pretrained object detectors on the COCO2017 dataset
+- Compute Precision, Recall, and F1-score metrics
+- Compute Mean Average Precision (mAP)
+- Generate Precision-Recall curves
+- Measure inference time and detection efficiency
+- Compare different object detection architectures
+
+---
+
+## Implemented Methods
+
+The following object detection models were implemented and evaluated:
+
+- Faster R-CNN
+- Single Shot Detector (SSD)
+
+Performance evaluation included:
+
+- Precision
+- Recall
+- F1-score
+- Mean Average Precision (mAP)
+- Precision-Recall Curves
+- Inference Time Analysis
+
+---
+
+## Topics Covered
+
+- Convolutional Neural Networks (CNNs)
+- Object Detection
+- Object Localization
+- Bounding Boxes
+- Intersection over Union (IoU)
+- Region Proposal Networks (RPN)
+- Anchor Boxes
+- Faster R-CNN
+- SSD (Single Shot Detector)
+- Precision
+- Recall
+- F1-score
+- Mean Average Precision (mAP)
+- Precision-Recall Curves
+- Non-Maximum Suppression (NMS)
+- COCO Dataset
+- Deep Learning
+- Computer Vision
+
+---
+
+## Technologies Used
+
+- Python
+- PyTorch
+- Torchvision
+- NumPy
+- Matplotlib
+- COCO2017 Dataset
 
 ---
 
